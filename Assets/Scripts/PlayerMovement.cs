@@ -9,22 +9,22 @@ public class PlayerMovement : MonoBehaviour
     Vector2 movement;
     Vector2 mousePos;
 
+
     void Update()
     {
-        // Input for movement
+        //Input for player movement
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
-        // Get mouse position for aiming
         mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
     }
 
     void FixedUpdate()
     {
-        // Move the player
+        //Updating position + movement + speed
         rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
 
-        // Rotate player to face the mouse cursor
+        //Mouse pos + Rb.pos
         Vector2 lookDir = mousePos - rb.position;
         float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
         rb.rotation = angle;

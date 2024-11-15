@@ -1,32 +1,65 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerControl : MonoBehaviour
 {
-    public float moveSpeed = 5f;
-    public Rigidbody2D rb;
-    public Camera cam;
+    [SerializeField] private float moveSpeed = 5.0f;
+    [SerializeField] private Transform weaponTransform; // Reference to the weapon's transform
+    [SerializeField] private float weaponDistance = 1.5f; // Distance of the weapon from the player
 
-    Vector2 movement;
-    Vector2 mousePos;
+    private Rigidbody2D rb;
+    public Animator animator;
+    public Weapon weapon;
 
+    private Vector2 movement;
+    private Vector2 mousePosition;
 
-    void Update()
+    private const string horizontal = "Horizontal";
+    private const string vertical = "Vertical";
+
+    private void Awake()
     {
-        //Input for player movement
-        movement.x = Input.GetAxisRaw("Horizontal");
-        movement.y = Input.GetAxisRaw("Vertical");
-
-        mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
+        //Getting componenets in inspector
+        rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
-    void FixedUpdate()
+    private void Update()
     {
-        //Updating position + movement + speed
-        rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+        // Handle movement input
+        movement.Set(Input.GetAxisRaw(horizontal), Input.GetAxisRaw(vertical));
 
-        //Mouse pos + Rb.pos
-        Vector2 lookDir = mousePos - rb.position;
-        float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
-        rb.rotation = angle;
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            weapon.Fire();
+        }
+
+        // Get mouse position in world space
+        mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        // Rotate weapon around player towards mouse position
+        RotateWeaponAroundPlayer();
+    }
+
+    private void FixedUpdate()
+    {
+        // Apply movement
+        rb.velocity = movement * moveSpeed;
+    }
+
+    private void RotateWeaponAroundPlayer()
+    {
+        // Calculate direction and angle to the mouse
+        Vector2 aimDirection = mousePosition - rb.position;
+        float aimAngle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
+
+        // Calculate the new position of the weapon
+        Vector2 weaponPosition = rb.position + aimDirection.normalized * weaponDistance;
+        weaponTransform.position = weaponPosition;
+
+        // Rotate the weapon to face the mouse
+        weaponTransform.rotation = Quaternion.Euler(0, 0, aimAngle - 90);
     }
 }

@@ -1,35 +1,48 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EndlessMap : MonoBehaviour
+public class EndlessMapping2 : MonoBehaviour
 {
     public Transform player;
     public GameObject[] mapTiles; // Prefabs of different map tiles
-    public int mapRadius = 3; // How many tiles around the player in a grid
+    public int mapRadius = 10; // How many tiles around the player in a grid
+    public float tileSize = 3f; // Size of each tile
 
-    private Vector2 lastPlayerPosition;
+    private Vector2 lastPlayerTilePosition;
     private Dictionary<Vector2, GameObject> activeTiles = new Dictionary<Vector2, GameObject>();
 
     void Start()
     {
-        lastPlayerPosition = new Vector2(Mathf.Floor(player.position.x), Mathf.Floor(player.position.y));
+        lastPlayerTilePosition = GetPlayerTilePosition();
         UpdateMap();
     }
 
     void Update()
     {
-        Vector2 currentPlayerPosition = new Vector2(Mathf.Floor(player.position.x), Mathf.Floor(player.position.y));
-        if (currentPlayerPosition != lastPlayerPosition)
+        // Calculate the player's current position in tile space
+        Vector2 currentPlayerTilePosition = GetPlayerTilePosition();
+
+        // Check if the player has moved to a new tile
+        if (currentPlayerTilePosition != lastPlayerTilePosition)
         {
-            lastPlayerPosition = currentPlayerPosition;
+            lastPlayerTilePosition = currentPlayerTilePosition;
             UpdateMap();
         }
     }
 
+    Vector2 GetPlayerTilePosition()
+    {
+        // Calculate the player's position in tile space, snapping to tileSize
+        return new Vector2(
+            Mathf.Floor(player.position.x / tileSize),
+            Mathf.Floor(player.position.y / tileSize)
+        );
+    }
+
     void UpdateMap()
     {
-        // Get the player's position in tile space
-        Vector2 playerTilePos = new Vector2(Mathf.Floor(player.position.x), Mathf.Floor(player.position.y));
+        // Get the player's position in tile space and render's the opposing tilemaps
+        Vector2 playerTilePos = GetPlayerTilePosition();
 
         // Create new tiles around the player
         for (int x = -mapRadius; x <= mapRadius; x++)
@@ -40,7 +53,9 @@ public class EndlessMap : MonoBehaviour
 
                 if (!activeTiles.ContainsKey(tilePos))
                 {
-                    GameObject newTile = Instantiate(mapTiles[Random.Range(0, mapTiles.Length)], tilePos, Quaternion.identity);
+                    // Calculate world position for the tile
+                    Vector3 worldPos = new Vector3(tilePos.x * tileSize, tilePos.y * tileSize, 0);
+                    GameObject newTile = Instantiate(mapTiles[Random.Range(0, mapTiles.Length)], worldPos, Quaternion.identity);
                     activeTiles.Add(tilePos, newTile);
                 }
             }

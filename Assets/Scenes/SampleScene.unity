@@ -230,7 +230,7 @@ Camera:
   far clip plane: 5000
   field of view: 40
   orthographic: 1
-  orthographic size: 13.5
+  orthographic size: 13
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -274,7 +274,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerTransform: {fileID: 1345096367}
-  displacementMultipiler: 0.1
+  displacementMultipiler: 0.2
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -409,6 +409,9 @@ MonoBehaviour:
   - {fileID: 5166384119909748574, guid: ab6f75a68a6d63244878c588234ae173, type: 3}
   - {fileID: 8888130378209669865, guid: 84b138af634515543a0240a0a03304a3, type: 3}
   - {fileID: 1808413121132055893, guid: 4f25ea491adaaff48836ed5f9d731363, type: 3}
+  - {fileID: 3194201292581191362, guid: d672839fd77328e46aeeb6c670fb70bb, type: 3}
+  - {fileID: 5136093249532369881, guid: bab79d59177ac8745908a37be164bf19, type: 3}
+  - {fileID: 2147847310136922201, guid: 6f33e3cd2bbec374e9698d069f5e32f8, type: 3}
   mapRadius: 10
   tileSize: 4.15
 --- !u!1 &979376220
@@ -653,6 +656,8 @@ MonoBehaviour:
   bulletPrefab: {fileID: 9098170348085121161, guid: fbbf1d3273f12104c906f65ea662fd68, type: 3}
   firePoint: {fileID: 1089669497}
   fireForce: 20
+  maxAmmo: 10
+  reloadTime: 2
 --- !u!212 &1504808641
 SpriteRenderer:
   m_ObjectHideFlags: 0

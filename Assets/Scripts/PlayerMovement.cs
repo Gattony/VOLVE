@@ -30,12 +30,6 @@ public class PlayerControl : MonoBehaviour
         // Handle movement input
         movement.Set(Input.GetAxisRaw(horizontal), Input.GetAxisRaw(vertical));
 
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            weapon.Fire();
-        }
-
         // Get mouse position in world space
         mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 

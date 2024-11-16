@@ -312,7 +312,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 00000000159515d29770788c
+  m_ApplyToSortingLayers: 00000000159515d29770788cbbf19938
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -414,6 +414,55 @@ MonoBehaviour:
   - {fileID: 2147847310136922201, guid: 6f33e3cd2bbec374e9698d069f5e32f8, type: 3}
   mapRadius: 10
   tileSize: 4.15
+--- !u!1 &894887980
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 894887981}
+  - component: {fileID: 894887982}
+  m_Layer: 0
+  m_Name: EnemySpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &894887981
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 894887980}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.19167113, y: 0.28019327, z: -0.14036632}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &894887982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 894887980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35a04a40e411cad4db3a0a52a99995be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyPrefab: {fileID: 8106966635535830933, guid: ab7b59df87f412b4dba9cd3bf68cdf85, type: 3}
+  player: {fileID: 1345096367}
+  spawnRadius: 35
+  spawnRate: 5
+  maxEnemies: 50
 --- !u!1 &979376220
 GameObject:
   m_ObjectHideFlags: 0
@@ -490,7 +539,7 @@ GameObject:
   - component: {fileID: 1345096369}
   m_Layer: 3
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -534,7 +583,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1938263913
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 0.9622642, g: 0.52231926, b: 0, a: 1}
@@ -657,7 +706,7 @@ MonoBehaviour:
   firePoint: {fileID: 1089669497}
   fireForce: 20
   maxAmmo: 10
-  reloadTime: 2
+  reloadTime: 1
 --- !u!212 &1504808641
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -697,7 +746,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1938263913
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: d4b237a29c2844546b4329343cd37b59, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

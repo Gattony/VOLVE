@@ -5,6 +5,7 @@ public class Bullet : MonoBehaviour
 {
     public float speed = 10f;
     public float lifetime = 2f;
+    public int damage = 1;
 
     private void Start()
     {
@@ -22,14 +23,16 @@ public class Bullet : MonoBehaviour
     {
         if (hitInfo.CompareTag("Enemy"))
         {
-            // Destroy the enemy
-            Destroy(hitInfo.gameObject);
+            // Get the Enemy component and apply damage
+            Enemy enemy = hitInfo.GetComponent<Enemy>();
+            if (enemy != null)
+            {
+                enemy.TakeDamage(damage); // Adjust the damage value as needed
+            }
 
-            // Destroy the bullet
+            // Destroy the bullet after hitting the enemy
             Destroy(gameObject);
         }
-
     }
 
-
-    }
+}

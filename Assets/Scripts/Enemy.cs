@@ -12,8 +12,15 @@ public class Enemy : MonoBehaviour
     public float moveSpeed = 2f;     // Speed at which the enemy moves
     private Transform player;        // Reference to the player's transform
 
-    private Rigidbody2D rb;          // Rigidbody2D for physics-based movement
-    private SpriteRenderer spriteRenderer; // Reference to the SpriteRenderer component
+    private Rigidbody2D rb;
+    private SpriteRenderer spriteRenderer;
+
+    private float knockbackForce = 10f; // Strength of the knockback effect
+
+
+    private bool isKnockedBack = false; // Is the enemy currently being knocked back?
+
+    public GameObject expOrbPrefab; //Exp Orb prefab
 
     void Start()
     {
@@ -40,22 +47,25 @@ public class Enemy : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Move towards the player
-        if (player != null)
+        // Move towards the player only if not being knocked back
+        if (player != null && !isKnockedBack)
         {
             Vector2 direction = (player.position - transform.position).normalized;
-            rb.MovePosition(rb.position + direction * moveSpeed * Time.fixedDeltaTime);
+            rb.velocity = direction * moveSpeed;
         }
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, Vector2 knockbackSource)
     {
         // Reduce the enemy's health by the damage amount
         currentHealth -= damage;
         Debug.Log($"Enemy {gameObject.name} took {damage} damage. Remaining health: {currentHealth}");
 
         // Trigger the damage flash effect
-        StartCoroutine(HitEffect());
+        StartCoroutine(FlashWhite());
+
+        // Apply knockback
+        StartCoroutine(ApplyKnockback(knockbackSource));
 
         // Check if health is depleted
         if (currentHealth <= 0)
@@ -64,14 +74,13 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private IEnumerator HitEffect()
+    private IEnumerator FlashWhite()
     {
         if (spriteRenderer != null)
         {
             // Save the original color
             Color originalColor = spriteRenderer.color;
 
-            //Hit effects
             spriteRenderer.color = Color.white;
 
             yield return new WaitForSeconds(0.07f);
@@ -81,11 +90,32 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    private IEnumerator ApplyKnockback(Vector2 knockbackSource)
+    {
+        isKnockedBack = true;
+
+        // Calculate the knockback direction
+        Vector2 knockbackDirection = (rb.position - knockbackSource).normalized; 
+
+        rb.velocity = knockbackDirection * knockbackForce;
+
+        yield return new WaitForSeconds(0.07f);
+
+        // Stop the knockback
+        rb.velocity = Vector2.zero;
+        isKnockedBack = false;
+    }
+
     private void Die()
     {
+
         OnEnemyDestroyed?.Invoke();
 
+        // Play destruction effects, particles, sound, etc.
         PlayDestructionEffects();
+
+        // Spawn EXP orb
+        Instantiate(expOrbPrefab, transform.position, Quaternion.identity);
 
         Destroy(gameObject);
     }

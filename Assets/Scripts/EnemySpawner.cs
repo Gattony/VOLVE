@@ -8,7 +8,7 @@ public class EnemySpawner : MonoBehaviour
     public Transform player;       // Reference to the player
     public float spawnRadius = 15f; // Minimum distance from the player
     public float spawnRate = 2f;    // Enemies spawn every 2 seconds
-    public int maxEnemies = 50;     // Limit for active enemies
+    private int maxEnemies = 150;     // Limit for active enemies
 
     private List<GameObject> activeEnemies = new List<GameObject>();
 
@@ -22,7 +22,7 @@ public class EnemySpawner : MonoBehaviour
     {
         while (true)
         {
-            // Spawn enemies at intervals
+            // Spawn enemies at intervals ( Reduce Lag )
             if (activeEnemies.Count < maxEnemies)
             {
                 SpawnEnemy();

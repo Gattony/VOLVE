@@ -27,7 +27,7 @@ public class Bullet : MonoBehaviour
             Enemy enemy = hitInfo.GetComponent<Enemy>();
             if (enemy != null)
             {
-                enemy.TakeDamage(damage); // Adjust the damage value as needed
+                enemy.TakeDamage(damage, transform.position);
             }
 
             // Destroy the bullet after hitting the enemy

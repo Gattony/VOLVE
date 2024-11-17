@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
@@ -8,13 +7,17 @@ public class Weapon : MonoBehaviour
     public Transform firePoint;
     public float fireForce = 20f;
 
-    private new AudioSource audio;
+    private AudioSource audio;
 
     // Ammo and reloading variables
     public int maxAmmo = 10;           // Maximum bullets per magazine
     private int currentAmmo;           // Current ammo in the magazine
     public float reloadTime = 2f;      // Time it takes to reload
     private bool isReloading = false;  // Whether the weapon is currently reloading
+
+    // Fire rate and damage multipliers from PlayerCharacter
+    public float baseFireRate = 0.5f;  // Base time between shots (in seconds)
+    private float nextFireTime = 0f;   // Tracks the next time the weapon can fire
 
     private void Awake()
     {
@@ -38,8 +41,8 @@ public class Weapon : MonoBehaviour
             return;
         }
 
-        // Firing logic (if left mouse button is clicked)
-        if (Input.GetButtonDown("Fire1"))
+        // Hold mouse button to fire
+        if (Input.GetButton("Fire1") && Time.time >= nextFireTime)
         {
             Fire();
         }
@@ -56,8 +59,18 @@ public class Weapon : MonoBehaviour
             return;
         }
 
+        // Calculate the time for the next shot using fire rate multiplier
+        float fireRateMultiplier = PlayerCharacter.Instance.fireRateMultiplier;
+        nextFireTime = Time.time + (baseFireRate / fireRateMultiplier);
+
         // Instantiating a bullet prefab
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+
+        // Apply damage multiplier to the bullet
+        float damageMultiplier = PlayerCharacter.Instance.damageMultiplier;
+        bullet.GetComponent<Bullet>().damage = bullet.GetComponent<Bullet>().baseDamage * damageMultiplier;
+
+        // Add force to the bullet
         bullet.GetComponent<Rigidbody2D>().AddForce(firePoint.up * fireForce, ForceMode2D.Impulse);
 
         // Playing audio whenever it fires
@@ -86,3 +99,4 @@ public class Weapon : MonoBehaviour
         isReloading = false;
     }
 }
+

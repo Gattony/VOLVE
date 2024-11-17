@@ -1,14 +1,17 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Bullet : MonoBehaviour
 {
-    public float speed = 10f;
-    public float lifetime = 2f;
-    public int damage = 1;
+    public float speed = 10f;        // Speed of the bullet
+    public float lifetime = 2f;     // Time before the bullet is destroyed
+    public int baseDamage = 1;      // Base damage of the bullet
+    public float damage;           // Actual damage after applying multipliers
 
     private void Start()
     {
+        // Calculate damage based on player's damage multiplier
+        damage = baseDamage * PlayerCharacter.Instance.damageMultiplier;
+
         // Destroy the bullet after a set time
         Destroy(gameObject, lifetime);
     }
@@ -19,7 +22,7 @@ public class Bullet : MonoBehaviour
         transform.Translate(Vector3.up * speed * Time.deltaTime);
     }
 
-    void OnTriggerEnter2D(Collider2D hitInfo)
+    private void OnTriggerEnter2D(Collider2D hitInfo)
     {
         if (hitInfo.CompareTag("Enemy"))
         {
@@ -27,12 +30,11 @@ public class Bullet : MonoBehaviour
             Enemy enemy = hitInfo.GetComponent<Enemy>();
             if (enemy != null)
             {
-                enemy.TakeDamage(damage, transform.position);
+                enemy.TakeDamage((int)damage, transform.position);
             }
 
             // Destroy the bullet after hitting the enemy
             Destroy(gameObject);
         }
     }
-
 }

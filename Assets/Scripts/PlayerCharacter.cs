@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerCharacter : MonoBehaviour
 {
@@ -13,11 +14,15 @@ public class PlayerCharacter : MonoBehaviour
 
     [Header("UI Elements")]
     public Slider expSlider;          // Slider to represent EXP bar
-    public Text levelText;            // Text to display the current level
+    public TMP_Text levelText;            // Text to display the current level
     public GameObject levelUpMenu;    // Level-up menu
 
     [Header("Level-Up Upgrades")]
-    public GameObject[] upgradeButtons; // Buttons for upgrades
+    public GameObject[] upgradeButtons; // Buttons for upgrades 
+
+    public float damageMultiplier = 1f;  // Multiplier for weapon damage
+    public float fireRateMultiplier = 1f; // Multiplier for weapon fire rate
+    public float movementSpeedMultiplier = 1f; // Multiplier for player movement speed
 
     private void Awake()
     {
@@ -111,7 +116,27 @@ public class PlayerCharacter : MonoBehaviour
 
         if (levelText != null)
         {
-            levelText.text = $"Level {currentLevel}";
+            levelText.text = $"{currentLevel}";
         }
     }
+
+    // Methods to modify multipliers (used by upgrades)
+    public void IncreaseDamage(float amount)
+    {
+        damageMultiplier += amount;
+        Debug.Log($"Damage multiplier increased to {damageMultiplier}");
+    }
+
+    public void IncreaseFireRate(float amount)
+    {
+        fireRateMultiplier += amount;
+        Debug.Log($"Fire rate multiplier increased to {fireRateMultiplier}");
+    }
+
+    public void IncreaseMovementSpeed(float amount)
+    {
+        movementSpeedMultiplier += amount;
+        Debug.Log($"Movement speed multiplier increased to {movementSpeedMultiplier}");
+    }
+
 }

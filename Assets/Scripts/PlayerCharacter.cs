@@ -90,7 +90,7 @@ public class PlayerCharacter : MonoBehaviour
 
     public void SelectUpgrade(GameObject upgrade)
     {
-        // Apply the upgrade logic here (implement separately for each upgrade)
+        // Apply the upgrade logic
         Debug.Log($"{upgrade.name} selected!");
 
         // Close level-up menu

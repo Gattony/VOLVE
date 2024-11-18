@@ -19,10 +19,8 @@ public class PlayerCharacter : MonoBehaviour
 
     [Header("Level-Up Upgrades")]
     public GameObject[] upgradeButtons; // Buttons for upgrades 
-
-    public float damageMultiplier = 1f;  // Multiplier for weapon damage
-    public float fireRateMultiplier = 1f; // Multiplier for weapon fire rate
-    public float movementSpeedMultiplier = 1f; // Multiplier for player movement speed
+        
+  
 
     private void Awake()
     {
@@ -118,25 +116,6 @@ public class PlayerCharacter : MonoBehaviour
         {
             levelText.text = $"{currentLevel}";
         }
-    }
-
-    // Methods to modify multipliers (used by upgrades)
-    public void IncreaseDamage(float amount)
-    {
-        damageMultiplier += amount;
-        Debug.Log($"Damage multiplier increased to {damageMultiplier}");
-    }
-
-    public void IncreaseFireRate(float amount)
-    {
-        fireRateMultiplier += amount;
-        Debug.Log($"Fire rate multiplier increased to {fireRateMultiplier}");
-    }
-
-    public void IncreaseMovementSpeed(float amount)
-    {
-        movementSpeedMultiplier += amount;
-        Debug.Log($"Movement speed multiplier increased to {movementSpeedMultiplier}");
     }
 
 }

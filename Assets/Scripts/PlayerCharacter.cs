@@ -1,10 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections.Generic;
 
 public class PlayerCharacter : MonoBehaviour
 {
     public static PlayerCharacter Instance;
+
+    public static event System.Action OnLevelUp;
 
     [Header("Leveling System")]
     public int currentLevel = 1;      // Starting level
@@ -63,8 +66,10 @@ public class PlayerCharacter : MonoBehaviour
         // Increase EXP requirement for the next level
         expToNextLevel = Mathf.RoundToInt(expToNextLevelBase * Mathf.Pow(1.2f, currentLevel - 1));
 
+        OnLevelUp?.Invoke();
+
         // Show level-up menu
-        levelUpMenu.SetActive(true);
+        //levelUpMenu.SetActive(true);
         Time.timeScale = 0f; // Pause the game during level-up
 
         // Enable random upgrade buttons
@@ -117,5 +122,4 @@ public class PlayerCharacter : MonoBehaviour
             levelText.text = $"{currentLevel}";
         }
     }
-
 }

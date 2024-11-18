@@ -53,5 +53,6 @@ public class UpgradeDisplay : MonoBehaviour
     public static void ClosePopup()
     {
         Instance.upgradeContainer.SetActive(false);
+
     }
 }

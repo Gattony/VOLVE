@@ -18,13 +18,7 @@ public class PlayerCharacter : MonoBehaviour
     [Header("UI Elements")]
     public Slider expSlider;          // Slider to represent EXP bar
     public TMP_Text levelText;            // Text to display the current level
-    public GameObject levelUpMenu;    // Level-up menu
-
-    [Header("Level-Up Upgrades")]
-    public GameObject[] upgradeButtons; // Buttons for upgrades 
-        
-  
-
+          
     private void Awake()
     {
         if (Instance == null)
@@ -39,8 +33,6 @@ public class PlayerCharacter : MonoBehaviour
 
     private void Start()
     {
-        // Ensure level-up menu is hidden at the start
-        levelUpMenu.SetActive(false);
         UpdateUI();
     }
 
@@ -72,41 +64,6 @@ public class PlayerCharacter : MonoBehaviour
         //levelUpMenu.SetActive(true);
         Time.timeScale = 0f; // Pause the game during level-up
 
-        // Enable random upgrade buttons
-        EnableRandomUpgrades();
-    }
-
-    private void EnableRandomUpgrades()
-    {
-        // Disable all buttons first
-        foreach (var button in upgradeButtons)
-        {
-            button.SetActive(false);
-        }
-
-        // Activate a random selection of buttons
-        int upgradesToShow = Mathf.Min(3, upgradeButtons.Length); // Show up to 3 upgrades
-        for (int i = 0; i < upgradesToShow; i++)
-        {
-            int randomIndex = Random.Range(0, upgradeButtons.Length);
-            upgradeButtons[randomIndex].SetActive(true);
-        }
-    }
-
-    public void SelectUpgrade(GameObject upgrade)
-    {
-        // Apply the upgrade logic
-        Debug.Log($"{upgrade.name} selected!");
-
-        // Close level-up menu
-        CloseLevelUpMenu();
-    }
-
-    public void CloseLevelUpMenu()
-    {
-        levelUpMenu.SetActive(false); // Hide the menu
-        Time.timeScale = 1f;         // Resume the game
-        UpdateUI();
     }
 
     private void UpdateUI()

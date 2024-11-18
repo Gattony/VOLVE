@@ -25,5 +25,6 @@ public class UpgradeOptionDisplay : MonoBehaviour
     {
         UpgradeManager.ApplyUpgrade(upgradeType);
         UpgradeDisplay.ClosePopup();
+        Time.timeScale = 1f;
     }
 }

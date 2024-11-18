@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
 
     public int maxHealth = 3;        // Maximum health of the enemy
     private int currentHealth;       // Current health of the enemy
+    public int enemyDamage = 1;
 
     public float moveSpeed = 2f;     // Speed at which the enemy moves
     private Transform player;        // Reference to the player's transform
@@ -16,11 +17,9 @@ public class Enemy : MonoBehaviour
     private SpriteRenderer spriteRenderer;
 
     private float knockbackForce = 10f; // Strength of the knockback effect
+    private bool isKnockedBack = false; 
 
-
-    private bool isKnockedBack = false; // Is the enemy currently being knocked back?
-
-    public GameObject expOrbPrefab; //Exp Orb prefab
+    public GameObject expOrbPrefab; 
 
     void Start()
     {
@@ -104,6 +103,14 @@ public class Enemy : MonoBehaviour
         // Stop the knockback
         rb.velocity = Vector2.zero;
         isKnockedBack = false;
+    }
+
+    private void OnTriggerEnter2D(Collider2D hitInfo)
+    {
+        if (hitInfo.CompareTag("Player"))
+        {
+            PlayerCharacter.Instance.TakeDamage(enemyDamage);
+        }
     }
 
     private void Die()

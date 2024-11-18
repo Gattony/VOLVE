@@ -100,6 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 10
+  enemyDamage: 1
   moveSpeed: 2
   expOrbPrefab: {fileID: 6046146200178845733, guid: cdbf3335f7153624aa7a453b7ed8ea0b, type: 3}
 --- !u!50 &1504382926808664967

@@ -27,6 +27,7 @@ public class PlayerControl : MonoBehaviour
 
     private void Update()
     {
+
         // Handle movement input
         movement.Set(Input.GetAxisRaw(horizontal), Input.GetAxisRaw(vertical));
 
@@ -40,7 +41,9 @@ public class PlayerControl : MonoBehaviour
     private void FixedUpdate()
     {
         // Apply movement
-        rb.velocity = movement * moveSpeed;
+        float speedmultipiler = PlayerStats.Instance.speedMultiplier;
+
+        rb.velocity = movement * moveSpeed * speedmultipiler;
     }
 
     private void RotateWeaponAroundPlayer()

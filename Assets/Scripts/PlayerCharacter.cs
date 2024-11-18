@@ -60,8 +60,6 @@ public class PlayerCharacter : MonoBehaviour
 
         OnLevelUp?.Invoke();
 
-        // Show level-up menu
-        //levelUpMenu.SetActive(true);
         Time.timeScale = 0f; // Pause the game during level-up
 
     }

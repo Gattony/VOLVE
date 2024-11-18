@@ -7,7 +7,7 @@ public class UpgradeManager : MonoBehaviour
 {
     public enum UpgradeTypes
     {
-        None,
+        None,  
         MovementSpeed,
         Health,
         Damage,
@@ -86,6 +86,6 @@ public class UpgradeManager : MonoBehaviour
 
     private static void UpgradeMovespeed()
     {
-        PlayerStats.Instance.damageMultiplier *= 1.5f;
+        PlayerStats.Instance.speedMultiplier *= 1.2f;
     }
 }

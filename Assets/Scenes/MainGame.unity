@@ -766,8 +766,6 @@ MonoBehaviour:
   expToNextLevel: 100
   expSlider: {fileID: 1552398663}
   levelText: {fileID: 2007817722}
-  levelUpMenu: {fileID: 0}
-  upgradeButtons: []
 --- !u!58 &1345096371
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1519,7 +1517,7 @@ GameObject:
   - component: {fileID: 1552398662}
   - component: {fileID: 1552398663}
   m_Layer: 5
-  m_Name: Slider
+  m_Name: Exp Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

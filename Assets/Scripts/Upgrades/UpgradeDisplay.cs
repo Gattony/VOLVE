@@ -9,7 +9,6 @@ public class UpgradeDisplay : MonoBehaviour
     [SerializeField] List<UpgradeOptionDisplay> upgradeOptions = new();
 
 
-
     private void OnEnable()
     {
         PlayerCharacter.OnLevelUp += OnLevelUp;

@@ -20,8 +20,8 @@ public class PlayerCharacter : MonoBehaviour
     private int currentHealth;            // Current health
     public Image heartContainerPrefab;    // Prefab for a single heart
     public Transform heartContainer;      // Parent object to hold all hearts
-    public Sprite fullHeart;              // Sprite for full heart
-    public Sprite emptyHeart;             // Sprite for empty heart
+    public Sprite fullHeart;              
+    public Sprite emptyHeart;             
 
     [Header("UI Elements")]
     public Slider expSlider;              // Slider to represent EXP bar
@@ -57,19 +57,35 @@ public class PlayerCharacter : MonoBehaviour
         // Instantiate hearts equal to maxHealth
         for (int i = 0; i < maxHealth; i++)
         {
-            GameObject newHeart = Instantiate(heartContainerPrefab.gameObject, heartContainer);
-            newHeart.GetComponent<Image>().sprite = fullHeart; 
+            Instantiate(heartContainerPrefab.gameObject, heartContainer);
         }
+
+        // Update heart sprites to match current health
+        UpdateHearts();
     }
+
 
 
     private void UpdateHearts()
     {
-        for (int i = 0; i < heartContainer.childCount; i++)
+        for (int i = 0; i < maxHealth; i++)
         {
-            Image heartImage = heartContainer.GetChild(i).GetComponent<Image>();
-            heartImage.sprite = (i < currentHealth) ? fullHeart : emptyHeart;
+            if (i < heartContainer.childCount) // Ensure there's a corresponding heart UI
+            {
+                Image heartImage = heartContainer.GetChild(i).GetComponent<Image>();
+                heartImage.sprite = (i < currentHealth) ? fullHeart : emptyHeart;
+            }
         }
+    }
+
+
+    public void IncreaseMaxHealth(int amount)
+    {
+        maxHealth += amount; // Increase max health
+        currentHealth = maxHealth; // Restore health to full
+        InitializeHearts(); // Recreate heart UI
+        UpdateUI(); // Update related UI elements
+        Debug.Log($"Max health increased to {maxHealth}");
     }
 
     public void TakeDamage(int amount)
@@ -110,7 +126,7 @@ public class PlayerCharacter : MonoBehaviour
         currentLevel++;
         currentExp -= expToNextLevel;
         //Increasing the exp limit each time it levels up
-        expToNextLevel = Mathf.RoundToInt(expToNextLevelBase * Mathf.Pow(1.5f, currentLevel - 1));
+        expToNextLevel = Mathf.RoundToInt(expToNextLevelBase * Mathf.Pow(1.35f, currentLevel - 1));
         OnLevelUp?.Invoke();
     }
 

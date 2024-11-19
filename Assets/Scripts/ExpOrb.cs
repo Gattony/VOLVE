@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class ExpOrb : MonoBehaviour
 {
-    public float baseSpeed = 1f;      // Base speed when farthest from the player
-    public float maxSpeed = 5f;      // Maximum speed when closest to the player
+    public float baseSpeed = 1f;      
+    public float maxSpeed = 5f;      
     public float detectionRange = 5f; // Distance within which the orb moves toward the player
-    public int expAmount = 10;       // Amount of EXP this orb grants
+    public int expAmount = 10;       
 
     private Transform player;
 
@@ -37,10 +37,9 @@ public class ExpOrb : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            // Add EXP to the player
+            //Adding EXP to the character
             PlayerCharacter.Instance.AddExp(expAmount);
 
-            // Destroy the orb
             Destroy(gameObject);
         }
     }

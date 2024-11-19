@@ -41,6 +41,7 @@ public class UpgradeManager : MonoBehaviour
         List<UpgradeData> result = new();
         List<UpgradeData> upgradePools = new(Instance.avaiableUpgrades.Count);
 
+        //Randomizing upgrades from upgrade data
         foreach (var upgrade in Instance.avaiableUpgrades)
         {
             UpgradeData instance = ScriptableObject.CreateInstance<UpgradeData>();
@@ -77,6 +78,9 @@ public class UpgradeManager : MonoBehaviour
             case UpgradeTypes.Damage:
                 UpgradeDamage();
                 break;
+            case UpgradeTypes.FireRate:
+                UpgradeFireRate();
+                break;
         }
     }
 
@@ -84,7 +88,13 @@ public class UpgradeManager : MonoBehaviour
 
     private static void UpgradeHealth()
     {
-        PlayerStats.Instance.healthIncrease += 1;
+        PlayerCharacter player = PlayerCharacter.Instance;
+
+        if (player != null)
+        {
+            int healthIncrease = 1; // Define how much health to increase per upgrade
+            player.IncreaseMaxHealth(healthIncrease); // Call method on PlayerCharacter to handle the increase
+        }
     }
 
     private static void UpgradeDamage()
@@ -94,6 +104,11 @@ public class UpgradeManager : MonoBehaviour
 
     private static void UpgradeMovespeed()
     {
-        PlayerStats.Instance.speedMultiplier *= 1.2f;
+        PlayerStats.Instance.speedMultiplier *= 1.15f;
+    }
+    
+    private static void UpgradeFireRate()
+    {
+        PlayerStats.Instance.fireRateMultiplier *= 1.2f;
     }
 }

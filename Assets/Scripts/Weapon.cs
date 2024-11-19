@@ -68,8 +68,8 @@ public class Weapon : MonoBehaviour
         float fireRateMultiplier = PlayerStats.Instance.fireRateMultiplier;
         float damageMultiplier = PlayerStats.Instance.damageMultiplier;
 
-        // Calculate the time for the next shot
-        nextFireTime = Time.time + baseFireRate;
+        // Calculate the time for the next shot using fire rate multiplier
+        nextFireTime = Time.time + (baseFireRate / fireRateMultiplier);
 
         // Instantiate a bullet prefab
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
@@ -91,25 +91,25 @@ public class Weapon : MonoBehaviour
             audio.Play();
         }
 
-        // Decrementing ammo after bullet instantiation
-        currentAmmo--;
-        //Debug.Log($"Fired! Ammo left: {currentAmmo}");
+        if (Camera.main.TryGetComponent(out CameraController cameraController))
+        {
+            cameraController.TriggerShake();
+        }
 
-        // Update ammo bar
+
+        currentAmmo--;
         UpdateAmmoBar();
     }
 
     private IEnumerator Reload()
     {
         isReloading = true;
-       // Debug.Log("Reloading...");
 
         // Optional: Add reload sound or animation here
 
         yield return new WaitForSeconds(reloadTime); // Wait for reload time
 
         currentAmmo = maxAmmo; // Refill ammo
-       // Debug.Log("Reloaded!");
 
         isReloading = false;
 

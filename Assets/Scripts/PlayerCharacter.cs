@@ -58,7 +58,6 @@ public class PlayerCharacter : MonoBehaviour
         for (int i = 0; i < maxHealth; i++)
         {
             GameObject newHeart = Instantiate(heartContainerPrefab.gameObject, heartContainer);
-            Debug.Log($"Heart {i + 1} created.");
             newHeart.GetComponent<Image>().sprite = fullHeart; 
         }
     }
@@ -110,9 +109,9 @@ public class PlayerCharacter : MonoBehaviour
     {
         currentLevel++;
         currentExp -= expToNextLevel;
-        expToNextLevel = Mathf.RoundToInt(expToNextLevelBase * Mathf.Pow(1.2f, currentLevel - 1));
+        //Increasing the exp limit each time it levels up
+        expToNextLevel = Mathf.RoundToInt(expToNextLevelBase * Mathf.Pow(1.5f, currentLevel - 1));
         OnLevelUp?.Invoke();
-        Debug.Log($"Level up! Current level: {currentLevel}");
     }
 
     private void UpdateUI()
@@ -127,7 +126,7 @@ public class PlayerCharacter : MonoBehaviour
         // Update level text
         if (levelText != null)
         {
-            levelText.text = $"Level {currentLevel}";
+            levelText.text = $"{currentLevel}";
         }
 
         // Update heart UI

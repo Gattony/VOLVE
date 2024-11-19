@@ -30,6 +30,7 @@ public class PlayerControl : MonoBehaviour
 
         // Handle movement input
         movement.Set(Input.GetAxisRaw(horizontal), Input.GetAxisRaw(vertical));
+        movement.Normalize();
 
         // Get mouse position in world space
         mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);

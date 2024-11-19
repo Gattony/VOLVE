@@ -1,6 +1,6 @@
-using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
-using System.Security.Cryptography;
+
 using UnityEngine;
 
 public class UpgradeManager : MonoBehaviour
@@ -35,17 +35,24 @@ public class UpgradeManager : MonoBehaviour
 
 
 
-    public static List<UpgradeData> GetRandomUpgrades(int _amount, bool _uniqueOnly = true)
+    public static List<UpgradeData> GetRandomUpgrades(int amount, bool uniqueOnly = true)
     {
-        List<UpgradeData> upgradePools = Instance.avaiableUpgrades;
         List<UpgradeData> result = new();
+        List<UpgradeData> upgradePools = new(Instance.avaiableUpgrades.Count);
 
-        for (int i = 0; i < _amount; i++)
+        foreach (var upgrade in Instance.avaiableUpgrades)
+        {
+            UpgradeData instance = ScriptableObject.CreateInstance<UpgradeData>();
+            instance.CloneFrom(upgrade);
+            upgradePools.Add(instance);
+        }
+
+        for (int i = 0; i < amount; i++)
         {
             int randomIndex = UnityEngine.Random.Range(0, upgradePools.Count - 1);
             result.Add(upgradePools[randomIndex]);
 
-            if (_uniqueOnly)
+            if (uniqueOnly)
             {
                 upgradePools.RemoveAt(randomIndex);
             }
@@ -54,9 +61,9 @@ public class UpgradeManager : MonoBehaviour
         return result;
     }
 
-    public static void ApplyUpgrade(UpgradeData _upgrade)
+    public static void ApplyUpgrade(UpgradeData upgrade)
     {
-        switch (_upgrade.type)
+        switch (upgrade.type)
         {
             case UpgradeTypes.None:
                 break;

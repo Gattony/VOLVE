@@ -13,18 +13,17 @@ public class UpgradeOptionDisplay : MonoBehaviour
 
 
 
-    public void UpdateDisplay(UpgradeData _data)
+    public void UpdateDisplay(UpgradeData data)
     {
-        upgradeName.text = _data.upgradeName;
-        icon.sprite = _data.icon;
+        upgradeName.text = data.upgradeName;
+        icon.sprite = data.icon;
 
-        upgradeType = _data;
+        upgradeType = data;
     }
 
     public void OnClick()
     {
         UpgradeManager.ApplyUpgrade(upgradeType);
         UpgradeDisplay.ClosePopup();
-        Time.timeScale = 1f;
     }
 }

@@ -47,11 +47,15 @@ public class UpgradeDisplay : MonoBehaviour
         {
             upgradeOptions[i].UpdateDisplay(upgrades[i]);
         }
+
+        Time.timeScale = 0f;
     }
 
     public static void ClosePopup()
     {
         Instance.upgradeContainer.SetActive(false);
+
+        Time.timeScale = 1f;
 
     }
 }

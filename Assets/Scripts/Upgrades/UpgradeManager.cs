@@ -11,6 +11,7 @@ public class UpgradeManager : MonoBehaviour
         MovementSpeed,
         Health,
         Damage,
+        FireRate,
     }
 
 
@@ -83,7 +84,7 @@ public class UpgradeManager : MonoBehaviour
 
     private static void UpgradeHealth()
     {
-        Debug.Log("Health Upgraded!");
+        PlayerStats.Instance.healthIncrease += 1;
     }
 
     private static void UpgradeDamage()

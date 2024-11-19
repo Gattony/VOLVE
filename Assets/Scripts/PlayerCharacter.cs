@@ -115,7 +115,7 @@ public class PlayerCharacter : MonoBehaviour
     }
 
     private void UpdateUI()
-    {
+    {   
         // Update EXP bar
         if (expSlider != null)
         {

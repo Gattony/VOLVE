@@ -6,7 +6,7 @@ public class Enemy : MonoBehaviour
 {
     public Action OnEnemyDestroyed; // Event triggered when the enemy is destroyed
 
-    public int maxHealth = 3;        // Maximum health of the enemy
+    public int maxHealth = 10;        // Maximum health of the enemy
     private int currentHealth;       // Current health of the enemy
     public int enemyDamage = 1;
 
@@ -58,7 +58,7 @@ public class Enemy : MonoBehaviour
     {
         // Reduce the enemy's health by the damage amount
         currentHealth -= damage;
-        Debug.Log($"Enemy {gameObject.name} took {damage} damage. Remaining health: {currentHealth}");
+        //Debug.Log($"Enemy {gameObject.name} took {damage} damage. Remaining health: {currentHealth}");
 
         // Trigger the damage flash effect
         StartCoroutine(FlashWhite());

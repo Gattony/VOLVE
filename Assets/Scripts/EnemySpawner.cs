@@ -4,31 +4,65 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    public GameObject enemyPrefab; // Enemy prefab to spawn
-    public Transform player;       // Reference to the player
+    public GameObject enemyPrefab;  // Enemy prefab to spawn
+    public Transform player;        // Reference to the player
     public float spawnRadius = 15f; // Minimum distance from the player
-    public float spawnRate = 2f;    // Enemies spawn every 2 seconds
-    private int maxEnemies = 150;     // Limit for active enemies
+
+    [Header("Spawn Timing")]
+    public float initialSpawnRate = 2f;  // Initial spawn rate (time between spawns)
+    public float minSpawnRate = 0.5f;    // Minimum spawn rate (time between spawns)
+    public float spawnRateDecay = 0.01f; // How much spawn rate decreases per interval
+    private float currentSpawnRate;
+
+    [Header("Enemy Limits")]
+    public int initialMaxEnemies = 25;   // Initial limit for active enemies
+    public int maxMaxEnemies = 200;      // Maximum limit for enemies over time
+    public int maxEnemiesIncrease = 1;   // Increase in max enemies per interval
+    public float difficultyIncreaseInterval = 10f; // Time interval to increase difficulty
+    private int currentMaxEnemies;
 
     private List<GameObject> activeEnemies = new List<GameObject>();
 
     void Start()
     {
-        // Start spawning enemies at regular intervals
+        // Initialize spawn rate and max enemies
+        currentSpawnRate = initialSpawnRate;
+        currentMaxEnemies = initialMaxEnemies;
+
+        // Start spawning enemies and difficulty progression
         StartCoroutine(SpawnEnemies());
+        StartCoroutine(IncreaseDifficulty());
     }
 
     IEnumerator SpawnEnemies()
     {
         while (true)
         {
-            // Spawn enemies at intervals ( Reduce Lag )
-            if (activeEnemies.Count < maxEnemies)
+            if (activeEnemies.Count < currentMaxEnemies)
             {
                 SpawnEnemy();
             }
 
-            yield return new WaitForSeconds(spawnRate);
+            yield return new WaitForSeconds(currentSpawnRate);
+        }
+    }
+
+    IEnumerator IncreaseDifficulty()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(difficultyIncreaseInterval);
+
+            // Decrease spawn rate gradually but not below the minimum
+            currentSpawnRate = Mathf.Max(minSpawnRate, currentSpawnRate - spawnRateDecay);
+
+            // Increase the maximum number of enemies gradually
+            if (currentMaxEnemies < maxMaxEnemies)
+            {
+                currentMaxEnemies += maxEnemiesIncrease;
+            }
+
+            Debug.Log($"Difficulty Increased: SpawnRate = {currentSpawnRate}, MaxEnemies = {currentMaxEnemies}");
         }
     }
 
@@ -53,6 +87,10 @@ public class EnemySpawner : MonoBehaviour
     {
         // Draw spawn radius in the Scene view for visualization
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(player.position, spawnRadius);
+        if (player != null)
+        {
+            Gizmos.DrawWireSphere(player.position, spawnRadius);
+        }
     }
 }
+

@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Weapon : MonoBehaviour
 {
@@ -9,13 +10,16 @@ public class Weapon : MonoBehaviour
 
     private new AudioSource audio;
 
-    // Ammo and reloading variables
+    [Header("Ammo System")]
     public int maxAmmo = 10;           // Maximum bullets per magazine
     private int currentAmmo;           // Current ammo in the magazine
     public float reloadTime = 2f;      // Time it takes to reload
     private bool isReloading = false;  // Whether the weapon is currently reloading
 
-    // Fire rate and damage multipliers from PlayerStats
+    [Header("UI Elements")]
+    public Image ammoBarFill;          // The "fill" image of the ammo bar
+
+    [Header("Fire Rate System")]
     public float baseFireRate = 0.5f;  // Base time between shots (in seconds)
     private float nextFireTime = 0f;   // Tracks the next time the weapon can fire
 
@@ -27,6 +31,7 @@ public class Weapon : MonoBehaviour
     private void Start()
     {
         currentAmmo = maxAmmo; // Initialize with full ammo
+        UpdateAmmoBar();
     }
 
     private void Update()
@@ -63,10 +68,10 @@ public class Weapon : MonoBehaviour
         float fireRateMultiplier = PlayerStats.Instance.fireRateMultiplier;
         float damageMultiplier = PlayerStats.Instance.damageMultiplier;
 
-        // Calculate the time for the next shot using fire rate multiplier
-        nextFireTime = Time.time + (baseFireRate / fireRateMultiplier);
+        // Calculate the time for the next shot
+        nextFireTime = Time.time + baseFireRate;
 
-        // Instantiating a bullet prefab
+        // Instantiate a bullet prefab
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
 
         // Pass the damage multiplier to the bullet via Initialize method
@@ -88,22 +93,35 @@ public class Weapon : MonoBehaviour
 
         // Decrementing ammo after bullet instantiation
         currentAmmo--;
-        Debug.Log($"Fired! Ammo left: {currentAmmo}");
+        //Debug.Log($"Fired! Ammo left: {currentAmmo}");
+
+        // Update ammo bar
+        UpdateAmmoBar();
     }
 
     private IEnumerator Reload()
     {
         isReloading = true;
-        Debug.Log("Reloading...");
+       // Debug.Log("Reloading...");
 
         // Optional: Add reload sound or animation here
 
         yield return new WaitForSeconds(reloadTime); // Wait for reload time
 
         currentAmmo = maxAmmo; // Refill ammo
-        Debug.Log("Reloaded!");
+       // Debug.Log("Reloaded!");
 
         isReloading = false;
+
+        // Update ammo bar
+        UpdateAmmoBar();
+    }
+
+    private void UpdateAmmoBar()
+    {
+        if (ammoBarFill != null)
+        {
+            ammoBarFill.fillAmount = (float)currentAmmo / maxAmmo; // Normalize the ammo value
+        }
     }
 }
-

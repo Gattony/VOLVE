@@ -8,11 +8,13 @@ public class PlayerStats : MonoBehaviour
     public float baseDamage = 10f;
     public float fireRate = 1f; 
     public float movementSpeed = 5f;
+    public float maxHealth = 3f;
 
     [Header("Modifiers")]
     public float damageMultiplier = 1f;
     public float fireRateMultiplier = 1f;
     public float speedMultiplier = 1f;
+    public float healthIncrease = 1f;
 
     private void Awake()
     {

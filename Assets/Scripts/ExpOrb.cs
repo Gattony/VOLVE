@@ -4,30 +4,36 @@ public class ExpOrb : MonoBehaviour
 {
     public float baseSpeed = 1f;      
     public float maxSpeed = 5f;      
-    public float detectionRange = 5f; // Distance within which the orb moves toward the player
-    public int expAmount = 10;       
+    public float detectionRange = 5f; 
+    public int expAmount = 10;        
 
     private Transform player;
 
     private void Start()
     {
+
         player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     private void Update()
     {
+
+        float expDetectionMultiplier = PlayerStats.Instance.expDetectionMultipler;
+
         if (player != null)
         {
+            // Calculate the distance to the player
             float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+            float adjustedDetectionRange = detectionRange * expDetectionMultiplier;
 
-            // Move toward the player only if within detection range
-            if (distanceToPlayer <= detectionRange)
+            // Move toward the player only if within the adjusted detection range
+            if (distanceToPlayer <= adjustedDetectionRange)
             {
-                // Interpolate speed based on distance, dynamic based exp orb movement
-                float dynamicSpeed = Mathf.Lerp(maxSpeed, baseSpeed, distanceToPlayer / detectionRange);
+                // Calculate speed dynamically based on distance
+                float dynamicSpeed = Mathf.Lerp(maxSpeed, baseSpeed, distanceToPlayer / adjustedDetectionRange);
 
+                // Move the orb toward the player
                 Vector3 direction = (player.position - transform.position).normalized;
-
                 transform.position += direction * dynamicSpeed * Time.deltaTime;
             }
         }
@@ -35,11 +41,10 @@ public class ExpOrb : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        // Add EXP to the player when the orb is collected
         if (other.CompareTag("Player"))
         {
-            //Adding EXP to the character
             PlayerCharacter.Instance.AddExp(expAmount);
-
             Destroy(gameObject);
         }
     }

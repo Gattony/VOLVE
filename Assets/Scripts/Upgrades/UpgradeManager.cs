@@ -12,6 +12,7 @@ public class UpgradeManager : MonoBehaviour
         Health,
         Damage,
         FireRate,
+        EXPDetection,
     }
 
 
@@ -81,6 +82,9 @@ public class UpgradeManager : MonoBehaviour
             case UpgradeTypes.FireRate:
                 UpgradeFireRate();
                 break;
+            case UpgradeTypes.EXPDetection:
+                UpgradeEXPDetection();
+                break;
         }
     }
 
@@ -99,7 +103,7 @@ public class UpgradeManager : MonoBehaviour
 
     private static void UpgradeDamage()
     {
-        PlayerStats.Instance.damageMultiplier *= 1.5f;
+        PlayerStats.Instance.damageMultiplier *= 1.35f;
     }
 
     private static void UpgradeMovespeed()
@@ -109,6 +113,11 @@ public class UpgradeManager : MonoBehaviour
     
     private static void UpgradeFireRate()
     {
-        PlayerStats.Instance.fireRateMultiplier *= 1.2f;
+        PlayerStats.Instance.fireRateMultiplier *= 1.1f;
+    }
+
+    private static void UpgradeEXPDetection()
+    {
+        PlayerStats.Instance.expDetectionMultipler += 1.1f;
     }
 }

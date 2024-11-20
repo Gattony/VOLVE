@@ -274,9 +274,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerTransform: {fileID: 1345096367}
-  displacementMultipiler: 0.075
-  shakeDuration: 0.08
-  shakeMagnitude: 0.08
+  displacementMultipiler: 0.08
+  shakeDuration: 0.06
+  shakeMagnitude: 0.06
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -626,6 +626,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3605ec8506512e6479cc18ce63b72063, type: 2}
   - {fileID: 11400000, guid: eaf71ffbd410cad4c8d110461b910364, type: 2}
   - {fileID: 11400000, guid: d8fc642db2703b84fbaf9fef3ae29eb1, type: 2}
+  - {fileID: 11400000, guid: eb97c60ce894888459c9e3012e815b2e, type: 2}
 --- !u!1 &1345096365
 GameObject:
   m_ObjectHideFlags: 0
@@ -964,7 +965,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 90, y: -210}
+  m_AnchoredPosition: {x: 140, y: -170}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1441289145
@@ -1143,10 +1144,12 @@ MonoBehaviour:
   fireRate: 1
   movementSpeed: 5
   maxHealth: 3
+  detectionRange: 5
   damageMultiplier: 1
   fireRateMultiplier: 1
   speedMultiplier: 1
   healthIncrease: 1
+  expDetectionMultipler: 1
 --- !u!4 &1508601253
 Transform:
   m_ObjectHideFlags: 0
@@ -1757,7 +1760,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 590, y: 100}
+  m_AnchoredPosition: {x: 640, y: 130}
   m_SizeDelta: {x: 1100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1582995950
@@ -2097,7 +2100,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -0.000030517578}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2146071071

@@ -58,7 +58,6 @@ public class Enemy : MonoBehaviour
     {
         // Reduce the enemy's health by the damage amount
         currentHealth -= damage;
-        //Debug.Log($"Enemy {gameObject.name} took {damage} damage. Remaining health: {currentHealth}");
 
         // Trigger the damage flash effect
         StartCoroutine(FlashWhite());
@@ -130,6 +129,6 @@ public class Enemy : MonoBehaviour
     private void PlayDestructionEffects()
     {
         // Placeholder for particle effects, sound effects, etc.
-        Debug.Log($"Enemy {gameObject.name} destroyed!");
+        
     }
 }

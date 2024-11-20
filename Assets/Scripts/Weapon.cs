@@ -71,7 +71,7 @@ public class Weapon : MonoBehaviour
         // Calculate the time for the next shot using fire rate multiplier
         nextFireTime = Time.time + (baseFireRate / fireRateMultiplier);
 
-        // Instantiate a bullet prefab
+        // Shooting a bullet
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
 
         // Pass the damage multiplier to the bullet via Initialize method

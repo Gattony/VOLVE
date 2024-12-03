@@ -24,8 +24,12 @@ public class PlayerCharacter : MonoBehaviour
     public Sprite emptyHeart;             
 
     [Header("UI Elements")]
-    public Slider expSlider;              // Slider to represent EXP bar
+    public Image expBarFill;
     public TMP_Text levelText;            // Text to display the current level
+
+    [Header("Effects")]
+    public ParticleSystem expFillEffect; // Particle system for EXP fill
+    public RectTransform expBarTransform; // RectTransform for the EXP bar
 
     private void Awake()
     {
@@ -131,21 +135,80 @@ public class PlayerCharacter : MonoBehaviour
     }
 
     private void UpdateUI()
-    {   
-        // Update EXP bar
-        if (expSlider != null)
-        {
-            expSlider.maxValue = expToNextLevel;
-            expSlider.value = currentExp;
-        }
+    {
 
-        // Update level text
-        if (levelText != null)
+        if (expBarFill != null)
         {
-            levelText.text = $"{currentLevel}";
+            float normalizedFill = (float)currentExp / expToNextLevel;
+
+            // Animate the bar fill using a coroutine
+            StartCoroutine(AnimateBarFill(expBarFill.fillAmount, normalizedFill));
+
+            // Update level text
+            if (levelText != null)
+            {
+                levelText.text = $"{currentLevel}";
+            }
         }
 
         // Update heart UI
         UpdateHearts();
     }
+    private void UpdateBarFill(float targetFill)
+    {
+        expBarFill.fillAmount = targetFill;
+
+        // Continuously position the particle system at the edge of the bar
+        if (expFillEffect != null)
+        {
+            // Get the width of the bar container
+            float containerWidth = expBarContainer.rect.width;
+
+            // Calculate the edge position in local space
+            Vector2 edgeLocalPosition = new Vector2(
+                targetFill * containerWidth - (containerWidth * 0.5f), // Adjust for pivot
+                0f
+            );
+
+            // Convert local to world space for the particle system
+            Vector3 edgeWorldPosition = expBarContainer.TransformPoint(edgeLocalPosition);
+
+            expFillEffect.transform.position = edgeWorldPosition;
+
+            // Ensure the particle effect is playing
+            if (!expFillEffect.isPlaying)
+            {
+                expFillEffect.Play();
+            }
+        }
+    }
+
+    private System.Collections.IEnumerator AnimateBarFill(float startFill, float targetFill)
+    {
+        float duration = 0.5f; // Duration of the animation
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float newFill = Mathf.Lerp(startFill, targetFill, elapsed / duration);
+
+            // Update the bar fill and particle system position
+            UpdateBarFill(newFill);
+
+            yield return null;
+        }
+
+        // Finalize bar fill and particle system position
+        UpdateBarFill(targetFill);
+    }
+
+    // Assuming expBarContainer is a reference to the parent
+    public RectTransform expBarContainer;
+
+    public void SetBarFill(float newFillAmount)
+    {
+        UpdateBarFill(newFillAmount);
+    }
+
 }

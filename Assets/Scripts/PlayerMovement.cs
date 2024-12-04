@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerControl : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5.0f;
-    [SerializeField] private Transform weaponTransform; // Reference to the weapon's transform
+    [SerializeField] private Transform weaponTransform;
     [SerializeField] private float weaponDistance = 1.5f; // Distance of the weapon from the player
 
     private Rigidbody2D rb;

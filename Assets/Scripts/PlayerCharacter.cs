@@ -147,7 +147,7 @@ public class PlayerCharacter : MonoBehaviour
             // Update level text
             if (levelText != null)
             {
-                levelText.text = $"{currentLevel}";
+                levelText.text = $"Level {currentLevel}";
             }
         }
 

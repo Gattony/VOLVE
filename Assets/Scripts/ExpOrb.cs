@@ -41,7 +41,7 @@ public class ExpOrb : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // Add EXP to the player when the orb is collected
+
         if (other.CompareTag("Player"))
         {
             PlayerCharacter.Instance.AddExp(expAmount);

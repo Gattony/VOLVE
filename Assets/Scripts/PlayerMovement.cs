@@ -35,7 +35,6 @@ public class PlayerControl : MonoBehaviour
         // Get mouse position in world space
         mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        // Rotate weapon around player towards mouse position
         RotateWeaponAroundPlayer();
     }
 

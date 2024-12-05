@@ -103,7 +103,7 @@ MonoBehaviour:
   maxSpeed: 5
   detectionRange: 3.5
   minExpAmount: 7
-  maxExpAmount: 11
+  maxExpAmount: 13
 --- !u!58 &5633755482970642138
 CircleCollider2D:
   m_ObjectHideFlags: 0

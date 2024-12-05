@@ -9,7 +9,7 @@ public class Weapon : MonoBehaviour
     public float fireForce = 20f;
 
     private new AudioSource audio;
-    private new AudioSource emptyAudio;
+    private AudioSource emptyAudio;
 
     [Header("Ammo System")]
     public int maxAmmo = 10; // Maximum bullets per magazine
@@ -74,7 +74,7 @@ public class Weapon : MonoBehaviour
         {
             if (currentAmmo <= 0)
             {
-                emptyAudio.Play();
+
             }
             return;
         }

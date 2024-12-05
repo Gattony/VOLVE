@@ -2,22 +2,27 @@ using UnityEngine;
 
 public class ExpOrb : MonoBehaviour
 {
-    public float baseSpeed = 1f;      
-    public float maxSpeed = 5f;      
-    public float detectionRange = 5f; 
-    public int expAmount = 10;        
+    public float baseSpeed = 1f;
+    public float maxSpeed = 5f;
+    public float detectionRange = 5f;
+
+    [Header("Experience Settings")]
+    public int minExpAmount = 5;   // Minimum experience amount
+    public int maxExpAmount = 15;  // Maximum experience amount
+    private int expAmount;         // Randomized experience amount
 
     private Transform player;
 
     private void Start()
     {
+        // Randomize the experience amount within the specified range
+        expAmount = Random.Range(minExpAmount, maxExpAmount + 1);
 
         player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     private void Update()
     {
-
         float expDetectionMultiplier = PlayerStats.Instance.expDetectionMultipler;
 
         if (player != null)
@@ -41,7 +46,6 @@ public class ExpOrb : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-
         if (other.CompareTag("Player"))
         {
             PlayerCharacter.Instance.AddExp(expAmount);

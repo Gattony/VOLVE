@@ -109,6 +109,7 @@ public class Enemy : MonoBehaviour
         if (hitInfo.CompareTag("Player"))
         {
             PlayerCharacter.Instance.TakeDamage(enemyDamage);
+            Die();
         }
     }
 

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerControl : MonoBehaviour
@@ -18,19 +17,33 @@ public class PlayerControl : MonoBehaviour
     private const string horizontal = "Horizontal";
     private const string vertical = "Vertical";
 
+    [Header("Joystick References")]
+    public JoystickMovement movementJoystick; // Movement joystick
+    public JoystickMovement actionJoystick; // Weapon rotation joystick
+
     private void Awake()
     {
-        //Getting componenets in inspector
+        // Getting components in inspector
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
     }
 
     private void Update()
     {
+        // Get joystick input for movement
+        Vector2 joystickInput = movementJoystick.joystickVec;
 
-        // Handle movement input
-        movement.Set(Input.GetAxisRaw(horizontal), Input.GetAxisRaw(vertical));
-        movement.Normalize();
+        // Check if movement joystick is being used (non-zero input), otherwise fallback to keyboard
+        if (joystickInput != Vector2.zero)
+        {
+            movement = joystickInput; // Use joystick input for movement
+        }
+        else
+        {
+            // Fallback to keyboard input
+            movement.Set(Input.GetAxisRaw(horizontal), Input.GetAxisRaw(vertical));
+            movement.Normalize(); // Ensure movement vector is normalized
+        }
 
         // Get mouse position in world space
         mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -41,22 +54,35 @@ public class PlayerControl : MonoBehaviour
     private void FixedUpdate()
     {
         // Apply movement
-        float speedmultipiler = PlayerStats.Instance.speedMultiplier;
+        float speedMultiplier = PlayerStats.Instance.speedMultiplier;
 
-        rb.velocity = movement * moveSpeed * speedmultipiler;
+        rb.velocity = movement * moveSpeed * speedMultiplier;
     }
 
     private void RotateWeaponAroundPlayer()
     {
-        // Calculate direction and angle to the mouse
-        Vector2 aimDirection = mousePosition - rb.position;
+        Vector2 aimDirection;
+
+        // Check if action joystick is being used
+        if (actionJoystick.joystickVec != Vector2.zero)
+        {
+            // Use joystick direction for aiming
+            aimDirection = actionJoystick.joystickVec;
+        }
+        else
+        {
+            // Fallback to mouse aiming
+            aimDirection = mousePosition - rb.position;
+        }
+
+        // Calculate the aim angle
         float aimAngle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
 
         // Calculate the new position of the weapon
         Vector2 weaponPosition = rb.position + aimDirection.normalized * weaponDistance;
         weaponTransform.position = weaponPosition;
 
-        // Rotate the weapon to face the mouse
+        // Rotate the weapon to face the aim direction
         weaponTransform.rotation = Quaternion.Euler(0, 0, aimAngle - 90);
     }
 }

@@ -34,6 +34,9 @@ public class Weapon : MonoBehaviour
     [Header("Joystick Input")]
     public JoystickMovement weaponJoystick; // Reference to the WeaponJoystick
 
+    private bool isUsingMouse = true; // Tracks whether the player is using the mouse for aiming
+    private Vector2 mousePosition;
+
     private void Awake()
     {
         audio = GetComponent<AudioSource>();
@@ -54,11 +57,36 @@ public class Weapon : MonoBehaviour
     {
         if (isReloading || currentAmmo <= 0) return;
 
-        Vector2 joystickVec = weaponJoystick.joystickVec; // Get joystick input
+        HandleInput();
+    }
 
-        if (joystickVec != Vector2.zero && Time.time >= nextFireTime)
+    private void HandleInput()
+    {
+        Vector2 aimDirection;
+
+        // Check if joystick is being used
+        if (weaponJoystick.joystickVec != Vector2.zero)
         {
-            Fire(joystickVec); // Fire in the joystick direction
+            isUsingMouse = false; // Prioritize joystick
+            aimDirection = weaponJoystick.joystickVec; // Use joystick direction
+
+            // Fire if enough time has passed
+            if (Time.time >= nextFireTime)
+            {
+                Fire(aimDirection);
+            }
+        }
+        else if (Input.GetMouseButton(0)) // Check if the left mouse button is held down
+        {
+            isUsingMouse = true; // Use mouse input
+            mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            aimDirection = (mousePosition - (Vector2)firePoint.position).normalized;
+
+            // Fire if enough time has passed
+            if (Time.time >= nextFireTime)
+            {
+                Fire(aimDirection);
+            }
         }
     }
 
@@ -75,10 +103,9 @@ public class Weapon : MonoBehaviour
 
         if (bulletRigidbody != null)
         {
-            Vector2 fireDirection = aimDirection.normalized;
-            bulletRigidbody.AddForce(fireDirection * fireForce, ForceMode2D.Impulse);
+            bulletRigidbody.AddForce(aimDirection * fireForce, ForceMode2D.Impulse);
 
-            RotateWeapon(fireDirection);
+            RotateWeapon(aimDirection);
         }
 
         if (audio != null)

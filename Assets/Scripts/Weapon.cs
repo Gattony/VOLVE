@@ -8,7 +8,7 @@ public class Weapon : MonoBehaviour
     public Transform firePoint;
     public float fireForce = 20f;
 
-    private AudioSource audio;
+    private new AudioSource audio;
 
     [Header("Ammo System")]
     public int maxAmmo = 10;
@@ -65,10 +65,10 @@ public class Weapon : MonoBehaviour
         Vector2 aimDirection;
 
         // Check if joystick is being used
-        if (weaponJoystick.joystickVec != Vector2.zero)
+        if (weaponJoystick.joystickDirec != Vector2.zero)
         {
             isUsingMouse = false; // Prioritize joystick
-            aimDirection = weaponJoystick.joystickVec; // Use joystick direction
+            aimDirection = weaponJoystick.joystickDirec; // Use joystick direction
 
             // Fire if enough time has passed
             if (Time.time >= nextFireTime)

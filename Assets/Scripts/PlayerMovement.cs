@@ -31,7 +31,7 @@ public class PlayerControl : MonoBehaviour
     private void Update()
     {
         // Get joystick input for movement
-        Vector2 joystickInput = movementJoystick.joystickVec;
+        Vector2 joystickInput = movementJoystick.joystickDirec;
 
         // Check if movement joystick is being used (non-zero input), otherwise fallback to keyboard
         if (joystickInput != Vector2.zero)
@@ -64,10 +64,10 @@ public class PlayerControl : MonoBehaviour
         Vector2 aimDirection;
 
         // Check if action joystick is being used
-        if (actionJoystick.joystickVec != Vector2.zero)
+        if (actionJoystick.joystickDirec != Vector2.zero)
         {
             // Use joystick direction for aiming
-            aimDirection = actionJoystick.joystickVec;
+            aimDirection = actionJoystick.joystickDirec;
         }
         else
         {

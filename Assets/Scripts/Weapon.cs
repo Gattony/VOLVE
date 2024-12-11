@@ -94,12 +94,22 @@ public class Weapon : MonoBehaviour
     {
         if (currentAmmo <= 0 || isReloading) return;
 
+        float fireRateMultiplier = PlayerStats.Instance.fireRateMultiplier;
+        float damageMultiplier = PlayerStats.Instance.damageMultiplier;
+
         // Apply fire rate
-        nextFireTime = Time.time + baseFireRate;
+        nextFireTime = Time.time + (baseFireRate / fireRateMultiplier);
+
 
         // Spawn the bullet
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+
+        //Adding force to the bullet
         Rigidbody2D bulletRigidbody = bullet.GetComponent<Rigidbody2D>();
+
+        // Pass the damage multiplier to the bullet via Initialize method
+        float adjustedDamage = bullet.GetComponent<Bullet>().damage * damageMultiplier;
+        bullet.GetComponent<Bullet>().Initialize(adjustedDamage);
 
         if (bulletRigidbody != null)
         {

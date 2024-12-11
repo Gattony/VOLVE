@@ -53,7 +53,7 @@ public class PlayerControl : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Apply movement
+        // Applying movement with upgrades
         float speedMultiplier = PlayerStats.Instance.speedMultiplier;
 
         rb.velocity = movement * moveSpeed * speedMultiplier;

@@ -13,6 +13,7 @@ public class UpgradeManager : MonoBehaviour
         Damage,
         FireRate,
         EXPDetection,
+        EXPBoost,
     }
 
 

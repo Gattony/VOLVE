@@ -53,11 +53,17 @@ public class Weapon : MonoBehaviour
         }
     }
 
+
     private void Update()
     {
         if (isReloading || currentAmmo <= 0) return;
 
         HandleInput();
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            StartCoroutine(Reload());
+        }
     }
 
     private void HandleInput()

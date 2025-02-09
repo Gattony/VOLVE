@@ -1,58 +1,49 @@
-using System.Collections;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    [Header("Player and Mouse Settings")]
-    [SerializeField] private Transform playerTransform;       
-    [SerializeField] private float displacementMultipiler = 0.15f; // Controls how much the camera moves towards the mouse
-    private float zPosition = -10f;                            
+    public Transform player; // Assign in Inspector
+    public float followSpeed = 2f;
+    public float maxOffset = 3f;
 
-    [Header("Shake Settings")]
-    [SerializeField] private float shakeDuration = 0.1f;       
-    [SerializeField] private float shakeMagnitude = 0.1f;      
-    private Vector3 shakeOffset = Vector3.zero;                // Offset applied during the shake
-    private Coroutine shakeCoroutine;
+    private Vector3 targetPosition;
+
+    [Header("Joystick Reference")]
+    public JoystickMovement actionJoystick; // Optional: Assign in Inspector
+
+    private void Start()
+    {
+        if (player == null)
+        {
+            Debug.LogError("CameraController: Player reference is missing! Assign it in the Inspector.");
+        }
+    }
 
     private void Update()
     {
-        // Calculate mouse-based camera displacement
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3 cameraDisplacement = (mousePosition - playerTransform.position) * displacementMultipiler;
+        if (player == null) return; // Prevents crash if player is missing
 
-        // Calculate final camera position, including shake
-        Vector3 finalCameraPosition = playerTransform.position + cameraDisplacement + shakeOffset;
-        finalCameraPosition.z = zPosition;
+        Vector3 offset = Vector3.zero;
 
-        // Set the camera position
-        transform.position = finalCameraPosition;
-    }
-
- 
-    public void TriggerShake()
-    {
-        if (shakeCoroutine != null)
+#if UNITY_ANDROID || UNITY_IOS
+        if (actionJoystick != null)
         {
-            StopCoroutine(shakeCoroutine); // Stop any existing shake
+            Vector2 joystickDirection = actionJoystick.joystickDirec;
+            offset = new Vector3(joystickDirection.x, joystickDirection.y, 0f) * maxOffset;
         }
-        shakeCoroutine = StartCoroutine(ShakeCoroutine());
-    }
-
-    private IEnumerator ShakeCoroutine()
-    {
-        float elapsedTime = 0f;
-
-        while (elapsedTime < shakeDuration)
+#else
+        Camera mainCamera = Camera.main;
+        if (mainCamera != null)
         {
-            float offsetX = Random.Range(-1f, 1f) * shakeMagnitude;
-            float offsetY = Random.Range(-1f, 1f) * shakeMagnitude;
-
-            shakeOffset = new Vector3(offsetX, offsetY, 0f);
-
-            elapsedTime += Time.deltaTime;
-            yield return null;
+            Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 direction = (mouseWorldPos - player.position).normalized;
+            offset = direction * maxOffset;
         }
+#endif
 
-        shakeOffset = Vector3.zero; // Reset shake offset after shake
+        targetPosition = player.position + offset;
+        targetPosition.z = transform.position.z; // Keep original Z position
+
+        transform.position = Vector3.Lerp(transform.position, targetPosition, followSpeed * Time.deltaTime);
     }
 }

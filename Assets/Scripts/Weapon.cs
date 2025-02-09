@@ -34,7 +34,6 @@ public class Weapon : MonoBehaviour
     [Header("Joystick Input")]
     public JoystickMovement weaponJoystick; // Reference to the WeaponJoystick
 
-    private bool isUsingMouse = true; // Tracks whether the player is using the mouse for aiming
     private Vector2 mousePosition;
 
     private void Awake()
@@ -53,47 +52,47 @@ public class Weapon : MonoBehaviour
         }
     }
 
-
     private void Update()
     {
         if (isReloading || currentAmmo <= 0) return;
 
         HandleInput();
 
+#if !UNITY_ANDROID && !UNITY_IOS
         if (Input.GetMouseButtonDown(1))
         {
             StartCoroutine(Reload());
         }
+#endif
     }
 
     private void HandleInput()
     {
         Vector2 aimDirection;
 
-        // Check if joystick is being used
+        // Use joystick input for firing
         if (weaponJoystick.joystickDirec != Vector2.zero)
         {
-            isUsingMouse = false; // Prioritize joystick
             aimDirection = weaponJoystick.joystickDirec; // Use joystick direction
 
-            // Fire if enough time has passed
             if (Time.time >= nextFireTime)
             {
                 Fire(aimDirection);
             }
         }
+
+#if !UNITY_ANDROID && !UNITY_IOS
         else if (Input.GetMouseButton(0)) // Check if the left mouse button is held down
         {
-            isUsingMouse = true; // Use mouse input
             mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             aimDirection = (mousePosition - (Vector2)firePoint.position).normalized;
 
-            // Fire if enough time has passed
             if (Time.time >= nextFireTime)
             {
                 Fire(aimDirection);
             }
         }
+#endif
     }
 
     private void Fire(Vector2 aimDirection)
@@ -103,24 +102,18 @@ public class Weapon : MonoBehaviour
         float fireRateMultiplier = PlayerStats.Instance.fireRateMultiplier;
         float damageMultiplier = PlayerStats.Instance.damageMultiplier;
 
-        // Apply fire rate
         nextFireTime = Time.time + (baseFireRate / fireRateMultiplier);
 
-
-        // Spawn the bullet
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
 
-        //Adding force to the bullet
         Rigidbody2D bulletRigidbody = bullet.GetComponent<Rigidbody2D>();
 
-        // Pass the damage multiplier to the bullet via Initialize method
         float adjustedDamage = bullet.GetComponent<Bullet>().damage * damageMultiplier;
         bullet.GetComponent<Bullet>().Initialize(adjustedDamage);
 
         if (bulletRigidbody != null)
         {
             bulletRigidbody.AddForce(aimDirection * fireForce, ForceMode2D.Impulse);
-
             RotateWeapon(aimDirection);
         }
 

@@ -828,10 +828,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aa7af903e92fbe4b8b68c7b5a91b709, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1345096367}
-  followSpeed: 2
-  maxOffset: 3
-  actionJoystick: {fileID: 1723435599}
+  playerTransform: {fileID: 1345096367}
+  displacementMultipiler: 0.08
+  shakeDuration: 0.06
+  shakeMagnitude: 0.06
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -3228,7 +3228,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1677109778
 MonoBehaviour:
   m_ObjectHideFlags: 0

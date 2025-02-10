@@ -23,6 +23,7 @@ public class PlayerControl : MonoBehaviour
 
     private void Awake()
     {
+        // Getting components in inspector
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
     }
@@ -32,28 +33,29 @@ public class PlayerControl : MonoBehaviour
         // Get joystick input for movement
         Vector2 joystickInput = movementJoystick.joystickDirec;
 
-        // Use joystick movement if available, otherwise use keyboard
+        // Check if movement joystick is being used (non-zero input), otherwise fallback to keyboard
         if (joystickInput != Vector2.zero)
         {
             movement = joystickInput; // Use joystick input for movement
         }
         else
         {
+            // Fallback to keyboard input
             movement.Set(Input.GetAxisRaw(horizontal), Input.GetAxisRaw(vertical));
             movement.Normalize(); // Ensure movement vector is normalized
         }
 
-#if !UNITY_ANDROID && !UNITY_IOS
-        // Only update mouse position on PC
+        // Get mouse position in world space
         mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-#endif
 
         RotateWeaponAroundPlayer();
     }
 
     private void FixedUpdate()
     {
+        // Applying movement with upgrades
         float speedMultiplier = PlayerStats.Instance.speedMultiplier;
+
         rb.velocity = movement * moveSpeed * speedMultiplier;
     }
 
@@ -61,27 +63,26 @@ public class PlayerControl : MonoBehaviour
     {
         Vector2 aimDirection;
 
-        // Use joystick input if available
+        // Check if action joystick is being used
         if (actionJoystick.joystickDirec != Vector2.zero)
         {
+            // Use joystick direction for aiming
             aimDirection = actionJoystick.joystickDirec;
         }
-#if !UNITY_ANDROID && !UNITY_IOS
         else
         {
-            // Use mouse aiming on PC
+            // Fallback to mouse aiming
             aimDirection = mousePosition - rb.position;
         }
-#else
-        else
-        {
-            return; // Prevent weapon movement if no input is detected
-        }
-#endif
 
+        // Calculate the aim angle
         float aimAngle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
+
+        // Calculate the new position of the weapon
         Vector2 weaponPosition = rb.position + aimDirection.normalized * weaponDistance;
         weaponTransform.position = weaponPosition;
+
+        // Rotate the weapon to face the aim direction
         weaponTransform.rotation = Quaternion.Euler(0, 0, aimAngle - 90);
     }
 }

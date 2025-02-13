@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class JoystickMovement : MonoBehaviour
+public class JoystickMovement : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
     public GameObject joystick;
     public GameObject joystickBG;
@@ -14,37 +14,44 @@ public class JoystickMovement : MonoBehaviour
     private Vector2 joystickBGOriginalPos;
     private float joystickRadius;
 
+    private int activeTouchID = -1; // Track which finger is using this joystick
 
-    // Start is called before the first frame update
     void Start()
     {
         joystickOriginalPos = joystick.transform.localPosition;
         joystickBGOriginalPos = joystickBG.transform.position;
         joystickRadius = joystickBG.GetComponent<RectTransform>().sizeDelta.y / 4;
     }
-    
-    public void PointerDown()
+
+    public void OnPointerDown(PointerEventData eventData)
     {
-        joystickBG.transform.position = Input.mousePosition;
-        joystickTouchPos = Input.mousePosition;
+        if (activeTouchID == -1) // Only register if not already in use
+        {
+            activeTouchID = eventData.pointerId;
+            joystickBG.transform.position = eventData.position;
+            joystickTouchPos = eventData.position;
+        }
     }
 
-    public void Drag(BaseEventData baseEventData)
+    public void OnDrag(PointerEventData eventData)
     {
-        PointerEventData pointerEventData = (PointerEventData)baseEventData;
-        Vector2 dragPos = pointerEventData.position;
+        if (eventData.pointerId != activeTouchID) return; // Ignore other touches
 
+        Vector2 dragPos = eventData.position;
         joystickDirec = (dragPos - joystickTouchPos).normalized;
 
-        float joystickDist = Mathf.Min(Vector2.Distance(dragPos,joystickTouchPos), joystickRadius);
-
+        float joystickDist = Mathf.Min(Vector2.Distance(dragPos, joystickTouchPos), joystickRadius);
         joystick.transform.localPosition = joystickDirec * joystickDist;
     }
 
-    public void PointerUp()
+    public void OnPointerUp(PointerEventData eventData)
     {
-        joystickDirec = Vector2.zero;
-        joystick.transform.localPosition = joystickOriginalPos;
-        joystickBG.transform.position = joystickBGOriginalPos;
+        if (eventData.pointerId == activeTouchID) // Only reset if it's the same touch
+        {
+            activeTouchID = -1;
+            joystickDirec = Vector2.zero;
+            joystick.transform.localPosition = joystickOriginalPos;
+            joystickBG.transform.position = joystickBGOriginalPos;
+        }
     }
 }

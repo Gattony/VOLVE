@@ -4,34 +4,34 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    public GameObject enemyPrefab;  // Enemy prefab to spawn
-    public Transform player;        // Reference to the player
-    public float spawnRadius = 15f; // Minimum distance from the player
+    public GameObject enemyPrefab;
+    public Transform player;
+    public float spawnRadius = 15f;
+    public float maxEnemyDistance = 30f; // Maximum distance before relocating
 
     [Header("Spawn Timing")]
-    public float initialSpawnRate = 2f;  // Initial spawn rate (time between spawns)
-    public float minSpawnRate = 0.5f;    // Minimum spawn rate (time between spawns)
-    public float spawnRateDecay = 0.01f; // How much spawn rate decreases per interval
+    public float initialSpawnRate = 2f;
+    public float minSpawnRate = 0.5f;
+    public float spawnRateDecay = 0.01f;
     private float currentSpawnRate;
 
     [Header("Enemy Limits")]
-    public int initialMaxEnemies = 25;   // Initial limit for active enemies
-    public int maxMaxEnemies = 200;      // Maximum limit for enemies over time
-    public int maxEnemiesIncrease = 1;   // Increase in max enemies per interval
-    public float difficultyIncreaseInterval = 10f; // Time interval to increase difficulty
+    public int initialMaxEnemies = 25;
+    public int maxMaxEnemies = 200;
+    public int maxEnemiesIncrease = 10;
+    public float difficultyIncreaseInterval = 10f;
     private int currentMaxEnemies;
 
     private List<GameObject> activeEnemies = new List<GameObject>();
 
     void Start()
     {
-        // Initialize spawn rate and max enemies
         currentSpawnRate = initialSpawnRate;
         currentMaxEnemies = initialMaxEnemies;
 
-        // Start spawning enemies and difficulty progression
         StartCoroutine(SpawnEnemies());
         StartCoroutine(IncreaseDifficulty());
+        StartCoroutine(RelocateFarEnemies());
     }
 
     IEnumerator SpawnEnemies()
@@ -52,40 +52,57 @@ public class EnemySpawner : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(difficultyIncreaseInterval);
-
-            // Decrease spawn rate gradually but not below the minimum
             currentSpawnRate = Mathf.Max(minSpawnRate, currentSpawnRate - spawnRateDecay);
-
-            // Increase the maximum number of enemies gradually
             if (currentMaxEnemies < maxMaxEnemies)
             {
                 currentMaxEnemies += maxEnemiesIncrease;
             }
-
             Debug.Log($"Difficulty Increased: SpawnRate = {currentSpawnRate}, MaxEnemies = {currentMaxEnemies}");
+        }
+    }
+
+    IEnumerator RelocateFarEnemies()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(2f); // Check every 2 seconds
+
+            foreach (GameObject enemy in activeEnemies)
+            {
+                if (enemy == null) continue;
+
+                float distance = Vector2.Distance(enemy.transform.position, player.position);
+                if (distance > maxEnemyDistance)
+                {
+                    RelocateEnemy(enemy);
+                }
+            }
         }
     }
 
     void SpawnEnemy()
     {
-        // Randomize spawn position around the player
         Vector2 spawnDirection = Random.insideUnitCircle.normalized;
         Vector2 spawnPosition = (Vector2)player.position + spawnDirection * spawnRadius;
 
-        // Instantiate the enemy and add it to the active list
         GameObject newEnemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
         activeEnemies.Add(newEnemy);
 
-        // Remove the enemy from the list when it is destroyed
         newEnemy.GetComponent<Enemy>().OnEnemyDestroyed += () =>
         {
             activeEnemies.Remove(newEnemy);
         };
     }
 
+    void RelocateEnemy(GameObject enemy)
+    {
+        Vector2 spawnDirection = Random.insideUnitCircle.normalized;
+        Vector2 spawnPosition = (Vector2)player.position + spawnDirection * spawnRadius;
+        enemy.transform.position = spawnPosition;
+    }
+
     void OnDrawGizmosSelected()
     {
-        // Draw spawn radius in the Scene view for visualization
         Gizmos.color = Color.red;
         if (player != null)
         {
@@ -93,4 +110,3 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 }
-

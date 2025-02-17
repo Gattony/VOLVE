@@ -42,12 +42,6 @@ public class PlayerControl : MonoBehaviour
             movement.Set(Input.GetAxisRaw(horizontal), Input.GetAxisRaw(vertical));
             movement.Normalize(); // Ensure movement vector is normalized
         }
-
-#if !UNITY_ANDROID && !UNITY_IOS
-        // Only update mouse position on PC
-        mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-#endif
-
         RotateWeaponAroundPlayer();
     }
 
@@ -66,18 +60,11 @@ public class PlayerControl : MonoBehaviour
         {
             aimDirection = actionJoystick.joystickDirec;
         }
-#if !UNITY_ANDROID && !UNITY_IOS
-        else
-        {
-            // Use mouse aiming on PC
-            aimDirection = mousePosition - rb.position;
-        }
-#else
+
         else
         {
             return; // Prevent weapon movement if no input is detected
         }
-#endif
 
         float aimAngle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
         Vector2 weaponPosition = rb.position + aimDirection.normalized * weaponDistance;

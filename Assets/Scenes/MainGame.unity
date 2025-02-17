@@ -3223,7 +3223,10 @@ PrefabInstance:
       value: Upgrade Container
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5437378513300888056, guid: 34f4023e87d34ab4680149423d5bff4a, type: 3}
+    - {fileID: 8218424528015538945, guid: 34f4023e87d34ab4680149423d5bff4a, type: 3}
+    - {fileID: 3900074612548096539, guid: 34f4023e87d34ab4680149423d5bff4a, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34f4023e87d34ab4680149423d5bff4a, type: 3}

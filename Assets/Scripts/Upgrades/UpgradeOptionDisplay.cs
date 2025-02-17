@@ -4,8 +4,7 @@ using UnityEngine.UI;
 using TMPro;
 
 public class UpgradeOptionDisplay : MonoBehaviour
-{
-    [SerializeField] TextMeshProUGUI upgradeName;
+{ 
     [SerializeField] Image icon;
     [SerializeField] Button button;
 
@@ -15,7 +14,6 @@ public class UpgradeOptionDisplay : MonoBehaviour
 
     public void UpdateDisplay(UpgradeData data)
     {
-        upgradeName.text = data.upgradeName;
         icon.sprite = data.icon;
 
         upgradeType = data;

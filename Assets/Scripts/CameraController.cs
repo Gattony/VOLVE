@@ -25,21 +25,11 @@ public class CameraController : MonoBehaviour
 
         Vector3 offset = Vector3.zero;
 
-#if UNITY_ANDROID || UNITY_IOS
         if (actionJoystick != null)
         {
             Vector2 joystickDirection = actionJoystick.joystickDirec;
             offset = new Vector3(joystickDirection.x, joystickDirection.y, 0f) * maxOffset;
         }
-#else
-        Camera mainCamera = Camera.main;
-        if (mainCamera != null)
-        {
-            Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-            Vector3 direction = (mouseWorldPos - player.position).normalized;
-            offset = direction * maxOffset;
-        }
-#endif
 
         targetPosition = player.position + offset;
         targetPosition.z = transform.position.z;

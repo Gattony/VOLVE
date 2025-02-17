@@ -42,6 +42,7 @@ public class PlayerControl : MonoBehaviour
             movement.Set(Input.GetAxisRaw(horizontal), Input.GetAxisRaw(vertical));
             movement.Normalize(); // Ensure movement vector is normalized
         }
+
         RotateWeaponAroundPlayer();
     }
 

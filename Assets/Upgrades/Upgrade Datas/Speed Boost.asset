@@ -10,8 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a43139a8c14d9f148a7a2b73b4863b78, type: 3}
-  m_Name: Damage Boost
+  m_Name: Speed Boost
   m_EditorClassIdentifier: 
-  upgradeName: Damage Boost
-  icon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  type: 3
+  icon: {fileID: 21300000, guid: 30c47d10f0cb4274199996ed03ce25fd, type: 3}
+  type: 1

@@ -10,8 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a43139a8c14d9f148a7a2b73b4863b78, type: 3}
-  m_Name: Health Boost
+  m_Name: Fire Rate Boost
   m_EditorClassIdentifier: 
-  upgradeName: Health
-  icon: {fileID: 21300000, guid: ae5089824bf473f4eb3972468241aca4, type: 3}
-  type: 2
+  icon: {fileID: 21300000, guid: 79183ee603f83404fba18aaee0ff4656, type: 3}
+  type: 4

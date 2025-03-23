@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
@@ -9,7 +10,7 @@ public class CameraController : MonoBehaviour
     private Vector3 targetPosition;
 
     [Header("Joystick Reference")]
-    public JoystickMovement actionJoystick; // Optional: Assign in Inspector
+    public JoystickMovement actionJoystick;
 
     private void Start()
     {
@@ -21,7 +22,7 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
-        if (player == null) return; // Prevents crash if player is missing
+        if (player == null) return;
 
         Vector3 offset = Vector3.zero;
 
@@ -35,5 +36,26 @@ public class CameraController : MonoBehaviour
         targetPosition.z = transform.position.z;
 
         transform.position = Vector3.Lerp(transform.position, targetPosition, followSpeed * Time.deltaTime);
+    }
+    public void ShakeCameraOnce(float intensity = 0.15f, float duration = 0.08f)
+    {
+        StartCoroutine(ShakeCoroutine(intensity, duration));
+    }
+
+    private IEnumerator ShakeCoroutine(float intensity, float duration)
+    {
+        Vector3 originalPos = transform.position;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            Vector2 shakeOffset = Random.insideUnitCircle * intensity;
+            transform.position = originalPos + new Vector3(shakeOffset.x, shakeOffset.y, 0);
+
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = originalPos;
     }
 }

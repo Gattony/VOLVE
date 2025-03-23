@@ -36,6 +36,8 @@ public class Weapon : MonoBehaviour
 
     private Vector2 mousePosition;
 
+    private CameraController cameraShake;
+
     private void Awake()
     {
         audio = GetComponent<AudioSource>();
@@ -50,6 +52,9 @@ public class Weapon : MonoBehaviour
         {
             initialAmmoBarPosition = ammoBarContainer.anchoredPosition;
         }
+
+        cameraShake = Camera.main.GetComponent<CameraController>();
+
     }
 
     private void Update()
@@ -115,6 +120,12 @@ public class Weapon : MonoBehaviour
         {
             bulletRigidbody.AddForce(aimDirection * fireForce, ForceMode2D.Impulse);
             RotateWeapon(aimDirection);
+        }
+
+        // Trigger camera shake
+        if (cameraShake != null)
+        {
+            cameraShake.ShakeCameraOnce();
         }
 
         if (audio != null)

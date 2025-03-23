@@ -6,7 +6,7 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private float moveSpeed = 5.0f;
     [SerializeField] private Transform weaponTransform;
     [SerializeField] private float weaponDistance = 1.5f; // Distance of the weapon from the player
-    [SerializeField] private float firingSpeedMultiplier = 0.5f; // Movement speed reduction while firing
+    [SerializeField] private float firingSpeedMultiplier = 0.6f; // Movement speed reduction while firing
 
     private Rigidbody2D rb;
     public Animator animator;
@@ -58,6 +58,7 @@ public class PlayerControl : MonoBehaviour
             speedMultiplier *= firingSpeedMultiplier;
         }
 
+        //Final calculation
         rb.velocity = movement * moveSpeed * speedMultiplier;
     }
 

@@ -785,7 +785,7 @@ Camera:
   far clip plane: 5000
   field of view: 40
   orthographic: 1
-  orthographic size: 13
+  orthographic size: 12
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1046,7 +1046,7 @@ MonoBehaviour:
   - {fileID: 3194201292581191362, guid: d672839fd77328e46aeeb6c670fb70bb, type: 3}
   - {fileID: 5136093249532369881, guid: bab79d59177ac8745908a37be164bf19, type: 3}
   - {fileID: 2147847310136922201, guid: 6f33e3cd2bbec374e9698d069f5e32f8, type: 3}
-  mapRadius: 10
+  mapRadius: 9
   tileSize: 4.15
 --- !u!1 &664160612
 GameObject:
@@ -1663,9 +1663,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e37bced10dbdab4cb37353e58169d11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  moveSpeed: 7
   weaponTransform: {fileID: 1504808639}
   weaponDistance: 1.5
+  firingSpeedMultiplier: 0.5
   animator: {fileID: 0}
   weapon: {fileID: 1504808640}
   movementJoystick: {fileID: 322037822}
@@ -2727,6 +2728,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.735849
       objectReference: {fileID: 0}
+    - target: {fileID: 1766947857222015964, guid: 34f4023e87d34ab4680149423d5bff4a, type: 3}
+      propertyPath: m_Transition
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1874717204523896209, guid: 34f4023e87d34ab4680149423d5bff4a, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3124,6 +3129,18 @@ PrefabInstance:
     - target: {fileID: 6779670059087176843, guid: 34f4023e87d34ab4680149423d5bff4a, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7345334123076898879, guid: 34f4023e87d34ab4680149423d5bff4a, type: 3}
+      propertyPath: m_Colors.m_PressedColor.b
+      value: 0.3773585
+      objectReference: {fileID: 0}
+    - target: {fileID: 7345334123076898879, guid: 34f4023e87d34ab4680149423d5bff4a, type: 3}
+      propertyPath: m_Colors.m_PressedColor.g
+      value: 0.3773585
+      objectReference: {fileID: 0}
+    - target: {fileID: 7345334123076898879, guid: 34f4023e87d34ab4680149423d5bff4a, type: 3}
+      propertyPath: m_Colors.m_PressedColor.r
+      value: 0.3773585
       objectReference: {fileID: 0}
     - target: {fileID: 7583269035729663751, guid: 34f4023e87d34ab4680149423d5bff4a, type: 3}
       propertyPath: m_fontSize

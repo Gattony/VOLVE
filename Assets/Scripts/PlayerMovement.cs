@@ -6,13 +6,13 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private float moveSpeed = 5.0f;
     [SerializeField] private Transform weaponTransform;
     [SerializeField] private float weaponDistance = 1.5f; // Distance of the weapon from the player
+    [SerializeField] private float firingSpeedMultiplier = 0.5f; // Movement speed reduction while firing
 
     private Rigidbody2D rb;
     public Animator animator;
     public Weapon weapon;
 
     private Vector2 movement;
-    private Vector2 mousePosition;
 
     private const string horizontal = "Horizontal";
     private const string vertical = "Vertical";
@@ -20,6 +20,8 @@ public class PlayerControl : MonoBehaviour
     [Header("Joystick References")]
     public JoystickMovement movementJoystick; // Movement joystick
     public JoystickMovement actionJoystick; // Weapon rotation joystick
+
+    private bool isFiring = false; // Track if the player is currently firing
 
     private void Awake()
     {
@@ -35,12 +37,12 @@ public class PlayerControl : MonoBehaviour
         // Use joystick movement if available, otherwise use keyboard
         if (joystickInput != Vector2.zero)
         {
-            movement = joystickInput; // Use joystick input for movement
+            movement = joystickInput;
         }
         else
         {
             movement.Set(Input.GetAxisRaw(horizontal), Input.GetAxisRaw(vertical));
-            movement.Normalize(); // Ensure movement vector is normalized
+            movement.Normalize();
         }
 
         RotateWeaponAroundPlayer();
@@ -49,6 +51,13 @@ public class PlayerControl : MonoBehaviour
     private void FixedUpdate()
     {
         float speedMultiplier = PlayerStats.Instance.speedMultiplier;
+
+        // Reduce movement speed when firing
+        if (isFiring)
+        {
+            speedMultiplier *= firingSpeedMultiplier;
+        }
+
         rb.velocity = movement * moveSpeed * speedMultiplier;
     }
 
@@ -60,11 +69,12 @@ public class PlayerControl : MonoBehaviour
         if (actionJoystick.joystickDirec != Vector2.zero)
         {
             aimDirection = actionJoystick.joystickDirec;
+            isFiring = true; // Player is actively aiming/firing
         }
-
         else
         {
-            return; // Prevent weapon movement if no input is detected
+            isFiring = false; // Stop firing if joystick is not used
+            return;
         }
 
         float aimAngle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;

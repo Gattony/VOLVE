@@ -241,8 +241,8 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 0.1
-  m_PreviewTimeScale: 0.2
+  m_Time: 0.45
+  m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -251,16 +251,16 @@ TrailRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.48962647
-        inSlope: 0
-        outSlope: 0
+        value: 0.37111092
+        inSlope: -0.0041572563
+        outSlope: -0.0041572563
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
-        outWeight: 0
+        outWeight: 0.17779511
       - serializedVersion: 3
-        time: 0.51724136
-        value: 0.23236515
+        time: 0.9946593
+        value: 0.059257507
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -272,17 +272,17 @@ TrailRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 1, b: 1, a: 1}
-      key1: {r: 0.13151261, g: 0.7142157, b: 0.5806023, a: 1}
-      key2: {r: 0.13151264, g: 0.7142157, b: 0.5806023, a: 0}
+      key0: {r: 0.13151261, g: 0.7142157, b: 0.5806023, a: 1}
+      key1: {r: 0.13151264, g: 0.7142157, b: 0.5806023, a: 1}
+      key2: {r: 1, g: 1, b: 1, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
       key5: {r: 0, g: 0, b: 0, a: 0}
       key6: {r: 0, g: 0, b: 0, a: 0}
       key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 8674
-      ctime1: 44333
-      ctime2: 56861
+      ctime0: 10409
+      ctime1: 65535
+      ctime2: 65535
       ctime3: 0
       ctime4: 0
       ctime5: 0
@@ -296,19 +296,19 @@ TrailRenderer:
       atime5: 0
       atime6: 0
       atime7: 0
-      m_Mode: 0
+      m_Mode: 1
       m_ColorSpace: 0
-      m_NumColorKeys: 3
+      m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     numCornerVertices: 0
-    numCapVertices: 0
+    numCapVertices: 4
     alignment: 0
     textureMode: 0
     textureScale: {x: 0.1, y: 0.1}
     shadowBias: 0.5
     generateLightingData: 0
-  m_MinVertexDistance: 0.01
+  m_MinVertexDistance: 0
   m_MaskInteraction: 0
-  m_Autodestruct: 1
+  m_Autodestruct: 0
   m_Emitting: 1
   m_ApplyActiveColorSpace: 1

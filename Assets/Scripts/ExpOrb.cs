@@ -12,13 +12,22 @@ public class ExpOrb : MonoBehaviour
     private int expAmount;         // Randomized experience amount
 
     private Transform player;
+    private bool isMoving = false;
+    private TrailRenderer trail; // Trail effect
 
     private void Start()
     {
         // Randomize the experience amount within the specified range
         expAmount = Random.Range(minExpAmount, maxExpAmount + 1);
-
         player = GameObject.FindGameObjectWithTag("Player").transform;
+
+        // Get the TrailRenderer component
+        trail = GetComponent<TrailRenderer>();
+
+        if (trail != null)
+        {
+            trail.enabled = false; // Disable trail initially
+        }
     }
 
     private void Update()
@@ -31,9 +40,16 @@ public class ExpOrb : MonoBehaviour
             float distanceToPlayer = Vector3.Distance(transform.position, player.position);
             float adjustedDetectionRange = detectionRange * expDetectionMultiplier;
 
-            // Move toward the player only if within the adjusted detection range
+            // Move toward the player only if within range
             if (distanceToPlayer <= adjustedDetectionRange)
             {
+                isMoving = true;
+
+                if (trail != null && !trail.enabled)
+                {
+                    trail.enabled = true; // Enable trail only when moving
+                }
+
                 // Calculate speed dynamically based on distance
                 float dynamicSpeed = Mathf.Lerp(maxSpeed, baseSpeed, distanceToPlayer / adjustedDetectionRange);
 

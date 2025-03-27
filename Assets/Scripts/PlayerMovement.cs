@@ -1,11 +1,11 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerControl : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5.0f;
     [SerializeField] private Transform weaponTransform;
-    [SerializeField] private float weaponDistance = 1.5f;
+    [SerializeField] private float weaponDistance = 2.5f;
     [SerializeField] private float firingSpeedMultiplier = 0.6f;
 
     private Rigidbody2D rb;
@@ -13,7 +13,7 @@ public class PlayerControl : MonoBehaviour
     public Weapon weapon;
 
     private Vector2 movement;
-    private Vector2 lastMoveDirection = Vector2.right; // Stores last movement direction for tentacles
+    private Vector2 lastMoveDirection = Vector2.right;
 
     private const string horizontal = "Horizontal";
     private const string vertical = "Vertical";
@@ -25,22 +25,30 @@ public class PlayerControl : MonoBehaviour
     private bool isFiring = false;
 
     [Header("Tentacle Effect Settings")]
-    public int tentacleCount = 5;
-    public int segmentCount = 10;
-    public float tentacleLength = 2f;
-    public float waveSpeed = 1f;
-    public float waveAmplitude = 0.15f;
-    public float tentacleFollowSpeed = 5f;
+    public int tentacleCount = 8;
+    public int segmentCount = 12;
+    public float tentacleMaxLength = 2f;
+    public float tentacleRetractSpeed = 3f;
+    public float tentacleStretchSpeed = 4f;
+    public float tentacleGrabDelayMin = 0.2f;
+    public float tentacleGrabDelayMax = 0.6f;
+    public float tentacleSpread = 100f;
+    public float tentacleCurlFactor = 0.6f;
+    public float tentacleWiggleIntensity = 0.3f;
     public Material tentacleMaterial;
 
     private List<LineRenderer> tentacles = new List<LineRenderer>();
+    private List<Vector3> tentacleTargets = new List<Vector3>();
+    private float[] tentacleTimers;
+    private float[] tentacleWiggleOffsets;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        tentacleTimers = new float[tentacleCount];
+        tentacleWiggleOffsets = new float[tentacleCount];
 
-        // Initialize tentacles
         for (int i = 0; i < tentacleCount; i++)
         {
             GameObject tentacleObj = new GameObject("Tentacle_" + i);
@@ -48,16 +56,19 @@ public class PlayerControl : MonoBehaviour
 
             LineRenderer lineRenderer = tentacleObj.AddComponent<LineRenderer>();
             lineRenderer.positionCount = segmentCount;
-            lineRenderer.startWidth = 0.1f;
-            lineRenderer.endWidth = 0.05f;
+            lineRenderer.startWidth = 0.13f;
+            lineRenderer.endWidth = 0.08f;
             lineRenderer.material = tentacleMaterial;
             tentacles.Add(lineRenderer);
+
+            tentacleTargets.Add(transform.position);
+            tentacleTimers[i] = Random.Range(tentacleGrabDelayMin, tentacleGrabDelayMax);
+            tentacleWiggleOffsets[i] = Random.Range(0f, 2f * Mathf.PI);
         }
     }
 
     private void Update()
     {
-        // Get joystick input for movement
         Vector2 joystickInput = movementJoystick.joystickDirec;
 
         if (joystickInput != Vector2.zero)
@@ -72,11 +83,16 @@ public class PlayerControl : MonoBehaviour
 
         if (movement.magnitude > 0.1f)
         {
-            lastMoveDirection = Vector2.Lerp(lastMoveDirection, movement, Time.deltaTime * tentacleFollowSpeed);
+            lastMoveDirection = Vector2.Lerp(lastMoveDirection, movement, Time.deltaTime * 10f);
+            animator.SetBool("isMoving", true);
+        }
+        else
+        {
+            animator.SetBool("isMoving", false); 
         }
 
         RotateWeaponAroundPlayer();
-        AnimateTentacles();
+        UpdateTentacles();
     }
 
     private void FixedUpdate()
@@ -112,27 +128,42 @@ public class PlayerControl : MonoBehaviour
         weaponTransform.rotation = Quaternion.Euler(0, 0, aimAngle - 90);
     }
 
-    private void AnimateTentacles()
+    private void UpdateTentacles()
     {
         for (int i = 0; i < tentacles.Count; i++)
         {
-            AnimateTentacle(tentacles[i], i);
+            tentacleTimers[i] -= Time.deltaTime;
+
+            if (tentacleTimers[i] <= 0)
+            {
+                Vector3 grabPoint = transform.position +
+                    (Quaternion.Euler(0, 0, (i - tentacleCount / 2f) * tentacleSpread + Random.Range(-10f, 10f)) * lastMoveDirection).normalized *
+                    Random.Range(tentacleMaxLength * 0.6f, tentacleMaxLength);
+
+                grabPoint += new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0);
+
+                tentacleTargets[i] = grabPoint;
+                tentacleTimers[i] = Random.Range(tentacleGrabDelayMin, tentacleGrabDelayMax);
+            }
+
+            AnimateTentacle(tentacles[i], tentacleTargets[i], i);
         }
     }
 
-    private void AnimateTentacle(LineRenderer tentacle, int index)
+    private void AnimateTentacle(LineRenderer tentacle, Vector3 target, int index)
     {
         Vector3 startPos = transform.position;
-        Vector3 direction = lastMoveDirection + (Vector2)Random.insideUnitCircle * 0.5f;
-        direction.Normalize();
+        Vector3 direction = (target - startPos).normalized;
+        float length = Vector3.Distance(startPos, target);
 
         for (int i = 0; i < segmentCount; i++)
         {
             float t = i / (float)(segmentCount - 1);
-            float waveOffset = Mathf.Sin(Time.time * waveSpeed + t * 3f + index * 2f) * waveAmplitude;
+            float curlOffset = Mathf.Sin(t * Mathf.PI) * tentacleCurlFactor;
+            float wiggleOffset = Mathf.Sin(Time.time * 3f + tentacleWiggleOffsets[index] + i * 0.5f) * tentacleWiggleIntensity * (1 - t);
 
-            Vector3 segmentPos = startPos + direction * (tentacleLength * t);
-            segmentPos += new Vector3(waveOffset, waveOffset, 0);
+            Vector3 segmentPos = startPos + direction * (length * t);
+            segmentPos += new Vector3(curlOffset + wiggleOffset, -curlOffset + wiggleOffset, 0);
 
             tentacle.SetPosition(i, segmentPos);
         }

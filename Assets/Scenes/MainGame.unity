@@ -1324,8 +1324,8 @@ MonoBehaviour:
   player: {fileID: 1345096367}
   spawnRadius: 30
   maxEnemyDistance: 30
-  initialSpawnRate: 3
-  minSpawnRate: 0.25
+  initialSpawnRate: 2
+  minSpawnRate: 0.2
   spawnRateDecay: 0.05
   initialMaxEnemies: 250
   maxMaxEnemies: 2500
@@ -1525,37 +1525,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: eaf71ffbd410cad4c8d110461b910364, type: 2}
   - {fileID: 11400000, guid: d8fc642db2703b84fbaf9fef3ae29eb1, type: 2}
   - {fileID: 11400000, guid: eb97c60ce894888459c9e3012e815b2e, type: 2}
---- !u!1 &1121531629
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1121531630}
-  m_Layer: 3
-  m_Name: TentacleController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1121531630
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1121531629}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1345096367}
-  m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1318589192
 GameObject:
   m_ObjectHideFlags: 0
@@ -1607,6 +1576,7 @@ GameObject:
   - component: {fileID: 1345096369}
   - component: {fileID: 1345096370}
   - component: {fileID: 1345096371}
+  - component: {fileID: 1345096372}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -1655,15 +1625,15 @@ SpriteRenderer:
   m_SortingLayerID: -1938263913
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 1027726508, guid: 57141a1873476db4192994be9c1a5ebc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.39, y: 0.23}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1345096367
@@ -1675,11 +1645,10 @@ Transform:
   m_GameObject: {fileID: 1345096365}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3.8638, y: 3.8638, z: 3.8638}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1504808639}
-  - {fileID: 1121531630}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1695,20 +1664,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e37bced10dbdab4cb37353e58169d11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 7
+  moveSpeed: 7.5
   weaponTransform: {fileID: 1504808639}
-  weaponDistance: 1.5
+  weaponDistance: 2
   firingSpeedMultiplier: 0.5
-  animator: {fileID: 0}
+  animator: {fileID: 1345096372}
   weapon: {fileID: 1504808640}
   movementJoystick: {fileID: 322037822}
   actionJoystick: {fileID: 1723435599}
-  tentacleCount: 5
-  segmentCount: 10
-  tentacleLength: 2
-  waveSpeed: 1
-  waveAmplitude: 0.15
-  tentacleFollowSpeed: 5
+  tentacleCount: 4
+  segmentCount: 11
+  tentacleMaxLength: 0.7
+  tentacleRetractSpeed: 2.5
+  tentacleStretchSpeed: 3
+  tentacleGrabDelayMin: 0.2
+  tentacleGrabDelayMax: 0.6
+  tentacleSpread: 80
+  tentacleCurlFactor: 0.4
+  tentacleWiggleIntensity: 0.25
   tentacleMaterial: {fileID: 2100000, guid: f77571f659d45ce40bf73806d57d0cc4, type: 2}
 --- !u!50 &1345096369
 Rigidbody2D:
@@ -1796,6 +1769,27 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.18870036
+--- !u!95 &1345096372
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1345096365}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e7e7dae0bc0ff1d42901a9ada11601bd, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1441289143
 GameObject:
   m_ObjectHideFlags: 0
@@ -2474,7 +2468,7 @@ Transform:
   m_GameObject: {fileID: 1504808638}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.0002588126, y: 0.28469384, z: 0}
-  m_LocalScale: {x: 0.90584403, y: 0.90584403, z: 0.25881258}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1089669497}
@@ -5267,6 +5261,10 @@ PrefabInstance:
     - target: {fileID: 7457708276753345125, guid: c23d612c6a04bcb408b10d971836a8c6, type: 3}
       propertyPath: m_Name
       value: Slungus
+      objectReference: {fileID: 0}
+    - target: {fileID: 7457708276753345125, guid: c23d612c6a04bcb408b10d971836a8c6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7457708276753345125, guid: c23d612c6a04bcb408b10d971836a8c6, type: 3}
       propertyPath: m_TagString

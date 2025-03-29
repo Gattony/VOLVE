@@ -42,6 +42,10 @@ public class PlayerControl : MonoBehaviour
     private float[] tentacleTimers;
     private float[] tentacleWiggleOffsets;
 
+    [Header("Wobble Effect")]
+    [SerializeField] private float wobbleAmount = 0.05f;  // How much the player "jiggles"
+    [SerializeField] private float wobbleSpeed = 5f;      // How fast the wobble adjusts
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();

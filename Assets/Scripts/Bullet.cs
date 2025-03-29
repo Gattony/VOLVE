@@ -2,20 +2,33 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public float speed = 10f;        // Speed of the bullet
-    public float lifetime = 2f;     // Time before the bullet is destroyed
-    public float damage;           // Damage value passed from the weapon script
+    public float speed = 10f;  
+    public float lifetime = 2f;    
+    public float damage;
+    private TrailRenderer bulletTrail;
 
     private void Start()
     {
-        // Destroy the bullet after a set time
+
         Destroy(gameObject, lifetime);
+
+        bulletTrail = GetComponent<TrailRenderer>();
+
+        if (bulletTrail != null)
+        {
+            bulletTrail.enabled = false; // Disable trail initially
+        }
     }
 
     private void Update()
     {
         // Move the bullet forward
         transform.Translate(Vector3.up * speed * Time.deltaTime);
+
+        if (bulletTrail != null && !bulletTrail.enabled)
+        {
+            bulletTrail.enabled = true; // Enable trail only when moving
+        }
     }
 
     // Method to set the damage value when the bullet is instantiated
@@ -37,6 +50,7 @@ public class Bullet : MonoBehaviour
 
             // Destroy the bullet upon collision with the enemy
             Destroy(gameObject);
+            Destroy(bulletTrail);
         }
     }
 }

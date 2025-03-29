@@ -1324,7 +1324,7 @@ MonoBehaviour:
   player: {fileID: 1345096367}
   spawnRadius: 30
   maxEnemyDistance: 30
-  initialSpawnRate: 2.5
+  initialSpawnRate: 2.2
   minSpawnRate: 0.2
   spawnRateDecay: 0.05
   initialMaxEnemies: 250

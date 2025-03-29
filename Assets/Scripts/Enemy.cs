@@ -6,32 +6,38 @@ public class Enemy : MonoBehaviour
 {
     public Action OnEnemyDestroyed; // Event triggered when the enemy is destroyed
 
-    public int maxHealth = 10;        // Maximum health of the enemy
-    private int currentHealth;       // Current health of the enemy
+    public int maxHealth = 10;
+    private int currentHealth;
     public int enemyDamage = 1;
 
-    public float moveSpeed = 2f;     // Speed at which the enemy moves
-    private Transform player;        // Reference to the player's transform
+    public float moveSpeed = 2f;
+    private Transform player;
 
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
+    private Animator animator;
 
-    private float knockbackForce = 10f; // Strength of the knockback effect
-    private bool isKnockedBack = false; 
+    private float knockbackForce = 10f;
+    private bool isKnockedBack = false;
 
-    public GameObject expOrbPrefab; 
+    public GameObject expOrbPrefab;
+    public GameObject bloodEffectPrefab;
 
     void Start()
     {
-        // Initialize health
         currentHealth = maxHealth;
 
-        // Find the player in the scene
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-
-        // Get the Rigidbody2D and SpriteRenderer components
+        // Get components BEFORE modifying animator
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
+
+        player = GameObject.FindGameObjectWithTag("Player")?.transform;
+
+        if (animator != null)
+        {
+            animator.SetBool("isAlive", true);
+        }
 
         if (player == null)
         {
@@ -42,11 +48,15 @@ public class Enemy : MonoBehaviour
         {
             Debug.LogError("SpriteRenderer not found! Make sure the enemy has a SpriteRenderer component.");
         }
+
+        if (animator == null)
+        {
+            Debug.LogError("Animator not found! Make sure the enemy has an Animator component.");
+        }
     }
 
     void FixedUpdate()
     {
-        // Move towards the player only if not being knocked back
         if (player != null && !isKnockedBack)
         {
             Vector2 direction = (player.position - transform.position).normalized;
@@ -56,16 +66,10 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(int damage, Vector2 knockbackSource)
     {
-        // Reduce the enemy's health by the damage amount
         currentHealth -= damage;
-
-        // Trigger the damage flash effect
         StartCoroutine(FlashWhite());
-
-        // Apply knockback
         StartCoroutine(ApplyKnockback(knockbackSource));
 
-        // Check if health is depleted
         if (currentHealth <= 0)
         {
             Die();
@@ -76,14 +80,9 @@ public class Enemy : MonoBehaviour
     {
         if (spriteRenderer != null)
         {
-            // Save the original color
             Color originalColor = spriteRenderer.color;
-
-            spriteRenderer.color = Color.white;
-
-            yield return new WaitForSeconds(0.07f);
-
-            // Revert to the original color
+            spriteRenderer.color = Color.red;
+            yield return new WaitForSeconds(0.08f);
             spriteRenderer.color = originalColor;
         }
     }
@@ -91,15 +90,11 @@ public class Enemy : MonoBehaviour
     private IEnumerator ApplyKnockback(Vector2 knockbackSource)
     {
         isKnockedBack = true;
-
-        // Calculate the knockback direction
-        Vector2 knockbackDirection = (rb.position - knockbackSource).normalized; 
-
+        Vector2 knockbackDirection = (rb.position - knockbackSource).normalized;
         rb.velocity = knockbackDirection * knockbackForce;
 
-        yield return new WaitForSeconds(0.07f);
+        yield return new WaitForSeconds(0.08f);
 
-        // Stop the knockback
         rb.velocity = Vector2.zero;
         isKnockedBack = false;
     }
@@ -115,21 +110,38 @@ public class Enemy : MonoBehaviour
 
     private void Die()
     {
-
         OnEnemyDestroyed?.Invoke();
+        StartCoroutine(DeathEffect());
+    }
 
-        // Play destruction effects, particles, sound, etc.
-        PlayDestructionEffects();
+    private IEnumerator DeathEffect()
+    {
+        rb.velocity = Vector2.zero;
 
-        // Spawn EXP orb
+        if (animator != null)
+        {
+            animator.SetBool("isAlive", false);
+        }
+
+        if (bloodEffectPrefab != null)
+        {
+            Instantiate(bloodEffectPrefab, transform.position, Quaternion.identity);
+        }
+
+        float timer = 0f;
+        Vector3 originalScale = transform.localScale;
+        while (timer < 0.1f)
+        {
+            timer += Time.deltaTime;
+            transform.localScale = originalScale * (1f + timer * 2f);
+            yield return null;
+        }
+
+        // Wait for the death animation to finish
+        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+
         Instantiate(expOrbPrefab, transform.position, Quaternion.identity);
 
         Destroy(gameObject);
-    }
-
-    private void PlayDestructionEffects()
-    {
-        // Placeholder for particle effects, sound effects, etc.
-        
     }
 }

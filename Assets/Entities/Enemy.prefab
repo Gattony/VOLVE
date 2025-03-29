@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6485214394028576774}
   - component: {fileID: 1504382926808664967}
   - component: {fileID: -7461422060645965408}
+  - component: {fileID: 1414914157774884162}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -101,8 +102,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 10
   enemyDamage: 1
-  moveSpeed: 4
+  moveSpeed: 3.4
   expOrbPrefab: {fileID: 6046146200178845733, guid: cdbf3335f7153624aa7a453b7ed8ea0b, type: 3}
+  bloodEffectPrefab: {fileID: 0}
 --- !u!50 &1504382926808664967
 Rigidbody2D:
   serializedVersion: 4
@@ -175,3 +177,24 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.5565219, y: 0.5955481}
   m_EdgeRadius: 0
+--- !u!95 &1414914157774884162
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8106966635535830933}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c3fea285498b6fa45937fadbb3721b56, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

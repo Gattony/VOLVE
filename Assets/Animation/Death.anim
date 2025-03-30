@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Death Animation Enemy
+  m_Name: Death
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -22,15 +22,15 @@ AnimationClip:
     curve:
     - time: 0
       value: {fileID: -1315086889, guid: ba3f0994555c0e942b5977e72cffa9c7, type: 3}
-    - time: 0.1
+    - time: 0.05
       value: {fileID: -1737231978, guid: ba3f0994555c0e942b5977e72cffa9c7, type: 3}
-    - time: 0.18333334
+    - time: 0.083333336
       value: {fileID: -1898435320, guid: ba3f0994555c0e942b5977e72cffa9c7, type: 3}
-    - time: 0.28333333
+    - time: 0.11666667
       value: {fileID: 2099555301, guid: ba3f0994555c0e942b5977e72cffa9c7, type: 3}
-    - time: 0.35
+    - time: 0.16666667
       value: {fileID: -1848384155, guid: ba3f0994555c0e942b5977e72cffa9c7, type: 3}
-    - time: 0.41666666
+    - time: 0.18333334
       value: {fileID: -535931435, guid: ba3f0994555c0e942b5977e72cffa9c7, type: 3}
     attribute: m_Sprite
     path: 
@@ -65,7 +65,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.43333334
+    m_StopTime: 0.2
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0

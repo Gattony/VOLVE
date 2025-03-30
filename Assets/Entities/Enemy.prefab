@@ -104,7 +104,7 @@ MonoBehaviour:
   enemyDamage: 1
   moveSpeed: 3.4
   expOrbPrefab: {fileID: 6046146200178845733, guid: cdbf3335f7153624aa7a453b7ed8ea0b, type: 3}
-  bloodEffectPrefab: {fileID: 0}
+  bloodEffectPrefab: {fileID: 8641287941577885775, guid: d7f2ca45bc8e2ae478f8bae7d8b7802e, type: 3}
 --- !u!50 &1504382926808664967
 Rigidbody2D:
   serializedVersion: 4

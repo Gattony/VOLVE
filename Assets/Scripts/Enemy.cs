@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using UnityEngine;
 
@@ -33,11 +33,6 @@ public class Enemy : MonoBehaviour
         animator = GetComponent<Animator>();
 
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
-
-        if (animator != null)
-        {
-            animator.SetBool("isAlive", true);
-        }
 
         if (player == null)
         {
@@ -117,31 +112,42 @@ public class Enemy : MonoBehaviour
     private IEnumerator DeathEffect()
     {
         rb.velocity = Vector2.zero;
-
-        if (animator != null)
-        {
-            animator.SetBool("isAlive", false);
-        }
-
-        if (bloodEffectPrefab != null)
-        {
-            Instantiate(bloodEffectPrefab, transform.position, Quaternion.identity);
-        }
+        rb.simulated = false;
+        isKnockedBack = true; // Prevent movement logic
 
         float timer = 0f;
         Vector3 originalScale = transform.localScale;
-        while (timer < 0.1f)
+        while (timer < 0.06f)
         {
             timer += Time.deltaTime;
             transform.localScale = originalScale * (1f + timer * 2f);
             yield return null;
         }
 
-        // Wait for the death animation to finish
-        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+        if (animator != null)
+        {
+            animator.SetTrigger("Death");
+
+            yield return null;
+
+            yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).IsName("Death"));
+
+            yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+        }
+
+        else
+        {
+            yield return new WaitForSeconds(0.5f); // Fallback if no animator
+        }
 
         Instantiate(expOrbPrefab, transform.position, Quaternion.identity);
 
+        if (bloodEffectPrefab != null)
+        {
+            Instantiate(bloodEffectPrefab, transform.position, Quaternion.identity);
+        }
+
         Destroy(gameObject);
     }
+
 }

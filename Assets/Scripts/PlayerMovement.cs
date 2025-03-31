@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerControl : MonoBehaviour
@@ -41,10 +42,6 @@ public class PlayerControl : MonoBehaviour
     private List<Vector3> tentacleTargets = new List<Vector3>();
     private float[] tentacleTimers;
     private float[] tentacleWiggleOffsets;
-
-    [Header("Wobble Effect")]
-    [SerializeField] private float wobbleAmount = 0.05f;  // How much the player "jiggles"
-    [SerializeField] private float wobbleSpeed = 5f;      // How fast the wobble adjusts
 
     private void Awake()
     {
@@ -111,18 +108,53 @@ public class PlayerControl : MonoBehaviour
         rb.velocity = movement * moveSpeed * speedMultiplier;
     }
 
+    private Coroutine fadeCoroutine;
+
+    private IEnumerator FadeWeapon(float targetAlpha)
+    {
+        SpriteRenderer weaponSprite = weaponTransform.GetComponent<SpriteRenderer>();
+        if (weaponSprite == null) yield break; // Exit if no SpriteRenderer
+
+        float startAlpha = weaponSprite.color.a;
+        float duration = 0.15f; 
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float newAlpha = Mathf.Lerp(startAlpha, targetAlpha, elapsed / duration);
+            weaponSprite.color = new Color(weaponSprite.color.r, weaponSprite.color.g, weaponSprite.color.b, newAlpha);
+            yield return null;
+        }
+
+        weaponSprite.color = new Color(weaponSprite.color.r, weaponSprite.color.g, weaponSprite.color.b, targetAlpha); // Ensure final alpha is set
+    }
+
     private void RotateWeaponAroundPlayer()
     {
         Vector2 aimDirection;
+        SpriteRenderer weaponSprite = weaponTransform.GetComponent<SpriteRenderer>();
 
         if (actionJoystick.joystickDirec != Vector2.zero)
         {
             aimDirection = actionJoystick.joystickDirec;
             isFiring = true;
+
+            if (weaponSprite.color.a < 1f)
+            {
+                if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
+                fadeCoroutine = StartCoroutine(FadeWeapon(1f)); // Fade in
+            }
         }
         else
         {
             isFiring = false;
+
+            if (weaponSprite.color.a > 0f) 
+            {
+                if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
+                fadeCoroutine = StartCoroutine(FadeWeapon(0f)); 
+            }
             return;
         }
 

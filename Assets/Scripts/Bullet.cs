@@ -2,14 +2,15 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public float speed = 10f;  
-    public float lifetime = 2f;    
+    public float speed = 10f;
+    public float lifetime = 2f;
     public float damage;
     private TrailRenderer bulletTrail;
 
+    public GameObject impactEffectPrefab; 
+
     private void Start()
     {
-
         Destroy(gameObject, lifetime);
 
         bulletTrail = GetComponent<TrailRenderer>();
@@ -22,16 +23,14 @@ public class Bullet : MonoBehaviour
 
     private void Update()
     {
-        // Move the bullet forward
         transform.Translate(Vector3.up * speed * Time.deltaTime);
 
         if (bulletTrail != null && !bulletTrail.enabled)
         {
-            bulletTrail.enabled = true; // Enable trail only when moving
+            bulletTrail.enabled = true;
         }
     }
 
-    // Method to set the damage value when the bullet is instantiated
     public void Initialize(float damageValue)
     {
         damage = damageValue;
@@ -41,16 +40,25 @@ public class Bullet : MonoBehaviour
     {
         if (hitInfo.CompareTag("Enemy"))
         {
-            // Apply damage to the enemy
             Enemy enemy = hitInfo.GetComponent<Enemy>();
             if (enemy != null)
             {
                 enemy.TakeDamage((int)damage, transform.position);
             }
 
-            // Destroy the bullet upon collision with the enemy
+            // Play the impact effect
+            if (impactEffectPrefab != null)
+            {
+                GameObject impactEffect = Instantiate(impactEffectPrefab, transform.position, Quaternion.identity);
+                Destroy(impactEffect, 0.18f); // Destroy effect after a short duration
+            }
+
+            // Destroy the bullet and its trail
             Destroy(gameObject);
-            Destroy(bulletTrail);
+            if (bulletTrail != null)
+            {
+                Destroy(bulletTrail.gameObject);
+            }
         }
     }
 }

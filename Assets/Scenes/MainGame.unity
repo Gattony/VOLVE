@@ -442,7 +442,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: -0.1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00048828125, y: -0.20000458}
+  m_AnchoredPosition: {x: 0.00048828125, y: -0.20000839}
   m_SizeDelta: {x: 10, y: -2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &325496817
@@ -1162,7 +1162,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.464, y: 0.946}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 39.841003, y: 3.6000977}
+  m_AnchoredPosition: {x: 39.841003, y: 3.6000671}
   m_SizeDelta: {x: 146.265, y: -10.334}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &668703218
@@ -1262,7 +1262,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.9475}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.0007324219, y: 1.7001953}
+  m_AnchoredPosition: {x: -0.0007324219, y: 1.7001648}
   m_SizeDelta: {x: 0, y: 22.304321}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &887554236 stripped
@@ -1683,8 +1683,6 @@ MonoBehaviour:
   tentacleCurlFactor: 0.4
   tentacleWiggleIntensity: 0.25
   tentacleMaterial: {fileID: 2100000, guid: f77571f659d45ce40bf73806d57d0cc4, type: 2}
-  wobbleAmount: 0.05
-  wobbleSpeed: 5
 --- !u!50 &1345096369
 Rigidbody2D:
   serializedVersion: 4

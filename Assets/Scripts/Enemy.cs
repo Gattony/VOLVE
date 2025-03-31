@@ -25,6 +25,7 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
+
         currentHealth = maxHealth;
 
         // Get components BEFORE modifying animator
@@ -49,16 +50,20 @@ public class Enemy : MonoBehaviour
             Debug.LogError("Animator not found! Make sure the enemy has an Animator component.");
         }
     }
-
     void FixedUpdate()
     {
         if (player != null && !isKnockedBack)
         {
             Vector2 direction = (player.position - transform.position).normalized;
             rb.velocity = direction * moveSpeed;
+
+            // Flip sprite based on movement direction
+            if (direction.x > 0)
+                spriteRenderer.flipX = false; 
+            else if (direction.x < 0)
+                spriteRenderer.flipX = true;
         }
     }
-
     public void TakeDamage(int damage, Vector2 knockbackSource)
     {
         currentHealth -= damage;
@@ -75,10 +80,14 @@ public class Enemy : MonoBehaviour
     {
         if (spriteRenderer != null)
         {
-            Color originalColor = spriteRenderer.color;
-            spriteRenderer.color = Color.red;
-            yield return new WaitForSeconds(0.08f);
-            spriteRenderer.color = originalColor;
+            Material material = spriteRenderer.material; // Get the material
+
+            if (material.HasProperty("_FlashAmount")) // Check if shader supports flash
+            {
+                material.SetFloat("_FlashAmount", 1f); // Apply full flash
+                yield return new WaitForSeconds(0.08f);
+                material.SetFloat("_FlashAmount", 0f); // Reset flash
+            }
         }
     }
 

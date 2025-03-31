@@ -108,7 +108,7 @@ public class UpgradeManager : MonoBehaviour
 
     private static void UpgradeMovespeed()
     {
-        PlayerStats.Instance.speedMultiplier *= 1.25f;
+        PlayerStats.Instance.speedMultiplier *= 1.1f;
     }
     
     private static void UpgradeFireRate()
@@ -118,6 +118,6 @@ public class UpgradeManager : MonoBehaviour
 
     private static void UpgradeEXPDetection()
     {
-        PlayerStats.Instance.expDetectionMultipler += 1.2f;
+        PlayerStats.Instance.expDetectionMultipler += 1.15f;
     }
 }

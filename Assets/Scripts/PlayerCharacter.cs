@@ -79,8 +79,6 @@ public class PlayerCharacter : MonoBehaviour
         UpdateHearts();
     }
 
-
-
     private void UpdateHearts()
     {
         for (int i = 0; i < maxHealth; i++)
@@ -92,7 +90,6 @@ public class PlayerCharacter : MonoBehaviour
             }
         }
     }
-
 
     public void IncreaseMaxHealth(int amount)
     {

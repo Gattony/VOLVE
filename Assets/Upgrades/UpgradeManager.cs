@@ -96,8 +96,8 @@ public class UpgradeManager : MonoBehaviour
 
         if (player != null)
         {
-            int healthIncrease = 1; // Define how much health to increase per upgrade
-            player.IncreaseMaxHealth(healthIncrease); // Call method on PlayerCharacter to handle the increase
+            int healthIncrease = 1; 
+            player.IncreaseMaxHealth(healthIncrease); 
         }
     }
 

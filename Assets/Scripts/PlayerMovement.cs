@@ -42,6 +42,8 @@ public class PlayerControl : MonoBehaviour
     private List<Vector3> tentacleTargets = new List<Vector3>();
     private float[] tentacleTimers;
     private float[] tentacleWiggleOffsets;
+    private bool isActive = true;
+
 
     private void Awake()
     {
@@ -72,6 +74,7 @@ public class PlayerControl : MonoBehaviour
     {
         Vector2 joystickInput = movementJoystick.joystickDirec;
 
+
         if (joystickInput != Vector2.zero)
         {
             movement = joystickInput;
@@ -89,11 +92,15 @@ public class PlayerControl : MonoBehaviour
         }
         else
         {
-            animator.SetBool("isMoving", false); 
+            animator.SetBool("isMoving", false);
         }
 
         RotateWeaponAroundPlayer();
-        UpdateTentacles();
+
+        if (isActive)
+        {
+            UpdateTentacles();
+        }
     }
 
     private void FixedUpdate()
@@ -116,7 +123,7 @@ public class PlayerControl : MonoBehaviour
         if (weaponSprite == null) yield break; // Exit if no SpriteRenderer
 
         float startAlpha = weaponSprite.color.a;
-        float duration = 0.15f; 
+        float duration = 0.15f;
         float elapsed = 0f;
 
         while (elapsed < duration)
@@ -150,10 +157,10 @@ public class PlayerControl : MonoBehaviour
         {
             isFiring = false;
 
-            if (weaponSprite.color.a > 0f) 
+            if (weaponSprite.color.a > 0f)
             {
                 if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
-                fadeCoroutine = StartCoroutine(FadeWeapon(0f)); 
+                fadeCoroutine = StartCoroutine(FadeWeapon(0f));
             }
             return;
         }
@@ -204,4 +211,31 @@ public class PlayerControl : MonoBehaviour
             tentacle.SetPosition(i, segmentPos);
         }
     }
+    public void StopTentacles()
+    {
+        isActive = false;
+
+        foreach (LineRenderer tentacle in tentacles)
+        {
+            if (tentacle != null)
+            {
+                Destroy(tentacle.gameObject);
+            }
+        }
+
+        tentacles.Clear();
+    }
+
+    public void Die()
+    {
+        Debug.Log("Death function fired");
+
+        rb.velocity = Vector2.zero;
+        rb.isKinematic = true; 
+        rb.simulated = false; 
+   
+        isActive = false; 
+        enabled = false;
+    }
+
 }

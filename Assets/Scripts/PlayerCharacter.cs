@@ -11,25 +11,28 @@ public class PlayerCharacter : MonoBehaviour
 
     [Header("Leveling System")]
     public int currentLevel = 1;          // Starting level
-    private int currentExp = 0;           // Current experience points
-    public int expToNextLevel = 100;      // Experience required for the next level
-    private int expToNextLevelBase = 100; // Base EXP for first level-up
+    private int currentExp = 0;           
+    public int expToNextLevel = 100;      
+    private int expToNextLevelBase = 100; 
 
     [Header("Health System")]
-    public int maxHealth = 3;             // Maximum health (number of hearts)
-    private int currentHealth;            // Current health
-    public Image heartContainerPrefab;    // Prefab for a single heart
-    public Transform heartContainer;      // Parent object to hold all hearts
+    public int maxHealth = 3;             
+    private int currentHealth;            
+    public Image heartContainerPrefab;    
+    public Transform heartContainer;      
     public Sprite fullHeart;              
     public Sprite emptyHeart;             
 
     [Header("UI Elements")]
     public Image expBarFill;
-    public TMP_Text levelText;            // Text to display the current level
+    public TMP_Text levelText;            
 
     [Header("Effects")]
-    public ParticleSystem expFillEffect; // Particle system for EXP fill
-    public RectTransform expBarTransform; // RectTransform for the EXP bar
+    public ParticleSystem expFillEffect;
+    public RectTransform expBarTransform;
+
+    private bool isDead = false;
+    private PlayerControl playerControl;
 
     private void Awake()
     {
@@ -48,6 +51,8 @@ public class PlayerCharacter : MonoBehaviour
         currentHealth = maxHealth;
         InitializeHearts();
         UpdateUI();
+        animator = GetComponent<Animator>();
+        playerControl = GetComponent<PlayerControl>();
     }
 
     private void InitializeHearts()
@@ -94,6 +99,8 @@ public class PlayerCharacter : MonoBehaviour
 
     public void TakeDamage(int amount)
     {
+        if (isDead) return;
+
         currentHealth -= amount;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
@@ -105,11 +112,40 @@ public class PlayerCharacter : MonoBehaviour
         UpdateHearts();
     }
 
+    private Animator animator;
+
     private void Die()
     {
+
+        if (isDead) return;
+        isDead = true;
+
+        if (playerControl != null)
+        {
+            playerControl.Die();
+        }
+
+        if (animator != null)
+        {
+            animator.SetTrigger("Death");
+        }
+
+        PlayerControl tentacleController = FindObjectOfType<PlayerControl>();
+        if (tentacleController != null)
+        {
+            tentacleController.StopTentacles();
+        }
+
         OnPlayerDeath?.Invoke();
         Debug.Log("Player has died!");
-        Time.timeScale = 0f; // Pause the game
+
+        StartCoroutine(DeathPause());
+    }
+
+    private System.Collections.IEnumerator DeathPause()
+    {
+        yield return new WaitForSeconds(3f); 
+        Time.timeScale = 0f; 
     }
 
     public void AddExp(int amount)
@@ -151,17 +187,15 @@ public class PlayerCharacter : MonoBehaviour
             }
         }
 
-        // Update heart UI
         UpdateHearts();
     }
     private void UpdateBarFill(float targetFill)
     {
         expBarFill.fillAmount = targetFill;
 
-        // Continuously position the particle system at the edge of the bar
         if (expFillEffect != null)
         {
-            // Get the width of the bar container
+
             float containerWidth = expBarContainer.rect.width;
 
             // Calculate the edge position in local space
@@ -185,7 +219,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private System.Collections.IEnumerator AnimateBarFill(float startFill, float targetFill)
     {
-        float duration = 0.5f; // Duration of the animation
+        float duration = 0.5f;
         float elapsed = 0f;
 
         while (elapsed < duration)

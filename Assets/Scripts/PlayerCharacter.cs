@@ -1,6 +1,7 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
 public class PlayerCharacter : MonoBehaviour
 {
@@ -30,6 +31,11 @@ public class PlayerCharacter : MonoBehaviour
     [Header("Effects")]
     public ParticleSystem expFillEffect;
     public RectTransform expBarTransform;
+
+    [Header("IFrames")]
+    [SerializeField] public float iFrameDuration;
+    [SerializeField] public float numberOfFlashes;
+    public SpriteRenderer spriteRend;
 
     private bool isDead = false;
     private PlayerControl playerControl;
@@ -90,10 +96,10 @@ public class PlayerCharacter : MonoBehaviour
 
     public void IncreaseMaxHealth(int amount)
     {
-        maxHealth += amount; // Increase max health
-        currentHealth = maxHealth; // Restore health to full
-        InitializeHearts(); // Recreate heart UI
-        UpdateUI(); // Update related UI elements
+        maxHealth += amount; 
+        currentHealth = maxHealth; 
+        InitializeHearts();
+        UpdateUI(); 
         Debug.Log($"Max health increased to {maxHealth}");
     }
 
@@ -104,6 +110,10 @@ public class PlayerCharacter : MonoBehaviour
         currentHealth -= amount;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
+        if (currentHealth > 0)
+        {
+            StartCoroutine(Invunerability());
+        }
         if (currentHealth <= 0)
         {
             Die();
@@ -124,7 +134,6 @@ public class PlayerCharacter : MonoBehaviour
         {
             playerControl.Die();
         }
-
         if (animator != null)
         {
             animator.SetTrigger("Death");
@@ -237,7 +246,7 @@ public class PlayerCharacter : MonoBehaviour
         UpdateBarFill(targetFill);
     }
 
-    // Assuming expBarContainer is a reference to the parent
+
     public RectTransform expBarContainer;
 
     public void SetBarFill(float newFillAmount)
@@ -245,4 +254,18 @@ public class PlayerCharacter : MonoBehaviour
         UpdateBarFill(newFillAmount);
     }
 
+    private IEnumerator Invunerability()
+    {
+        Physics2D.IgnoreLayerCollision(3, 7, true);
+
+        for (int i = 0; i < numberOfFlashes; i++)
+        {
+            spriteRend.color = new Color(1f, 1f, 1f, .7f);
+            yield return new WaitForSeconds(0.4f);
+            spriteRend.color = Color.white;
+            yield return new WaitForSeconds(0.4f);
+        }
+
+        Physics2D.IgnoreLayerCollision(3, 7, false);
+    }
 }

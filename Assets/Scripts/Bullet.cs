@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
@@ -7,7 +8,8 @@ public class Bullet : MonoBehaviour
     public float damage;
     private TrailRenderer bulletTrail;
 
-    public GameObject impactEffectPrefab; 
+    public GameObject damageNumber;
+    public GameObject impactEffectPrefab;
 
     private void Start()
     {
@@ -58,6 +60,12 @@ public class Bullet : MonoBehaviour
             if (bulletTrail != null)
             {
                 Destroy(bulletTrail.gameObject);
+            }
+
+            if (damageNumber != null)
+            {
+                GameObject damageText = Instantiate(damageNumber, transform.position, Quaternion.identity);
+                damageText.GetComponent<TextMeshPro>().text = damage.ToString(); // Set damage text
             }
         }
     }

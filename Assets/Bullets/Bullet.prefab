@@ -276,6 +276,7 @@ MonoBehaviour:
   speed: 3.5
   lifetime: 2.5
   damage: 4
+  damageNumber: {fileID: 1818377434971905588, guid: 9fd6e4f1b9e8af043afbd7ebdba50a9c, type: 3}
   impactEffectPrefab: {fileID: 267881959190861434, guid: e6aa78cc1a98e1e4dab7d0d188d53829, type: 3}
 --- !u!58 &5410635166850510941
 CircleCollider2D:

@@ -115,7 +115,11 @@ public class Enemy : MonoBehaviour
     private void Die()
     {
         OnEnemyDestroyed?.Invoke();
+
+        //Scoring Logic
         ScoreManager.Instance.AddScore(10);
+        ScoreManager.Instance.OnEnemyKilled();
+
         StartCoroutine(DeathEffect());
     }
 

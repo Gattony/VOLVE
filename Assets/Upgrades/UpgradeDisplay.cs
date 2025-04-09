@@ -48,6 +48,7 @@ public class UpgradeDisplay : MonoBehaviour
             upgradeOptions[i].UpdateDisplay(upgrades[i]);
         }
 
+        ScoreManager.Instance?.PauseMultiplierDecay();
         Time.timeScale = 0f;
     }
 
@@ -55,6 +56,7 @@ public class UpgradeDisplay : MonoBehaviour
     {
         Instance.upgradeContainer.SetActive(false);
 
+        ScoreManager.Instance?.ResumeMultiplierDecay();
         Time.timeScale = 1f;
 
     }

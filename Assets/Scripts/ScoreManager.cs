@@ -24,6 +24,7 @@ public class ScoreManager : MonoBehaviour
     private float decayTimer;
     private Coroutine multiplierShakeCoroutine;
     private Vector2 originalMultiplierPos;
+    private bool isMultiplierDecayPaused = false;
 
     private void Awake()
     {
@@ -42,6 +43,8 @@ public class ScoreManager : MonoBehaviour
 
     private void HandleMultiplierDecay()
     {
+        if (Time.timeScale == 0f) return;
+
         if (decayTimer > 0)
         {
             decayTimer -= Time.unscaledDeltaTime;
@@ -59,6 +62,7 @@ public class ScoreManager : MonoBehaviour
             }
         }
     }
+
 
     public void AddScore(int baseAmount)
     {
@@ -135,4 +139,14 @@ public class ScoreManager : MonoBehaviour
 
         rect.anchoredPosition = originalPos;
     }
+    public void PauseMultiplierDecay()
+    {
+        isMultiplierDecayPaused = true;
+    }
+
+    public void ResumeMultiplierDecay()
+    {
+        isMultiplierDecayPaused = false;
+    }
 }
+    

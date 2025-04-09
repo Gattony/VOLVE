@@ -84,7 +84,7 @@ public class PlayerCharacter : MonoBehaviour
     {
         for (int i = 0; i < maxHealth; i++)
         {
-            if (i < heartContainer.childCount) // Ensure there's a corresponding heart UI
+            if (i < heartContainer.childCount) 
             {
                 Image heartImage = heartContainer.GetChild(i).GetComponent<Image>();
                 heartImage.sprite = (i < currentHealth) ? fullHeart : emptyHeart;

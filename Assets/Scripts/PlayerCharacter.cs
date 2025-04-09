@@ -37,6 +37,7 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField] public float numberOfFlashes;
     public SpriteRenderer spriteRend;
 
+    public GameObject gameplayCanvas;
     private bool isDead = false;
     private PlayerControl playerControl;
 
@@ -142,8 +143,14 @@ public class PlayerCharacter : MonoBehaviour
             tentacleController.StopTentacles();
         }
 
+        if (gameplayCanvas != null)
+        {
+            gameplayCanvas.SetActive(false);
+        }
+
         OnPlayerDeath?.Invoke();
         Debug.Log("Player has died!");
+
 
         StartCoroutine(DeathPause());
     }

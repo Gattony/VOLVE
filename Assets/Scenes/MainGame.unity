@@ -2011,7 +2011,7 @@ MonoBehaviour:
   currentLevel: 1
   expToNextLevel: 100
   maxHealth: 3
-  heartContainerPrefab: {fileID: 965357756}
+  heartContainerPrefab: {fileID: 4710065771556992851, guid: 03d9dbf0805d2c548a5b17f9b54b19af, type: 3}
   heartContainer: {fileID: 1582995949}
   fullHeart: {fileID: 21300000, guid: ae5089824bf473f4eb3972468241aca4, type: 3}
   emptyHeart: {fileID: 21300000, guid: 2922b8f1e09680b459fee149bd5db331, type: 3}
@@ -2022,6 +2022,7 @@ MonoBehaviour:
   iFrameDuration: 4.5
   numberOfFlashes: 7
   spriteRend: {fileID: 1345096366}
+  gameplayCanvas: {fileID: 1677109777}
   expBarContainer: {fileID: 847320816}
 --- !u!58 &1345096371
 CircleCollider2D:

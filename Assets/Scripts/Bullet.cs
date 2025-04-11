@@ -65,7 +65,11 @@ public class Bullet : MonoBehaviour
             if (damageNumber != null)
             {
                 GameObject damageText = Instantiate(damageNumber, transform.position, Quaternion.identity);
-                damageText.GetComponent<TextMeshPro>().text = damage.ToString(); // Set damage text
+                DamageNumber dmgNumber = damageText.GetComponent<DamageNumber>();
+                if (dmgNumber != null)
+                {
+                    dmgNumber.Initialize(damage);
+                }
             }
         }
     }

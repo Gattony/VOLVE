@@ -11,7 +11,8 @@ public class Weapon : MonoBehaviour
     private new AudioSource audio;
 
     [Header("Ammo System")]
-    public int maxAmmo = 10;
+    public int baseMaxAmmo = 10; // Changed from maxAmmo to baseMaxAmmo
+    private int maxAmmo;
     private int currentAmmo;
     public float reloadTime = 2f;
     private bool isReloading = false;
@@ -45,6 +46,8 @@ public class Weapon : MonoBehaviour
 
     private void Start()
     {
+        float ammoCapacityMultiplier = PlayerStats.Instance.ammoCapacityMultiplier;
+        maxAmmo = Mathf.RoundToInt(baseMaxAmmo * ammoCapacityMultiplier); // Apply multiplier
         currentAmmo = maxAmmo;
         UpdateAmmoBar();
 
@@ -54,7 +57,6 @@ public class Weapon : MonoBehaviour
         }
 
         cameraShake = Camera.main.GetComponent<CameraController>();
-
     }
 
     private void Update()
@@ -150,10 +152,14 @@ public class Weapon : MonoBehaviour
 
     private IEnumerator Reload()
     {
+        float reloadSpeedMultiplier = PlayerStats.Instance.reloadSpeedMultiplier;
+        float ammoCapacityMultiplier = PlayerStats.Instance.ammoCapacityMultiplier;
+
         isReloading = true;
 
-        yield return new WaitForSeconds(reloadTime);
+        yield return new WaitForSeconds(reloadTime / reloadSpeedMultiplier);
 
+        maxAmmo = Mathf.RoundToInt(baseMaxAmmo * ammoCapacityMultiplier); // Recalculate maxAmmo on reload
         currentAmmo = maxAmmo;
         isParticleSystemActive = false;
 

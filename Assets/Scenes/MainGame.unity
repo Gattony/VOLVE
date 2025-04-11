@@ -249,7 +249,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &322037817
 GameObject:
@@ -658,7 +658,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &433280162
 MonoBehaviour:
@@ -726,7 +726,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
@@ -1606,13 +1606,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1102541272}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2217.0889, y: -3753.8733, z: -756.46484}
+  m_LocalScale: {x: 8.28199, y: 8.28199, z: 8.28199}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_Father: {fileID: 2136277907}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1102541274
 MonoBehaviour:
@@ -1632,6 +1632,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: eaf71ffbd410cad4c8d110461b910364, type: 2}
   - {fileID: 11400000, guid: d8fc642db2703b84fbaf9fef3ae29eb1, type: 2}
   - {fileID: 11400000, guid: eb97c60ce894888459c9e3012e815b2e, type: 2}
+  - {fileID: 11400000, guid: 641a640acda062643926708eec396f5e, type: 2}
+  - {fileID: 11400000, guid: a02ddbadef62bfa4db09fb9e1152ad0c, type: 2}
+  - {fileID: 11400000, guid: f04ca5e09a910bc4e8b16799f2957b19, type: 2}
 --- !u!1 &1318589192
 GameObject:
   m_ObjectHideFlags: 0
@@ -2874,12 +2877,16 @@ MonoBehaviour:
   fireRate: 1
   movementSpeed: 5
   maxHealth: 3
-  detectionRange: 5
+  expDetectionRange: 5
+  ammoCapacity: 10
+  reloadSpeed: 1
   damageMultiplier: 1
   fireRateMultiplier: 1
   speedMultiplier: 1
   healthIncrease: 1
-  expDetectionMultipler: 1
+  expDetectionMultiplier: 1
+  ammoCapacityMultiplier: 1
+  reloadSpeedMultiplier: 1
 --- !u!4 &1508601253
 Transform:
   m_ObjectHideFlags: 0
@@ -2893,7 +2900,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1532269044
 PrefabInstance:
@@ -3814,7 +3821,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1677109777
 GameObject:
@@ -3913,7 +3920,7 @@ RectTransform:
   - {fileID: 322037818}
   - {fileID: 1723435594}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -4937,6 +4944,7 @@ RectTransform:
   - {fileID: 1318589193}
   - {fileID: 794582059}
   - {fileID: 1344804407}
+  - {fileID: 1102541273}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5739,7 +5747,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8707854841172341382, guid: c23d612c6a04bcb408b10d971836a8c6, type: 3}
       propertyPath: m_RootOrder
-      value: 13
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8707854841172341382, guid: c23d612c6a04bcb408b10d971836a8c6, type: 3}
       propertyPath: m_AnchorMax.x

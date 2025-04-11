@@ -32,7 +32,7 @@ public class ExpOrb : MonoBehaviour
 
     private void Update()
     {
-        float expDetectionMultiplier = PlayerStats.Instance.expDetectionMultipler;
+        float expDetectionMultiplier = PlayerStats.Instance.expDetectionMultiplier;
 
         if (player != null)
         {

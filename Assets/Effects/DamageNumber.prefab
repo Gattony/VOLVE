@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3791929730834269223}
   - component: {fileID: 5199184288766844391}
   - component: {fileID: 4914841738580950560}
+  - component: {fileID: 2775303433175251818}
   m_Layer: 0
   m_Name: DamageNumber
   m_TagString: Untagged
@@ -190,6 +191,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   floatSpeed: 0.9
   lifetime: 1.2
+  fadeSpeed: 1
 --- !u!95 &4914841738580950560
 Animator:
   serializedVersion: 5
@@ -211,3 +213,26 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!223 &2775303433175251818
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1818377434971905588}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0

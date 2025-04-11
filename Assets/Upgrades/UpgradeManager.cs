@@ -2,6 +2,7 @@ using System.Linq;
 using System.Collections.Generic;
 
 using UnityEngine;
+using Unity.VisualScripting;
 
 public class UpgradeManager : MonoBehaviour
 {
@@ -12,7 +13,9 @@ public class UpgradeManager : MonoBehaviour
         Health,
         Damage,
         FireRate,
-        EXPDetection,
+        EXP,
+        Ammo,
+        Reload,
     }
 
 
@@ -82,8 +85,14 @@ public class UpgradeManager : MonoBehaviour
             case UpgradeTypes.FireRate:
                 UpgradeFireRate();
                 break;
-            case UpgradeTypes.EXPDetection:
+            case UpgradeTypes.EXP:
                 UpgradeEXPDetection();
+                break;
+            case UpgradeTypes.Ammo:
+                UpgradeAmmoCapacity();
+                break;
+            case UpgradeTypes.Reload:
+                UpgradeReloadSpeed();
                 break;
         }
     }
@@ -108,7 +117,7 @@ public class UpgradeManager : MonoBehaviour
 
     private static void UpgradeMovespeed()
     {
-        PlayerStats.Instance.speedMultiplier *= 1.1f;
+        PlayerStats.Instance.speedMultiplier *= 1.05f;
     }
     
     private static void UpgradeFireRate()
@@ -118,6 +127,16 @@ public class UpgradeManager : MonoBehaviour
 
     private static void UpgradeEXPDetection()
     {
-        PlayerStats.Instance.expDetectionMultipler += 1.15f;
+        PlayerStats.Instance.expDetectionMultiplier *= 1.15f;
+    }
+
+    private static void UpgradeAmmoCapacity()
+    {
+        PlayerStats.Instance.ammoCapacityMultiplier *= 1.2f;
+    }
+
+    private static void UpgradeReloadSpeed()
+    {
+        PlayerStats.Instance.reloadSpeedMultiplier *= 1.15f;
     }
 }

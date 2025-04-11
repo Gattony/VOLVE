@@ -46,6 +46,8 @@ public class Weapon : MonoBehaviour
 
     private void Start()
     {
+        UpgradeManager.OnAmmoCapacityUpgrade += RecalculateAmmo;
+
         float ammoCapacityMultiplier = PlayerStats.Instance.ammoCapacityMultiplier;
         maxAmmo = Mathf.RoundToInt(baseMaxAmmo * ammoCapacityMultiplier); // Apply multiplier
         currentAmmo = maxAmmo;
@@ -213,12 +215,30 @@ public class Weapon : MonoBehaviour
                 Random.Range(-shakeIntensity, shakeIntensity),
                 0f
             );
-
+                
             ammoBarContainer.anchoredPosition = initialAmmoBarPosition + (Vector2)randomOffset;
 
             yield return null;
         }
 
         ammoBarContainer.anchoredPosition = initialAmmoBarPosition;
+    }
+
+    private void OnDestroy()
+    {
+        UpgradeManager.OnAmmoCapacityUpgrade -= RecalculateAmmo;
+    }
+
+    private void RecalculateAmmo()
+    {
+        float ammoCapacityMultiplier = PlayerStats.Instance.ammoCapacityMultiplier;
+        int newMaxAmmo = Mathf.RoundToInt(baseMaxAmmo * ammoCapacityMultiplier);
+        int ammoToAdd = newMaxAmmo - maxAmmo;
+
+        maxAmmo = newMaxAmmo;
+        currentAmmo += ammoToAdd; // Or clamp to maxAmmo if preferred
+        currentAmmo = Mathf.Clamp(currentAmmo, 0, maxAmmo);
+
+        UpdateAmmoBar();
     }
 }

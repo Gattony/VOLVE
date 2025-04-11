@@ -1,6 +1,5 @@
 using System.Linq;
 using System.Collections.Generic;
-
 using UnityEngine;
 using Unity.VisualScripting;
 
@@ -97,7 +96,7 @@ public class UpgradeManager : MonoBehaviour
         }
     }
 
-
+    public static event System.Action OnAmmoCapacityUpgrade;
 
     private static void UpgradeHealth()
     {
@@ -133,7 +132,9 @@ public class UpgradeManager : MonoBehaviour
     private static void UpgradeAmmoCapacity()
     {
         PlayerStats.Instance.ammoCapacityMultiplier *= 1.2f;
+        OnAmmoCapacityUpgrade?.Invoke();
     }
+
 
     private static void UpgradeReloadSpeed()
     {

@@ -126,12 +126,12 @@ public class UpgradeManager : MonoBehaviour
 
     private static void UpgradeEXPDetection()
     {
-        PlayerStats.Instance.expDetectionMultiplier *= 1.15f;
+        PlayerStats.Instance.expDetectionMultiplier *= 1.25f;
     }
 
     private static void UpgradeAmmoCapacity()
     {
-        PlayerStats.Instance.ammoCapacityMultiplier *= 1.2f;
+        PlayerStats.Instance.ammoCapacityMultiplier *= 1.3f;
         OnAmmoCapacityUpgrade?.Invoke();
     }
 

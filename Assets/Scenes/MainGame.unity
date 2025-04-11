@@ -2783,7 +2783,7 @@ MonoBehaviour:
   bulletPrefab: {fileID: 9098170348085121161, guid: fbbf1d3273f12104c906f65ea662fd68, type: 3}
   firePoint: {fileID: 1089669497}
   fireForce: 20
-  maxAmmo: 10
+  baseMaxAmmo: 10
   reloadTime: 1
   ammoBarContainer: {fileID: 1318589193}
   ammoBarFill: {fileID: 2146071071}

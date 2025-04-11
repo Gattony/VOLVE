@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a43139a8c14d9f148a7a2b73b4863b78, type: 3}
   m_Name: Reload Speed Boost
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: 7d314a1ab6c583544a5f9dcfb7cefe34, type: 3}
+  icon: {fileID: 21300000, guid: 652d777541216c946998a970b6696374, type: 3}
   type: 7

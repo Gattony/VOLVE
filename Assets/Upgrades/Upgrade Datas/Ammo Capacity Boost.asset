@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a43139a8c14d9f148a7a2b73b4863b78, type: 3}
   m_Name: Ammo Capacity Boost
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: 1ae6291cbba9066468a4ba434f6e07bf, type: 3}
+  icon: {fileID: 21300000, guid: 7567ba4a93afe47409826d368549d8b0, type: 3}
   type: 6

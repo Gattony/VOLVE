@@ -676,8 +676,8 @@ MonoBehaviour:
   multiplierText: {fileID: 1344804408}
   maxMultiplier: 3
   multiplierGain: 0.2
-  multiplierDecayRate: 0.3
-  decayDelay: 2
+  multiplierDecayRate: 0.5
+  decayDelay: 3
   multiplierShakeMultiplier: 2
 --- !u!21 &464652003
 Material:
@@ -1428,7 +1428,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 8106966635535830933, guid: ab7b59df87f412b4dba9cd3bf68cdf85, type: 3}
   secondEnemyPrefab: {fileID: 8106966635535830933, guid: 2954d9ebd314a2f4987784d7869c1dcc, type: 3}
-  secondEnemyStartTime: 3
+  secondEnemyStartTime: 60
   player: {fileID: 1345096367}
   spawnRadius: 30
   maxEnemyDistance: 30
@@ -1670,11 +1670,11 @@ MonoBehaviour:
   avaiableUpgrades:
   - {fileID: 11400000, guid: 2204802db62d69746912b14ae019adcf, type: 2}
   - {fileID: 11400000, guid: 3605ec8506512e6479cc18ce63b72063, type: 2}
-  - {fileID: 11400000, guid: eaf71ffbd410cad4c8d110461b910364, type: 2}
   - {fileID: 11400000, guid: d8fc642db2703b84fbaf9fef3ae29eb1, type: 2}
+  - {fileID: 11400000, guid: a02ddbadef62bfa4db09fb9e1152ad0c, type: 2}
   - {fileID: 11400000, guid: eb97c60ce894888459c9e3012e815b2e, type: 2}
   - {fileID: 11400000, guid: 641a640acda062643926708eec396f5e, type: 2}
-  - {fileID: 11400000, guid: a02ddbadef62bfa4db09fb9e1152ad0c, type: 2}
+  - {fileID: 11400000, guid: eaf71ffbd410cad4c8d110461b910364, type: 2}
   - {fileID: 11400000, guid: f04ca5e09a910bc4e8b16799f2957b19, type: 2}
 --- !u!1 &1318589192
 GameObject:
@@ -1853,7 +1853,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5537876282156442504, guid: d4770dab19d430b49b2b868a4ed33175, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 116.20001
+      value: 116.20004
       objectReference: {fileID: 0}
     - target: {fileID: 5537876282156442504, guid: d4770dab19d430b49b2b868a4ed33175, type: 3}
       propertyPath: m_AnchoredPosition.y

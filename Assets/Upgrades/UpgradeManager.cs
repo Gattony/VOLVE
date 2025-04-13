@@ -17,13 +17,9 @@ public class UpgradeManager : MonoBehaviour
         Reload,
     }
 
-
-
     public static UpgradeManager Instance { get; private set; }
 
     [SerializeField] private List<UpgradeData> avaiableUpgrades;
-
-
 
     private void Awake()
     {
@@ -36,8 +32,6 @@ public class UpgradeManager : MonoBehaviour
             Destroy(this);
         }
     }
-
-
 
     public static List<UpgradeData> GetRandomUpgrades(int amount, bool uniqueOnly = true)
     {
@@ -134,7 +128,6 @@ public class UpgradeManager : MonoBehaviour
         PlayerStats.Instance.ammoCapacityMultiplier *= 1.3f;
         OnAmmoCapacityUpgrade?.Invoke();
     }
-
 
     private static void UpgradeReloadSpeed()
     {

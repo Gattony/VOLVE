@@ -10,8 +10,6 @@ public class UpgradeOptionDisplay : MonoBehaviour
 
     private UpgradeData upgradeType;
 
-
-
     public void UpdateDisplay(UpgradeData data)
     {
         icon.sprite = data.icon;

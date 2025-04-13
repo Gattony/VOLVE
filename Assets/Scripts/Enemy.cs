@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour
     public int maxHealth = 10;
     private int currentHealth;
     public int enemyDamage = 1;
+    public int scoreDrop = 10;
 
     public float moveSpeed = 2f;
     private Transform player;
@@ -50,6 +51,7 @@ public class Enemy : MonoBehaviour
             Debug.LogError("Animator not found! Make sure the enemy has an Animator component.");
         }
     }
+
     void FixedUpdate()
     {
         if (player != null && !isKnockedBack)
@@ -80,11 +82,11 @@ public class Enemy : MonoBehaviour
     {
         if (spriteRenderer != null)
         {
-            Material material = spriteRenderer.material; // Get the material
+            Material material = spriteRenderer.material; 
 
             if (material.HasProperty("_FlashAmount")) // Check if shader supports flash
             {
-                material.SetFloat("_FlashAmount", 1f); // Apply full flash
+                material.SetFloat("_FlashAmount", 1f);
                 yield return new WaitForSeconds(0.08f);
                 material.SetFloat("_FlashAmount", 0f); // Reset flash
             }
@@ -97,7 +99,7 @@ public class Enemy : MonoBehaviour
         Vector2 knockbackDirection = (rb.position - knockbackSource).normalized;
         rb.velocity = knockbackDirection * knockbackForce;
 
-        yield return new WaitForSeconds(0.08f);
+        yield return new WaitForSeconds(0.09f);
 
         rb.velocity = Vector2.zero;
         isKnockedBack = false;
@@ -117,7 +119,7 @@ public class Enemy : MonoBehaviour
         OnEnemyDestroyed?.Invoke();
 
         //Scoring Logic
-        ScoreManager.Instance.AddScore(10);
+        ScoreManager.Instance.AddScore(scoreDrop);
         ScoreManager.Instance.OnEnemyKilled();
 
         StartCoroutine(DeathEffect());
@@ -129,6 +131,7 @@ public class Enemy : MonoBehaviour
         rb.simulated = false;
         isKnockedBack = true; // Prevent movement logic
 
+        // Quick pop effect
         float timer = 0f;
         Vector3 originalScale = transform.localScale;
         while (timer < 0.06f)
@@ -142,24 +145,29 @@ public class Enemy : MonoBehaviour
         {
             animator.SetTrigger("Death");
 
-            yield return null;
+            // Wait until the Death animation starts playing
+            yield return new WaitUntil(() =>
+                animator.GetCurrentAnimatorStateInfo(0).IsName("Death") ||
+                animator.GetCurrentAnimatorStateInfo(0).IsName("DeathZ")
+            );
 
-            yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).IsName("Death"));
+            // Then wait for its actual duration
+            float animDuration = animator.GetCurrentAnimatorStateInfo(0).length;
+            yield return new WaitForSeconds(animDuration);
 
-            yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
         }
 
         else
         {
-            yield return new WaitForSeconds(0.5f); // Fallback if no animator
+            // Fallback wait if there's no animator
+            yield return new WaitForSeconds(0.5f);
         }
 
-        Instantiate(expOrbPrefab, transform.position, Quaternion.identity);
+        if (expOrbPrefab != null)
+            Instantiate(expOrbPrefab, transform.position, Quaternion.identity);
 
         if (bloodEffectPrefab != null)
-        {
             Instantiate(bloodEffectPrefab, transform.position, Quaternion.identity);
-        }
 
         Destroy(gameObject);
     }

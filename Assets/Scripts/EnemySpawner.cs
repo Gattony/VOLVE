@@ -5,6 +5,10 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     public GameObject enemyPrefab;
+    public GameObject secondEnemyPrefab; 
+    public float secondEnemyStartTime = 30f; 
+    private bool secondEnemyActive = false;
+
     public Transform player;
     public float spawnRadius = 15f;
     public float maxEnemyDistance = 30f; // Maximum distance before relocating
@@ -17,7 +21,7 @@ public class EnemySpawner : MonoBehaviour
 
     [Header("Enemy Limits")]
     public int initialMaxEnemies = 25;
-    public int maxMaxEnemies = 200;
+    public int maxMaxEnemies = 50;
     public int maxEnemiesIncrease = 10;
     public float difficultyIncreaseInterval = 10f;
     private int currentMaxEnemies;
@@ -26,6 +30,7 @@ public class EnemySpawner : MonoBehaviour
 
     void Start()
     {
+        StartCoroutine(EnableSecondEnemyType());
         currentSpawnRate = initialSpawnRate;
         currentMaxEnemies = initialMaxEnemies;
 
@@ -80,12 +85,31 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
+    IEnumerator EnableSecondEnemyType()
+    {
+        yield return new WaitForSeconds(secondEnemyStartTime);
+        secondEnemyActive = true;
+    }
+
     void SpawnEnemy()
     {
         Vector2 spawnDirection = Random.insideUnitCircle.normalized;
         Vector2 spawnPosition = (Vector2)player.position + spawnDirection * spawnRadius;
 
-        GameObject newEnemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+        GameObject prefabToSpawn = enemyPrefab;
+
+        float spawnChance = Random.value;
+
+        if (secondEnemyActive && spawnChance < 0.35f) 
+        {
+            prefabToSpawn = secondEnemyPrefab;
+        }
+        else
+        {
+            prefabToSpawn = enemyPrefab;
+        }
+
+        GameObject newEnemy = Instantiate(prefabToSpawn, spawnPosition, Quaternion.identity);
         activeEnemies.Add(newEnemy);
 
         newEnemy.GetComponent<Enemy>().OnEnemyDestroyed += () =>
@@ -93,6 +117,7 @@ public class EnemySpawner : MonoBehaviour
             activeEnemies.Remove(newEnemy);
         };
     }
+
 
     void RelocateEnemy(GameObject enemy)
     {

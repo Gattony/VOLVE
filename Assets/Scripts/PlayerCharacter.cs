@@ -178,8 +178,9 @@ public class PlayerCharacter : MonoBehaviour
     {
         currentLevel++;
         currentExp -= expToNextLevel;
+
         //Increasing the exp limit each time it levels up
-        expToNextLevel = Mathf.RoundToInt(expToNextLevelBase * Mathf.Pow(1.35f, currentLevel - 1));
+        expToNextLevel = Mathf.RoundToInt(expToNextLevelBase * Mathf.Pow(1.2f, currentLevel - 1));
         OnLevelUp?.Invoke();
     }
 

@@ -1,19 +1,24 @@
+using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 
 public class UpgradeDisplay : MonoBehaviour
 {
     public static UpgradeDisplay Instance { get; private set; }
 
-    [SerializeField] GameObject upgradeContainer;
-    [SerializeField] List<UpgradeOptionDisplay> upgradeOptions = new();
+    [SerializeField] private GameObject upgradeContainer;
+    [SerializeField] private List<UpgradeOptionDisplay> upgradeOptions = new();
+    [SerializeField] private float delay = 0.5f;
+
+
 
     private void OnEnable()
     {
         PlayerCharacter.OnLevelUp += OnLevelUp;
     }
 
-    private void OnDisbale()
+    private void OnDisable()
     {
         PlayerCharacter.OnLevelUp -= OnLevelUp;
     }
@@ -32,8 +37,17 @@ public class UpgradeDisplay : MonoBehaviour
         upgradeContainer.SetActive(false);
     }
 
-    void OnLevelUp()
+
+
+    private void OnLevelUp()
     {
+        StartCoroutine(LevelUpCoroutine());
+    }
+
+    private IEnumerator LevelUpCoroutine()
+    {
+        yield return new WaitForSeconds(delay);
+
         upgradeContainer.SetActive(true);
 
         // Get random upgrades from UpgradeManager.
@@ -48,6 +62,8 @@ public class UpgradeDisplay : MonoBehaviour
         ScoreManager.Instance?.PauseMultiplierDecay();
         Time.timeScale = 0f;
     }
+
+
 
     public static void ClosePopup()
     {

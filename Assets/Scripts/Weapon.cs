@@ -63,6 +63,7 @@ public class Weapon : MonoBehaviour
 
     private void Update()
     {
+
         if (isReloading || currentAmmo <= 0) return;
 
         HandleInput();
@@ -106,6 +107,9 @@ public class Weapon : MonoBehaviour
 
     private void Fire(Vector2 aimDirection)
     {
+        if (PlayerCharacter.Instance == null || PlayerCharacter.Instance.isDead)
+            return;
+
         if (currentAmmo <= 0 || isReloading) return;
 
         float fireRateMultiplier = PlayerStats.Instance.fireRateMultiplier;

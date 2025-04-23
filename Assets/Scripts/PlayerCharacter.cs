@@ -2,11 +2,14 @@
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using TMPro.Examples;
 
 public class PlayerCharacter : MonoBehaviour
 {
+    private CameraController cameraController;
     public static PlayerCharacter Instance;
 
+    public GameObject weapon;
     public static event System.Action OnLevelUp;
     public static event System.Action OnPlayerDeath;
 
@@ -38,7 +41,7 @@ public class PlayerCharacter : MonoBehaviour
     public SpriteRenderer spriteRend;
 
     public GameObject gameplayCanvas;
-    private bool isDead = false;
+    public bool isDead = false;
     private PlayerControl playerControl;
 
     private void Awake()
@@ -60,6 +63,8 @@ public class PlayerCharacter : MonoBehaviour
         UpdateUI();
         animator = GetComponent<Animator>();
         playerControl = GetComponent<PlayerControl>();
+
+        cameraController = FindObjectOfType<CameraController>();
     }
 
     private void InitializeHearts()
@@ -108,6 +113,11 @@ public class PlayerCharacter : MonoBehaviour
         currentHealth -= amount;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
+        if (cameraController != null)
+        {
+            cameraController.ShakeCameraOnce(0.3f, 0.2f);
+        }
+
         if (currentHealth > 0)
         {
             StartCoroutine(Invunerability());
@@ -124,6 +134,8 @@ public class PlayerCharacter : MonoBehaviour
 
     private void Die()
     {
+        if (weapon != null)
+            weapon.SetActive(false);
 
         if (isDead) return;
         isDead = true;

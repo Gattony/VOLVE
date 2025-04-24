@@ -12,6 +12,7 @@ public class PlayerControl : MonoBehaviour
     private Rigidbody2D rb;
     public Animator animator;
     public Weapon weapon;
+    public bool isInCharacterSelect = false;
 
     private Vector2 movement;
     private Vector2 lastMoveDirection = Vector2.right;
@@ -72,6 +73,8 @@ public class PlayerControl : MonoBehaviour
 
     private void Update()
     {
+        if (isInCharacterSelect) return;
+
         Vector2 joystickInput = movementJoystick.joystickDirec;
 
 

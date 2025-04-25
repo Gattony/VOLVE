@@ -1645,6 +1645,37 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 641a640acda062643926708eec396f5e, type: 2}
   - {fileID: 11400000, guid: eaf71ffbd410cad4c8d110461b910364, type: 2}
   - {fileID: 11400000, guid: f04ca5e09a910bc4e8b16799f2957b19, type: 2}
+--- !u!1 &1257743206
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1257743207}
+  m_Layer: 3
+  m_Name: EffectSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1257743207
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1257743206}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.6, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6453453120981904761}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1318589192
 GameObject:
   m_ObjectHideFlags: 0
@@ -1822,7 +1853,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5537876282156442504, guid: d4770dab19d430b49b2b868a4ed33175, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 116.19992
+      value: 116.19989
       objectReference: {fileID: 0}
     - target: {fileID: 5537876282156442504, guid: d4770dab19d430b49b2b868a4ed33175, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -2578,6 +2609,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2136277907}
     m_Modifications:
+    - target: {fileID: 351621718228404533, guid: 34f4023e87d34ab4680149423d5bff4a, type: 3}
+      propertyPath: GameplayCanvas
+      value: 
+      objectReference: {fileID: 1677109777}
+    - target: {fileID: 351621718228404533, guid: 34f4023e87d34ab4680149423d5bff4a, type: 3}
+      propertyPath: effectSpawnPoint
+      value: 
+      objectReference: {fileID: 1257743207}
+    - target: {fileID: 351621718228404533, guid: 34f4023e87d34ab4680149423d5bff4a, type: 3}
+      propertyPath: levelUpEffectPrefab
+      value: 
+      objectReference: {fileID: 1151055680151992597, guid: 1b4a093704900de468c6900ad0e0340c, type: 3}
     - target: {fileID: 622160311172455643, guid: 34f4023e87d34ab4680149423d5bff4a, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3649,7 +3692,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1712139824}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.01, y: -0.05, z: -8.917372}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3681,7 +3724,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1722639382}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.71097, y: -2.849376, z: -9.143886}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3703,6 +3746,23 @@ MonoBehaviour:
   playerSpawnPoint: {fileID: 1722639383}
   movementJoystick: {fileID: 322037822}
   actionJoystick: {fileID: 1723435599}
+  cameraController: {fileID: 519420033}
+  endlessMapController: {fileID: 649092831}
+  enemySpawner: {fileID: 894887982}
+  effectSpawnPoint: {fileID: 0}
+  expBarFill: {fileID: 1998703653}
+  levelText: {fileID: 346440116}
+  expBarContainer: {fileID: 847320816}
+  expFillEffect: {fileID: 345181105}
+  expBarTransform: {fileID: 1998703652}
+  heartContainerPrefab: {fileID: 4710065771556992851, guid: 03d9dbf0805d2c548a5b17f9b54b19af, type: 3}
+  heartContainer: {fileID: 1582995949}
+  fullHeart: {fileID: 21300000, guid: ae5089824bf473f4eb3972468241aca4, type: 3}
+  emptyHeart: {fileID: 21300000, guid: 2922b8f1e09680b459fee149bd5db331, type: 3}
+  ammoBarContainer: {fileID: 1318589193}
+  ammoBarFill: {fileID: 2146071071}
+  ammoEffect: {fileID: 2050337871}
+  GameplayCanvas: {fileID: 1677109777}
 --- !u!1 &1723435593
 GameObject:
   m_ObjectHideFlags: 0
@@ -5066,7 +5126,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5537876282156442504, guid: a446bcecf2153044d82ef3a112e58ff3, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 163.50006
+      value: 163.50003
       objectReference: {fileID: 0}
     - target: {fileID: 5537876282156442504, guid: a446bcecf2153044d82ef3a112e58ff3, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -5849,6 +5909,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 3792160267361922400, guid: b5dfdf0bd7f7a7045aa7bd394610f3ee, type: 3}
+      insertIndex: 0
+      addedObject: {fileID: 1257743207}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b5dfdf0bd7f7a7045aa7bd394610f3ee, type: 3}

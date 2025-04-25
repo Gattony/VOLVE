@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class CharacterSelector : MonoBehaviour
 {
-    public GameObject[] characterPreviews;            // Lightweight preview prefabs
+    public GameObject[] characterPreviews;           
     public GameObject[] characterPlayablePrefabs;     // Full versions used in gameplay
 
     public Transform spawnPoint;                      // Incubator display spot

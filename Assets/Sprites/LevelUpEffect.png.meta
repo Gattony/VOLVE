@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5c372f92f073a2644a08b38dd29bc818
+guid: 25c5b499b2b9e25478a3b5cff0bb5386
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -37,9 +37,9 @@ TextureImporter:
     filterMode: 0
     aniso: 1
     mipBias: 0
-    wrapU: 0
-    wrapV: 0
-    wrapW: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -72,7 +72,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -162,13 +162,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: volve-level-up-sfx_0
+      name: LevelUpEffect_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 64
-        height: 64
+        width: 40
+        height: 150
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -176,20 +176,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 53e7a1b46be5b1d4faf6f11619d63ee1
-      internalID: -2052249611
+      spriteID: 9ebb6582620db1249aefc0db89988cf5
+      internalID: 1502569598
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: volve-level-up-sfx_1
+      name: LevelUpEffect_1
       rect:
         serializedVersion: 2
-        x: 64
+        x: 40
         y: 0
-        width: 64
-        height: 64
+        width: 40
+        height: 150
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -197,20 +197,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 453d61260037a1b40aaf48acece8bad9
-      internalID: -2035455222
+      spriteID: 108aa1a757244274d97872305e7dae9e
+      internalID: -997591004
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: volve-level-up-sfx_2
+      name: LevelUpEffect_2
       rect:
         serializedVersion: 2
-        x: 128
+        x: 80
         y: 0
-        width: 64
-        height: 64
+        width: 40
+        height: 150
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -218,20 +218,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bed89c9162a52624ea215abdaf6394d7
-      internalID: 2072029349
+      spriteID: f43dea9ded439914fb1b5a3e6c7c3f3e
+      internalID: 1977837576
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: volve-level-up-sfx_3
+      name: LevelUpEffect_3
       rect:
         serializedVersion: 2
-        x: 192
+        x: 120
         y: 0
-        width: 64
-        height: 64
+        width: 40
+        height: 150
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -239,29 +239,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6d97e3cf77aa1004daf25104b043d80c
-      internalID: 2087181395
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: volve-level-up-sfx_4
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 0
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5eec57b9688690d4aba37626c3dfbc90
-      internalID: 2127337713
+      spriteID: 4be2ce068b39c7f4eb10c62c61b97eac
+      internalID: 1491453500
       vertices: []
       indices: 
       edges: []
@@ -277,11 +256,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      volve-level-up-sfx_0: -2052249611
-      volve-level-up-sfx_1: -2035455222
-      volve-level-up-sfx_2: 2072029349
-      volve-level-up-sfx_3: 2087181395
-      volve-level-up-sfx_4: 2127337713
+      LevelUpEffect_0: 1502569598
+      LevelUpEffect_1: -997591004
+      LevelUpEffect_2: 1977837576
+      LevelUpEffect_3: 1491453500
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

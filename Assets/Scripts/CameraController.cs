@@ -11,6 +11,9 @@ public class CameraController : MonoBehaviour
     private bool isPanning = false;
     private bool disableJoystickOffset = false;
 
+    private Coroutine continuousShakeCoroutine; 
+    private Vector3 shakeOffset = Vector3.zero;  
+
     [Header("Joystick Reference")]
     public JoystickMovement actionJoystick;
 
@@ -24,7 +27,13 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
-        if (player == null || isPanning) return;
+        if (player == null) return;
+
+        if (isPanning)
+        {
+            transform.position += shakeOffset;
+            return;
+        }
 
         Vector3 offset = Vector3.zero;
 
@@ -37,8 +46,10 @@ public class CameraController : MonoBehaviour
         targetPosition = player.position + offset;
         targetPosition.z = transform.position.z;
 
-        transform.position = Vector3.Lerp(transform.position, targetPosition, followSpeed * Time.deltaTime);
+        transform.position = Vector3.Lerp(transform.position, targetPosition + shakeOffset, followSpeed * Time.deltaTime);
     }
+
+
 
     public void ShakeCameraOnce(float intensity = 0.15f, float duration = 0.08f)
     {
@@ -52,14 +63,44 @@ public class CameraController : MonoBehaviour
 
         while (elapsed < duration)
         {
-            Vector2 shakeOffset = Random.insideUnitCircle * intensity;
-            transform.position = originalPos + new Vector3(shakeOffset.x, shakeOffset.y, 0);
+            Vector2 shake = Random.insideUnitCircle * intensity;
+            transform.position = originalPos + new Vector3(shake.x, shake.y, 0f);
             elapsed += Time.deltaTime;
             yield return null;
         }
 
         transform.position = originalPos;
     }
+
+    public void StartContinuousShake(float intensity = 0.05f) 
+    {
+        if (continuousShakeCoroutine != null)
+            StopCoroutine(continuousShakeCoroutine);
+
+        continuousShakeCoroutine = StartCoroutine(ContinuousShakeCoroutine(intensity));
+    }
+
+    public void StopContinuousShake()
+    {
+        if (continuousShakeCoroutine != null)
+        {
+            StopCoroutine(continuousShakeCoroutine);
+            continuousShakeCoroutine = null;
+            shakeOffset = Vector3.zero; 
+        }
+    }
+
+    private IEnumerator ContinuousShakeCoroutine(float intensity)
+    {
+        while (true)
+        {
+            Vector2 randomPoint = Random.insideUnitCircle * intensity;
+            Vector3 targetShake = new Vector3(randomPoint.x, randomPoint.y, 0f);
+            shakeOffset = Vector3.Lerp(shakeOffset, targetShake, 5f * Time.unscaledDeltaTime);
+            yield return null;
+        }
+    }
+
 
     public void PanToPlayer(float duration = 2f)
     {
@@ -69,7 +110,7 @@ public class CameraController : MonoBehaviour
     private IEnumerator PanToPlayerCoroutine(float duration)
     {
         isPanning = true;
-        disableJoystickOffset = true; // Prevent aim offset
+        disableJoystickOffset = true;
 
         Vector3 start = transform.position;
         Vector3 end = new Vector3(player.position.x, player.position.y, start.z);
@@ -88,7 +129,6 @@ public class CameraController : MonoBehaviour
 
         isPanning = false;
 
-        // Delay re-enabling offset until after popup shows
         yield return new WaitForSecondsRealtime(0.25f);
         disableJoystickOffset = false;
     }

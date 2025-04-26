@@ -48,7 +48,13 @@ public class UpgradeDisplay : MonoBehaviour
         GameplayCanvas.SetActive(false);
         Time.timeScale = 0f;
 
-        Camera.main.GetComponent<CameraController>().PanToPlayer(0.1f);
+        CameraController cameraController = Camera.main.GetComponent<CameraController>();
+        cameraController.PanToPlayer(0.1f);
+
+        // Wait a tiny bit for the pan to finish
+        yield return new WaitForSecondsRealtime(0.1f);
+
+        cameraController.StartContinuousShake(0.05f); // smaller intensity now
 
         // Instantiate the effect prefab
         GameObject effect = Instantiate(levelUpEffectPrefab, effectSpawnPoint.position, Quaternion.identity);
@@ -56,10 +62,8 @@ public class UpgradeDisplay : MonoBehaviour
 
         if (effectAnimator != null)
         {
-            // Wait one frame to let the Animator enter its first state
             yield return null;
 
-            // Wait until the animator starts a valid animation
             AnimatorStateInfo stateInfo = effectAnimator.GetCurrentAnimatorStateInfo(0);
             while (stateInfo.length == 0f || effectAnimator.IsInTransition(0))
             {
@@ -69,7 +73,6 @@ public class UpgradeDisplay : MonoBehaviour
 
             float animationLength = stateInfo.length;
 
-            // Wait for the animation using unscaled time
             float timer = 0f;
             while (timer < animationLength)
             {
@@ -85,8 +88,9 @@ public class UpgradeDisplay : MonoBehaviour
 
         Destroy(effect);
 
-        // Show the upgrade UI
         upgradeContainer.SetActive(true);
+
+        cameraController.StopContinuousShake();
 
         var upgrades = UpgradeManager.GetRandomUpgrades(upgradeOptions.Count);
 
@@ -98,6 +102,7 @@ public class UpgradeDisplay : MonoBehaviour
         ScoreManager.Instance?.PauseMultiplierDecay();
     }
 
+
     public static void ClosePopup()
     {
         Instance.GameplayCanvas.SetActive(true);
@@ -105,6 +110,7 @@ public class UpgradeDisplay : MonoBehaviour
 
         ScoreManager.Instance?.ResumeMultiplierDecay();
         Time.timeScale = 1f;
-
     }
+
+
 }

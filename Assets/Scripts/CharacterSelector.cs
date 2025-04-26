@@ -1,15 +1,25 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class CharacterSelector : MonoBehaviour
 {
-    public GameObject[] characterPreviews;           
-    public GameObject[] characterPlayablePrefabs;     // Full versions used in gameplay
+    public GameObject[] characterPreviews;
+    public GameObject[] characterPlayablePrefabs;
 
-    public Transform spawnPoint;                      // Incubator display spot
+    [Header("Character Info")]
+    public string[] characterNames;
+    [TextArea(2, 5)]
+    public string[] characterDescriptions;
+
+    [Header("UI References")]
+    public Transform spawnPoint;
     public Button leftArrow;
     public Button rightArrow;
+    public TMP_Text nameText;
+    public TMP_Text descriptionText;
+    public CanvasGroup descriptionGroup;
 
     private int currentIndex = 0;
     private GameObject currentPreview;
@@ -29,20 +39,47 @@ public class CharacterSelector : MonoBehaviour
 
         currentPreview = Instantiate(characterPreviews[index], spawnPoint.position, Quaternion.identity, spawnPoint);
         currentPreview.transform.SetParent(spawnPoint, false);
-        currentPreview.transform.localScale = Vector3.one * 0.5f; // Start small
-
-        // Reset localPosition so floating always starts from zero
+        currentPreview.transform.localScale = Vector3.one * 0.5f;
         currentPreview.transform.localPosition = Vector3.zero;
 
-        // Disable FloatIdle during animation
         FloatIdle floatScript = currentPreview.GetComponent<FloatIdle>();
         if (floatScript != null) floatScript.enabled = false;
 
-        // Disable physics
         Rigidbody2D rb = currentPreview.GetComponent<Rigidbody2D>();
         if (rb != null) rb.simulated = false;
 
         StartCoroutine(BounceIn(currentPreview, floatScript));
+
+        // Update Name and Description UI
+        StartCoroutine(UpdateCharacterInfo());
+    }
+
+    IEnumerator UpdateCharacterInfo()
+    {
+        // Fade out first
+        yield return StartCoroutine(FadeDescription(0f, 0.15f));
+
+        // Update the text
+        nameText.text = characterNames[currentIndex];
+        descriptionText.text = characterDescriptions[currentIndex];
+
+        // Fade in
+        yield return StartCoroutine(FadeDescription(1f, 0.15f));
+    }
+
+    IEnumerator FadeDescription(float targetAlpha, float duration)
+    {
+        float startAlpha = descriptionGroup.alpha;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            descriptionGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsed / duration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        descriptionGroup.alpha = targetAlpha;
     }
 
     IEnumerator BounceIn(GameObject obj, FloatIdle floatScript)
@@ -57,7 +94,6 @@ public class CharacterSelector : MonoBehaviour
         float duration = 0.15f;
         float elapsed = 0f;
 
-        // Overshoot
         while (elapsed < duration)
         {
             if (obj == null) yield break;
@@ -69,7 +105,6 @@ public class CharacterSelector : MonoBehaviour
         obj.transform.localScale = overshoot;
         elapsed = 0f;
 
-        // Undershoot
         while (elapsed < duration)
         {
             if (obj == null) yield break;
@@ -81,7 +116,6 @@ public class CharacterSelector : MonoBehaviour
         obj.transform.localScale = undershoot;
         elapsed = 0f;
 
-        // Settle
         while (elapsed < duration / 2f)
         {
             if (obj == null) yield break;
@@ -91,14 +125,10 @@ public class CharacterSelector : MonoBehaviour
         }
 
         obj.transform.localScale = finalScale;
-
-        // Reset floating offset to exact zero before enabling
         obj.transform.localPosition = Vector3.zero;
 
-        // Re-enable FloatIdle
         if (floatScript != null) floatScript.enabled = true;
     }
-
 
     void SelectNextCharacter()
     {

@@ -26,10 +26,18 @@ public class EnemySpawner : MonoBehaviour
     public float difficultyIncreaseInterval = 10f;
     private int currentMaxEnemies;
 
+    [Header("Burst Spawning")]
+    public float burstSpawnInterval = 120f; 
+    public int burstEnemyCount = 10;
+    public float burstEnemySpeedMultiplier = 0.8f; 
+
+    private bool isBursting = false;
+
     private List<GameObject> activeEnemies = new List<GameObject>();
 
     void Start()
     {
+        StartCoroutine(BurstSpawnEnemies());
         StartCoroutine(EnableSecondEnemyType());
         currentSpawnRate = initialSpawnRate;
         currentMaxEnemies = initialMaxEnemies;
@@ -90,6 +98,50 @@ public class EnemySpawner : MonoBehaviour
         yield return new WaitForSeconds(secondEnemyStartTime);
         secondEnemyActive = true;
     }
+
+    IEnumerator BurstSpawnEnemies()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(burstSpawnInterval);
+
+            if (player == null) continue;
+
+            float angleStep = 360f / burstEnemyCount;
+            float currentAngle = 0f;
+
+            for (int i = 0; i < burstEnemyCount; i++)
+            {
+                Vector2 spawnDirection = new Vector2(
+                    Mathf.Cos(currentAngle * Mathf.Deg2Rad),
+                    Mathf.Sin(currentAngle * Mathf.Deg2Rad)
+                );
+
+                Vector2 spawnPosition = (Vector2)player.position + spawnDirection * spawnRadius;
+
+                GameObject newEnemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+                activeEnemies.Add(newEnemy);
+
+                // Make this enemy slower
+                Enemy enemyScript = newEnemy.GetComponent<Enemy>();
+                if (enemyScript != null)
+                {
+                    enemyScript.moveSpeed *= burstEnemySpeedMultiplier;
+                }
+
+                // Track destruction
+                newEnemy.GetComponent<Enemy>().OnEnemyDestroyed += () =>
+                {
+                    activeEnemies.Remove(newEnemy);
+                };
+
+                currentAngle += angleStep;
+            }
+
+            Debug.Log($"Burst spawned {burstEnemyCount} slow enemies!");
+        }
+    }
+
 
     void SpawnEnemy()
     {

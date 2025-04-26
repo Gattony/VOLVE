@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1932315707721760034}
   - component: {fileID: 5633755482970642138}
   - component: {fileID: 1938077237085338711}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Exp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -103,8 +103,8 @@ MonoBehaviour:
   baseSpeed: 0.2
   maxSpeed: 5
   detectionRange: 5
-  minExpAmount: 12
-  maxExpAmount: 20
+  minExpAmount: 20
+  maxExpAmount: 35
 --- !u!58 &5633755482970642138
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -177,7 +177,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7232885703946433924}
   - component: {fileID: 2094908885698137291}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -208,6 +208,10 @@ MonoBehaviour:
   iFrameDuration: 4.5
   numberOfFlashes: 7
   spriteRend: {fileID: 1781608552409992871}
+  deathScreen: {fileID: 0}
+  deathScreenHiddenPos: {x: 0, y: -1000}
+  deathScreenVisiblePos: {x: 0, y: 0}
+  deathScreenSlideDuration: 1.5
   gameplayCanvas: {fileID: 0}
   isDead: 0
   expBarContainer: {fileID: 0}
@@ -291,7 +295,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6792564775828675408}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalPosition: {x: 0, y: 1.85, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

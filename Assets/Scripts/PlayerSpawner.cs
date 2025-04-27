@@ -32,6 +32,7 @@ public class PlayerSpawner : MonoBehaviour
     public Image ammoBarFill;
     public ParticleSystem ammoEffect;
 
+    public RectTransform DeathScreen;
     public GameObject GameplayCanvas;
 
     void Start()
@@ -102,6 +103,7 @@ public class PlayerSpawner : MonoBehaviour
                 character.emptyHeart = emptyHeart;
 
                 character.gameplayCanvas = GameplayCanvas;
+                character.deathScreen = DeathScreen;
             }
         }
         else

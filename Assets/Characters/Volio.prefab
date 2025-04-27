@@ -239,6 +239,10 @@ MonoBehaviour:
   iFrameDuration: 4.5
   numberOfFlashes: 7
   spriteRend: {fileID: 1781608552409992871}
+  deathScreen: {fileID: 0}
+  deathScreenHiddenPos: {x: 0, y: -1000}
+  deathScreenVisiblePos: {x: 0, y: 0}
+  deathScreenSlideDuration: 1.5
   gameplayCanvas: {fileID: 0}
   isDead: 0
   expBarContainer: {fileID: 0}

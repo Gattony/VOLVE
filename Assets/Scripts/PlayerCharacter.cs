@@ -15,21 +15,21 @@ public class PlayerCharacter : MonoBehaviour
 
     [Header("Leveling System")]
     public int currentLevel = 1;          // Starting level
-    private int currentExp = 0;           
-    public int expToNextLevel = 100;      
-    private int expToNextLevelBase = 100; 
+    private int currentExp = 0;
+    public int expToNextLevel = 100;
+    private int expToNextLevelBase = 100;
 
     [Header("Health System")]
-    public int maxHealth = 3;             
-    private int currentHealth;            
-    public Image heartContainerPrefab;    
-    public Transform heartContainer;      
-    public Sprite fullHeart;              
-    public Sprite emptyHeart;             
+    public int maxHealth = 3;
+    private int currentHealth;
+    public Image heartContainerPrefab;
+    public Transform heartContainer;
+    public Sprite fullHeart;
+    public Sprite emptyHeart;
 
     [Header("UI Elements")]
     public Image expBarFill;
-    public TMP_Text levelText;            
+    public TMP_Text levelText;
 
     [Header("Effects")]
     public ParticleSystem expFillEffect;
@@ -39,6 +39,12 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField] public float iFrameDuration;
     [SerializeField] public float numberOfFlashes;
     public SpriteRenderer spriteRend;
+
+    [Header("Death Screen")]
+    public RectTransform deathScreen;
+    public Vector2 deathScreenHiddenPos;
+    public Vector2 deathScreenVisiblePos;
+    public float deathScreenSlideDuration = 1f;
 
     public GameObject gameplayCanvas;
     public bool isDead = false;
@@ -89,7 +95,7 @@ public class PlayerCharacter : MonoBehaviour
     {
         for (int i = 0; i < maxHealth; i++)
         {
-            if (i < heartContainer.childCount) 
+            if (i < heartContainer.childCount)
             {
                 Image heartImage = heartContainer.GetChild(i).GetComponent<Image>();
                 heartImage.sprite = (i < currentHealth) ? fullHeart : emptyHeart;
@@ -99,10 +105,10 @@ public class PlayerCharacter : MonoBehaviour
 
     public void IncreaseMaxHealth(int amount)
     {
-        maxHealth += amount; 
-        currentHealth = maxHealth; 
+        maxHealth += amount;
+        currentHealth = maxHealth;
         InitializeHearts();
-        UpdateUI(); 
+        UpdateUI();
         Debug.Log($"Max health increased to {maxHealth}");
     }
 
@@ -160,17 +166,26 @@ public class PlayerCharacter : MonoBehaviour
             gameplayCanvas.SetActive(false);
         }
 
+        ScoreManager.Instance.ShowFinalScores();
+
+        if (deathScreen != null)
+        {
+            deathScreen.gameObject.SetActive(true);
+            deathScreen.anchoredPosition = deathScreenHiddenPos;
+            StartCoroutine(SlideInDeathScreen());
+        }
+
         OnPlayerDeath?.Invoke();
         Debug.Log("Player has died!");
-
 
         StartCoroutine(DeathPause());
     }
 
+
     private System.Collections.IEnumerator DeathPause()
     {
-        yield return new WaitForSeconds(3f); 
-        Time.timeScale = 0f; 
+        yield return new WaitForSeconds(3f);
+        Time.timeScale = 0f;
     }
 
     public void AddExp(int amount)
@@ -284,5 +299,27 @@ public class PlayerCharacter : MonoBehaviour
         }
 
         Physics2D.IgnoreLayerCollision(3, 7, false);
+    }
+
+    private IEnumerator SlideInDeathScreen()
+    {
+        yield return new WaitForSeconds(3f);
+
+        float elapsed = 0f;
+        Vector2 startPos = deathScreenHiddenPos;
+        Vector2 endPos = deathScreenVisiblePos;
+
+        while (elapsed < deathScreenSlideDuration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            float t = elapsed / deathScreenSlideDuration;
+
+            t = t * t * (3f - 2f * t);
+
+            deathScreen.anchoredPosition = Vector2.Lerp(startPos, endPos, t);
+            yield return null;
+        }
+
+        deathScreen.anchoredPosition = endPos;
     }
 }

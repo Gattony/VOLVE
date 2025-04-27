@@ -26,6 +26,13 @@ public class ScoreManager : MonoBehaviour
     private Vector2 originalMultiplierPos;
     private bool isMultiplierDecayPaused = false;
 
+    [Header("High Score")]
+    public TextMeshProUGUI runScoreText;
+    public TextMeshProUGUI highScoreText;
+
+    private int highScore = 0;
+
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -33,6 +40,7 @@ public class ScoreManager : MonoBehaviour
 
     private void Start()
     {
+        highScore = PlayerPrefs.GetInt("HighScore", 0);
         UpdateUI();
     }
 
@@ -139,6 +147,45 @@ public class ScoreManager : MonoBehaviour
 
         rect.anchoredPosition = originalPos;
     }
+
+    private IEnumerator AnimateFinalScores()
+    {
+        yield return new WaitForSecondsRealtime(4f);
+
+        int displayedScore = 0;
+        float countDuration = 2f; 
+        float elapsed = 0f;
+
+        while (elapsed < countDuration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            float t = Mathf.Clamp01(elapsed / countDuration);
+            displayedScore = Mathf.RoundToInt(Mathf.Lerp(0, currentScore, t));
+            if (runScoreText != null)
+                runScoreText.text = "Score: " + displayedScore.ToString();
+            yield return null;
+        }
+
+        if (runScoreText != null)
+            runScoreText.text = "Score: " + currentScore.ToString();
+
+        yield return new WaitForSecondsRealtime(0.5f); // Small pause after counting
+        if (highScoreText != null)
+            highScoreText.text = "High Score: " + highScore.ToString();
+    }
+
+
+    public void ShowFinalScores()
+    {
+        if (currentScore > highScore)
+        {
+            highScore = currentScore;
+            PlayerPrefs.SetInt("HighScore", highScore);
+        }
+
+        StartCoroutine(AnimateFinalScores());
+    }
+
     public void PauseMultiplierDecay()
     {
         isMultiplierDecayPaused = true;

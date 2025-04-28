@@ -8,7 +8,8 @@ public class Weapon : MonoBehaviour
     public Transform firePoint;
     public float fireForce = 20f;
 
-    private new AudioSource audio;
+    public AudioSource audioSource;
+
 
     [Header("Ammo System")]
     public int baseMaxAmmo = 10; // Changed from maxAmmo to baseMaxAmmo
@@ -41,7 +42,7 @@ public class Weapon : MonoBehaviour
 
     private void Awake()
     {
-        audio = GetComponent<AudioSource>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -136,9 +137,9 @@ public class Weapon : MonoBehaviour
             cameraShake.ShakeCameraOnce();
         }
 
-        if (audio != null)
+        if (GetComponent<AudioSource>() != null && GetComponent<AudioSource>().clip != null)
         {
-            audio.Play();
+            GetComponent<AudioSource>().Play();
         }
 
         currentAmmo--;

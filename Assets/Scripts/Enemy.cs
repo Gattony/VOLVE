@@ -6,6 +6,10 @@ public class Enemy : MonoBehaviour
 {
     public Action OnEnemyDestroyed; // Event triggered when the enemy is destroyed
 
+    public AudioSource audioSource;
+    public AudioClip hitSound;
+    public AudioClip deathSound;
+
     public int maxHealth = 10;
     private int currentHealth;
     public int enemyDamage = 1;
@@ -69,6 +73,10 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(int damage, Vector2 knockbackSource)
     {
         currentHealth -= damage;
+
+        if (audioSource != null && hitSound != null)
+            audioSource.PlayOneShot(hitSound);
+
         StartCoroutine(FlashWhite());
         StartCoroutine(ApplyKnockback(knockbackSource));
 
@@ -116,6 +124,9 @@ public class Enemy : MonoBehaviour
 
     private void Die()
     {
+        if (audioSource != null && deathSound != null)
+            audioSource.PlayOneShot(deathSound);
+
         OnEnemyDestroyed?.Invoke();
 
         //Scoring Logic

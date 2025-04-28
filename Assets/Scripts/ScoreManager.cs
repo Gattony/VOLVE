@@ -6,6 +6,9 @@ public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager Instance;
 
+    private Vector2 originalScorePos;
+    private Coroutine scoreShakeCoroutine;
+
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI multiplierText;
 
@@ -41,6 +44,8 @@ public class ScoreManager : MonoBehaviour
     private void Start()
     {
         highScore = PlayerPrefs.GetInt("HighScore", 0);
+        originalScorePos = scoreText.rectTransform.anchoredPosition;
+        originalMultiplierPos = multiplierText.rectTransform.anchoredPosition;
         UpdateUI();
     }
 
@@ -105,15 +110,35 @@ public class ScoreManager : MonoBehaviour
         multiplierText.text = $"<b>x{currentMultiplier:F1}</b>";
     }
 
+    private IEnumerator ShakeText(TextMeshProUGUI text, Vector2 startPosition, float duration, float magnitude)
+    {
+        RectTransform rect = text.rectTransform;
+
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            float offsetX = Random.Range(-1f, 1f) * magnitude;
+            float offsetY = Random.Range(-1f, 1f) * magnitude;
+
+            rect.anchoredPosition = startPosition + new Vector2(offsetX, offsetY);
+            elapsed += Time.unscaledDeltaTime;
+            yield return null;
+        }
+
+        rect.anchoredPosition = startPosition;
+    }
+
     private void TriggerScoreTextShake()
     {
-        StartCoroutine(ShakeText(scoreText, 0.2f, 8f));
+        if (scoreShakeCoroutine != null)
+            StopCoroutine(scoreShakeCoroutine);
+
+        scoreShakeCoroutine = StartCoroutine(ShakeText(scoreText, originalScorePos, 0.2f, 8f));
     }
 
     private IEnumerator ShakeMultiplierText()
     {
         RectTransform rect = multiplierText.rectTransform;
-        originalMultiplierPos = rect.anchoredPosition;
 
         while (currentMultiplier > 1f)
         {
@@ -129,31 +154,13 @@ public class ScoreManager : MonoBehaviour
         rect.anchoredPosition = originalMultiplierPos;
     }
 
-    private IEnumerator ShakeText(TextMeshProUGUI text, float duration, float magnitude)
-    {
-        RectTransform rect = text.rectTransform;
-        Vector2 originalPos = rect.anchoredPosition;
-
-        float elapsed = 0f;
-        while (elapsed < duration)
-        {
-            float offsetX = Random.Range(-1f, 1f) * magnitude;
-            float offsetY = Random.Range(-1f, 1f) * magnitude;
-
-            rect.anchoredPosition = originalPos + new Vector2(offsetX, offsetY);
-            elapsed += Time.unscaledDeltaTime;
-            yield return null;
-        }
-
-        rect.anchoredPosition = originalPos;
-    }
 
     private IEnumerator AnimateFinalScores()
     {
         yield return new WaitForSecondsRealtime(4f);
 
         int displayedScore = 0;
-        float countDuration = 2f; 
+        float countDuration = 1.5f; 
         float elapsed = 0f;
 
         while (elapsed < countDuration)

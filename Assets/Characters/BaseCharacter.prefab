@@ -132,6 +132,7 @@ MonoBehaviour:
   bulletPrefab: {fileID: 9098170348085121161, guid: fbbf1d3273f12104c906f65ea662fd68, type: 3}
   firePoint: {fileID: 19205283965025318}
   fireForce: 20
+  audioSource: {fileID: 0}
   baseMaxAmmo: 10
   reloadTime: 1
   ammoBarContainer: {fileID: 0}
@@ -220,7 +221,7 @@ SpriteRenderer:
   m_SortingLayerID: -1938263913
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1027726508, guid: 57141a1873476db4192994be9c1a5ebc, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -228,7 +229,7 @@ SpriteRenderer:
   m_Size: {x: 0.39, y: 0.23}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &2829814414101761475
@@ -317,6 +318,10 @@ MonoBehaviour:
   iFrameDuration: 4.5
   numberOfFlashes: 7
   spriteRend: {fileID: 2012465563188945476}
+  deathScreen: {fileID: 0}
+  deathScreenHiddenPos: {x: 0, y: 0}
+  deathScreenVisiblePos: {x: 0, y: 0}
+  deathScreenSlideDuration: 1
   gameplayCanvas: {fileID: 0}
   isDead: 0
   expBarContainer: {fileID: 0}

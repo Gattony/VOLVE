@@ -9,6 +9,11 @@ public class PlayerCharacter : MonoBehaviour
     private CameraController cameraController;
     public static PlayerCharacter Instance;
 
+    [Header("Audio Clips")]
+    public AudioClip levelUpClip;
+    public AudioClip deathClip;
+    public AudioSource levelupSFX;
+
     public GameObject weapon;
     public static event System.Action OnLevelUp;
     public static event System.Action OnPlayerDeath;
@@ -60,6 +65,8 @@ public class PlayerCharacter : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        levelupSFX = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -140,6 +147,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private void Die()
     {
+
         if (weapon != null)
             weapon.SetActive(false);
 
@@ -178,7 +186,14 @@ public class PlayerCharacter : MonoBehaviour
         OnPlayerDeath?.Invoke();
         Debug.Log("Player has died!");
 
+        if (deathClip != null && levelupSFX != null)
+        {
+            levelupSFX.PlayOneShot(deathClip);
+        }
+
         StartCoroutine(DeathPause());
+
+        RunCounter.Instance.OnPlayerDied();
     }
 
 
@@ -206,10 +221,15 @@ public class PlayerCharacter : MonoBehaviour
         currentLevel++;
         currentExp -= expToNextLevel;
 
-        //Increasing the exp limit each time it levels up
         expToNextLevel = Mathf.RoundToInt(expToNextLevelBase * Mathf.Pow(1.2f, currentLevel - 1));
         OnLevelUp?.Invoke();
+
+        if (levelUpClip != null && levelupSFX != null)
+        {
+            levelupSFX.PlayOneShot(levelUpClip);
+        }
     }
+
 
     private void UpdateUI()
     {

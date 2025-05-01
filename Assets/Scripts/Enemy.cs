@@ -138,6 +138,7 @@ public class Enemy : MonoBehaviour
 
     private IEnumerator DeathEffect()
     {
+
         rb.velocity = Vector2.zero;
         rb.simulated = false;
         isKnockedBack = true; // Prevent movement logic

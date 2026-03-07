@@ -23,6 +23,14 @@ public class JoystickMovement : MonoBehaviour, IPointerDownHandler, IDragHandler
         joystickRadius = joystickBG.GetComponent<RectTransform>().sizeDelta.y / 4;
     }
 
+    public void ResetJoystick()
+    {
+        activeTouchID = -1;
+        joystickDirec = Vector2.zero;
+        joystick.transform.localPosition = joystickOriginalPos;
+        joystickBG.transform.position = joystickBGOriginalPos;
+    }
+
     public void OnPointerDown(PointerEventData eventData)
     {
         if (activeTouchID == -1) // Only register if not already in use

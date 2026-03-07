@@ -12,7 +12,8 @@ public class UpgradeDisplay : MonoBehaviour
     [SerializeField] private GameObject levelUpEffectPrefab;
     [SerializeField] public Transform effectSpawnPoint;
     [SerializeField] public GameObject GameplayCanvas;
-
+    [SerializeField] public JoystickMovement joystick1;
+    [SerializeField] public JoystickMovement joystick2;
 
     private void OnEnable()
     {
@@ -45,7 +46,11 @@ public class UpgradeDisplay : MonoBehaviour
 
     private IEnumerator LevelUpCoroutine()
     {
+        joystick1.ResetJoystick();
+        joystick2.ResetJoystick();
+
         GameplayCanvas.SetActive(false);
+
         Time.timeScale = 0f;
 
         CameraController cameraController = Camera.main.GetComponent<CameraController>();

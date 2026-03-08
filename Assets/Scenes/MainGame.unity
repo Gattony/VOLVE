@@ -6771,16 +6771,36 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -1920403793339067752, guid: d5809df746d0fc94e90820e03f7551ad, type: 3}
+      propertyPath: maxHealth
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: -1920403793339067752, guid: d5809df746d0fc94e90820e03f7551ad, type: 3}
       propertyPath: slamWidth
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -1920403793339067752, guid: d5809df746d0fc94e90820e03f7551ad, type: 3}
       propertyPath: flashCount
-      value: 8
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -1920403793339067752, guid: d5809df746d0fc94e90820e03f7551ad, type: 3}
+      propertyPath: glowAmount
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: -1920403793339067752, guid: d5809df746d0fc94e90820e03f7551ad, type: 3}
       propertyPath: slamLength
-      value: 10
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -1920403793339067752, guid: d5809df746d0fc94e90820e03f7551ad, type: 3}
+      propertyPath: slamColor.b
+      value: 0.110890314
+      objectReference: {fileID: 0}
+    - target: {fileID: -1920403793339067752, guid: d5809df746d0fc94e90820e03f7551ad, type: 3}
+      propertyPath: slamColor.g
+      value: 0.13207549
+      objectReference: {fileID: 0}
+    - target: {fileID: -1920403793339067752, guid: d5809df746d0fc94e90820e03f7551ad, type: 3}
+      propertyPath: slamColor.r
+      value: 0.04423283
       objectReference: {fileID: 0}
     - target: {fileID: -1920403793339067752, guid: d5809df746d0fc94e90820e03f7551ad, type: 3}
       propertyPath: flashColor.b
@@ -12356,7 +12376,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8972368462750519754, guid: b5dfdf0bd7f7a7045aa7bd394610f3ee, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

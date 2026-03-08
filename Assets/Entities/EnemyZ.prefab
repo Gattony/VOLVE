@@ -76,7 +76,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 949612987
   m_SortingLayer: 3
-  m_SortingOrder: 0
+  m_SortingOrder: 3
   m_Sprite: {fileID: 1777915309, guid: 97ec16c805e22b14dad910ee4462c8d9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -101,8 +101,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 0}
-  hitSound: {fileID: 0}
-  deathSound: {fileID: 0}
+  hitSound: {fileID: 8300000, guid: b6f6c6fcc6e525447bb5714faa4393c0, type: 3}
+  deathSound: {fileID: 8300000, guid: 99728e9d46f957246b893cf5ed18d785, type: 3}
   maxHealth: 20
   enemyDamage: 1
   scoreDrop: 50

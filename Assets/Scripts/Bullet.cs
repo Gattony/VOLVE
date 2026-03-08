@@ -19,7 +19,7 @@ public class Bullet : MonoBehaviour
 
         if (bulletTrail != null)
         {
-            bulletTrail.enabled = false; // Disable trail initially
+            bulletTrail.enabled = false;
         }
     }
 
@@ -40,37 +40,34 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D hitInfo)
     {
-        if (hitInfo.CompareTag("Enemy"))
+        // Check if object implements IDamageable
+        IDamageable damageable = hitInfo.GetComponentInParent<IDamageable>();
+
+        if (damageable != null)
         {
-            Enemy enemy = hitInfo.GetComponent<Enemy>();
-            if (enemy != null)
-            {
-                enemy.TakeDamage((int)damage, transform.position);
-            }
+            // Apply damage
+            damageable.TakeDamage((int)damage, transform.position);
 
-            // Play the impact effect
-            if (impactEffectPrefab != null)
-            {
-                GameObject impactEffect = Instantiate(impactEffectPrefab, transform.position, Quaternion.identity);
-                Destroy(impactEffect, 0.18f); // Destroy effect after a short duration
-            }
-
-            // Destroy the bullet and its trail
-            Destroy(gameObject);
-            if (bulletTrail != null)
-            {
-                Destroy(bulletTrail.gameObject);
-            }
-
+            // Spawn damage number
             if (damageNumber != null)
             {
                 GameObject damageText = Instantiate(damageNumber, transform.position, Quaternion.identity);
                 DamageNumber dmgNumber = damageText.GetComponent<DamageNumber>();
+
                 if (dmgNumber != null)
                 {
                     dmgNumber.Initialize(damage);
                 }
             }
+
+            // Spawn impact effect
+            if (impactEffectPrefab != null)
+            {
+                GameObject impactEffect = Instantiate(impactEffectPrefab, transform.position, Quaternion.identity);
+                Destroy(impactEffect, 0.18f);
+            }
+
+            Destroy(gameObject);
         }
     }
 }

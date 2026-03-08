@@ -109,7 +109,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 949612987
   m_SortingLayer: 3
-  m_SortingOrder: 1
+  m_SortingOrder: 4
   m_Sprite: {fileID: -315479350, guid: 02ad4dbbd776fec4f9df664d6005fabe, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -154,24 +154,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bdb362d4e54c1f4a946241a08d67cde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  warningLinePrefab: {fileID: 3958329755518198579, guid: ec851eb1d67d6aa4791e442c65b3336d, type: 3}
-  slamLinePrefab: {fileID: 4279103296007190093, guid: 9bad39bc56c1e244c86f327e373dbe9f, type: 3}
+  spiralStep: 20
+  warningLinePrefab: {fileID: 3130279278355939329, guid: ec851eb1d67d6aa4791e442c65b3336d, type: 3}
+  slamLinePrefab: {fileID: 2490522040738552881, guid: 9bad39bc56c1e244c86f327e373dbe9f, type: 3}
+  slamColor: {r: 0.09371662, g: 0.16981131, b: 0.15211113, a: 1}
   flashDuration: 0.5
-  flashCount: 8
+  flashCount: 9
   warningColor: {r: 0.6037736, g: 0.16963997, b: 0.15663938, a: 1}
   flashColor: {r: 1, g: 0.76687104, b: 0.1745283, a: 1}
   slamLineCount: 8
   warningDuration: 1
-  slamWidth: 4
-  slamLength: 10
-  attackCooldown: 4
+  slamWidth: 3
+  slamLength: 3
+  attackCooldown: 5
   audioSource: {fileID: 0}
   hitSound: {fileID: 0}
   deathSound: {fileID: 0}
-  maxHealth: 150
+  maxHealth: 300
   enemyDamage: 1
   scoreDrop: 1500
-  moveSpeed: 3.5
+  moveSpeed: 4
   arrowPivot: {fileID: 1551078523053731525}
   expOrbPrefab: {fileID: 6046146200178845733, guid: 4a8190405d87ea04a89122c903744f63, type: 3}
   bloodEffectPrefab: {fileID: 8641287941577885775, guid: d7f2ca45bc8e2ae478f8bae7d8b7802e, type: 3}

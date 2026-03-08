@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IDamageable
 {
     public Action OnEnemyDestroyed; // Event triggered when the enemy is destroyed
 

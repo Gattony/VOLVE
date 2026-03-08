@@ -3,13 +3,28 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 
-public class EnemyBoss : MonoBehaviour
+public class EnemyBoss : MonoBehaviour, IDamageable
 {
+    enum SlamPattern
+    {
+        Radial,
+        Plus,
+        Diagonal,
+        Spiral
+    }
+
     private List<GameObject> warningArrows = new List<GameObject>();
+
+    [Header("Spiral Slam")]
+    public float spiralStep = 20f;
+    private float spiralOffset = 0f;
 
     [Header("Boss Slam Attack")]
     public GameObject warningLinePrefab;
     public GameObject slamLinePrefab;
+
+    [Header("Slam Visual")]
+    public Color slamColor = new Color(1f, 0.4f, 0.1f);
 
     [Header("Telegraph Flash")]
     public float flashDuration = 0.2f;
@@ -66,17 +81,29 @@ public class EnemyBoss : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
 
-        player = GameObject.FindGameObjectWithTag("Player")?.transform;
-
-        if (player == null)
-            Debug.LogError("Player not found!");
+        StartCoroutine(FindPlayer());
 
         StartCoroutine(BossIntro());
     }
 
+    IEnumerator FindPlayer()
+    {
+        while (player == null)
+        {
+            if (PlayerCharacter.Instance != null)
+            {
+                player = PlayerCharacter.Instance.transform;
+                Debug.Log("Boss found player!");
+                yield break;
+            }
+
+            yield return null; // check again next frame
+        }
+    }
+
     void FixedUpdate()
     {
-        if (!introFinished) return;
+        if (!introFinished || player == null) return;
 
         HandleMovement();
         HandleAttacks();
@@ -84,7 +111,13 @@ public class EnemyBoss : MonoBehaviour
 
     void HandleMovement()
     {
-        if (player == null || isKnockedBack || isAttacking)
+        if (player == null || isKnockedBack)
+        {
+            rb.velocity = Vector2.zero;
+            return;
+        }
+
+        if (isAttacking)
         {
             rb.velocity = Vector2.zero;
             return;
@@ -125,21 +158,69 @@ public class EnemyBoss : MonoBehaviour
         introFinished = true;
     }
 
+    SlamPattern GetRandomPattern()
+    {
+        if (currentHealth <= maxHealth * 0.5f)
+        {
+            int roll = UnityEngine.Random.Range(0, 4);
+
+            switch (roll)
+            {
+                case 0: return SlamPattern.Plus;
+                case 1: return SlamPattern.Diagonal;
+                case 2: return SlamPattern.Radial;
+                default: return SlamPattern.Spiral;
+            }
+        }
+        else
+        {
+            int roll = UnityEngine.Random.Range(0, 2);
+            return roll == 0 ? SlamPattern.Plus : SlamPattern.Diagonal;
+        }
+    }
+    float[] GetPatternAngles(SlamPattern pattern)
+    {
+        switch (pattern)
+        {
+            case SlamPattern.Plus:
+                return new float[] { 0, 90, 180, 270 };
+
+            case SlamPattern.Diagonal:
+                return new float[] { 45, 135, 225, 315 };
+
+            case SlamPattern.Spiral:
+            case SlamPattern.Radial:
+
+                float[] angles = new float[slamLineCount];
+                float step = 360f / slamLineCount;
+
+                for (int i = 0; i < slamLineCount; i++)
+                {
+                    angles[i] = i * step + spiralOffset;
+                }
+
+                if (pattern == SlamPattern.Spiral)
+                    spiralOffset += spiralStep;
+
+                return angles;
+        }
+
+        return new float[] { 0, 90, 180, 270 };
+    }
+
     IEnumerator SlamAttack()
     {
         isAttacking = true;
-
         rb.velocity = Vector2.zero;
 
-        // WARNING TELEGRAPH
-        SpawnWarningLines();
+        SlamPattern pattern = GetRandomPattern();
+
+        SpawnWarningLines(pattern);
 
         yield return new WaitForSeconds(warningDuration - flashDuration);
 
-        // FLASH WARNING
         yield return StartCoroutine(FlashTelegraph());
 
-        // PLAY SLAM ANIMATION
         if (animator != null)
             animator.SetTrigger("Slam");
 
@@ -171,24 +252,40 @@ public class EnemyBoss : MonoBehaviour
             yield return null;
         }
     }
+    IEnumerator FadeOutArrow(SpriteRenderer sr)
+    {
+        float t = 0;
 
-    void SpawnWarningLines()
+        Color start = sr.color;
+        
+        while (t < 0.5f)
+        {
+            t += Time.deltaTime;
+            float alpha = 1 - (t / 0.5f);
+
+            sr.color = new Color(start.r, start.g, start.b, alpha);
+
+            yield return null;
+        }
+
+        Destroy(sr.gameObject);
+    }
+
+    void SpawnWarningLines(SlamPattern pattern)
     {
         warningArrows.Clear();
 
-        float angleStep = 360f / slamLineCount;
+        float[] angles = GetPatternAngles(pattern);
+        slamAngles = angles;
 
-        for (int i = 0; i < slamLineCount; i++)
+        foreach (float angle in angles)
         {
-            float angle = i * angleStep;
-
             Quaternion rotation = Quaternion.Euler(0, 0, angle);
 
-            GameObject arrow = Instantiate
-            (
-                        warningLinePrefab,
-                        arrowPivot.position,
-                        rotation
+            GameObject arrow = Instantiate(
+                warningLinePrefab,
+                arrowPivot.position,
+                rotation
             );
 
             SpriteRenderer sr = arrow.GetComponent<SpriteRenderer>();
@@ -207,17 +304,20 @@ public class EnemyBoss : MonoBehaviour
         {
             if (arrow == null) continue;
 
-            // swap sprite
             SpriteRenderer sr = arrow.GetComponent<SpriteRenderer>();
             SpriteRenderer slamSprite = slamLinePrefab.GetComponent<SpriteRenderer>();
+            Collider2D col = arrow.GetComponent<Collider2D>();
 
             if (sr != null && slamSprite != null)
+            {
                 sr.sprite = slamSprite.sprite;
+                sr.color = slamColor;
 
-            // optional: change color for impact
-            sr.color = Color.white;
+                if (col != null)
+                    col.enabled = true;
 
-            Destroy(arrow, 0.35f);
+                StartCoroutine(FadeOutArrow(sr));
+            }
         }
 
         warningArrows.Clear();
@@ -315,8 +415,22 @@ public class EnemyBoss : MonoBehaviour
         }
     }
 
+    void DestroyAllLines()
+    {
+        foreach (GameObject arrow in warningArrows)
+        {
+            if (arrow != null)
+                Destroy(arrow);
+        }
+
+        warningArrows.Clear();
+    }
+
     void Die()
     {
+        StopAllCoroutines();
+        DestroyAllLines();
+
         if (audioSource != null && deathSound != null)
             audioSource.PlayOneShot(deathSound);
 

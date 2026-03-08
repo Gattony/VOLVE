@@ -6772,15 +6772,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -1920403793339067752, guid: d5809df746d0fc94e90820e03f7551ad, type: 3}
       propertyPath: maxHealth
-      value: 25
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: -1920403793339067752, guid: d5809df746d0fc94e90820e03f7551ad, type: 3}
       propertyPath: slamWidth
-      value: 3
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: -1920403793339067752, guid: d5809df746d0fc94e90820e03f7551ad, type: 3}
       propertyPath: flashCount
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -1920403793339067752, guid: d5809df746d0fc94e90820e03f7551ad, type: 3}
       propertyPath: glowAmount
@@ -6788,7 +6788,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -1920403793339067752, guid: d5809df746d0fc94e90820e03f7551ad, type: 3}
       propertyPath: slamLength
-      value: 3
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: -1920403793339067752, guid: d5809df746d0fc94e90820e03f7551ad, type: 3}
       propertyPath: slamColor.b
@@ -6840,7 +6840,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -1920403793339067752, guid: d5809df746d0fc94e90820e03f7551ad, type: 3}
       propertyPath: warningDuration
-      value: 1
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 3006077678859915025, guid: d5809df746d0fc94e90820e03f7551ad, type: 3}
       propertyPath: m_Name
@@ -12376,7 +12376,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8972368462750519754, guid: b5dfdf0bd7f7a7045aa7bd394610f3ee, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

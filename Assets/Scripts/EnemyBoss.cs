@@ -213,22 +213,31 @@ public class EnemyBoss : MonoBehaviour, IDamageable
         isAttacking = true;
         rb.velocity = Vector2.zero;
 
+        // Start prepare animation
+        if (animator != null)
+            animator.SetTrigger("Prepare");
+
         SlamPattern pattern = GetRandomPattern();
 
+        // Spawn warning lines at the same time
         SpawnWarningLines(pattern);
 
+        // Wait until the warning phase almost finishes
         yield return new WaitForSeconds(warningDuration - flashDuration);
 
+        // Flash telegraph
         yield return StartCoroutine(FlashTelegraph());
 
+        // Start slam animation slightly before the flash finishes
         if (animator != null)
             animator.SetTrigger("Slam");
 
-        yield return new WaitForSeconds(0.35f);
+        // Flash telegraph
+        yield return StartCoroutine(FlashTelegraph());
 
-        SpawnSlamLines();
+        SpawnSlamLines();   
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.4f);
 
         isAttacking = false;
     }
@@ -258,10 +267,10 @@ public class EnemyBoss : MonoBehaviour, IDamageable
 
         Color start = sr.color;
         
-        while (t < 0.5f)
+        while (t < 0.85f)
         {
             t += Time.deltaTime;
-            float alpha = 1 - (t / 0.5f);
+            float alpha = 1 - (t / 0.85f);
 
             sr.color = new Color(start.r, start.g, start.b, alpha);
 
@@ -314,7 +323,10 @@ public class EnemyBoss : MonoBehaviour, IDamageable
                 sr.color = slamColor;
 
                 if (col != null)
+                {
                     col.enabled = true;
+                    StartCoroutine(DisableHitboxAfterDelay(col));
+                }
 
                 StartCoroutine(FadeOutArrow(sr));
             }
@@ -343,12 +355,19 @@ public class EnemyBoss : MonoBehaviour, IDamageable
 
     void CheckPhase2()
     {
-        if (currentHealth <= maxHealth * 0.5f)
+        if (currentHealth <= maxHealth * 0.65f)
         {
-            attackCooldown = 2.5f;
-            slamLineCount = 12;
-            moveSpeed = 3f;
+            attackCooldown = 2f;
+            slamLineCount = 10;
+            moveSpeed = 5f;
         }
+    }
+
+    IEnumerator DisableHitboxAfterDelay(Collider2D col)
+    {
+        yield return new WaitForSeconds(0.12f); // how long the hitbox exists
+        if (col != null)
+            col.enabled = false;
     }
 
     IEnumerator FlashTelegraph()

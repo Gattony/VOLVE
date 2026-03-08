@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5633755482970642138}
   - component: {fileID: 1938077237085338711}
   m_Layer: 0
-  m_Name: ExpB
+  m_Name: ExpBoss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 6046146200178845733}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7232885703946433924}
@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: e9b0584bc22d37f4a944078cef9bd19c, type: 3}
-  m_Color: {r: 0.49550554, g: 0.8018868, b: 0.64633936, a: 1}
+  m_Color: {r: 0.33935562, g: 0.7735849, b: 0.70045155, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -103,8 +103,8 @@ MonoBehaviour:
   baseSpeed: 0.2
   maxSpeed: 5
   detectionRange: 5
-  minExpAmount: 35
-  maxExpAmount: 45
+  minExpAmount: 350
+  maxExpAmount: 350
 --- !u!58 &5633755482970642138
 CircleCollider2D:
   m_ObjectHideFlags: 0

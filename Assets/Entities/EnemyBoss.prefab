@@ -159,13 +159,13 @@ MonoBehaviour:
   slamLinePrefab: {fileID: 2490522040738552881, guid: 9bad39bc56c1e244c86f327e373dbe9f, type: 3}
   slamColor: {r: 0.09371662, g: 0.16981131, b: 0.15211113, a: 1}
   flashDuration: 0.5
-  flashCount: 9
+  flashCount: 10
   warningColor: {r: 0.6037736, g: 0.16963997, b: 0.15663938, a: 1}
   flashColor: {r: 1, g: 0.76687104, b: 0.1745283, a: 1}
   slamLineCount: 8
-  warningDuration: 1
-  slamWidth: 3
-  slamLength: 3
+  warningDuration: 1.5
+  slamWidth: 3.5
+  slamLength: 3.5
   attackCooldown: 5
   audioSource: {fileID: 0}
   hitSound: {fileID: 0}
@@ -175,7 +175,7 @@ MonoBehaviour:
   scoreDrop: 1500
   moveSpeed: 4
   arrowPivot: {fileID: 1551078523053731525}
-  expOrbPrefab: {fileID: 6046146200178845733, guid: 4a8190405d87ea04a89122c903744f63, type: 3}
+  expOrbPrefab: {fileID: 6046146200178845733, guid: 801dad6f9afc8624288b0a129b8b02d7, type: 3}
   bloodEffectPrefab: {fileID: 8641287941577885775, guid: d7f2ca45bc8e2ae478f8bae7d8b7802e, type: 3}
 --- !u!50 &-1228685648526768382
 Rigidbody2D:

@@ -154,7 +154,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bdb362d4e54c1f4a946241a08d67cde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spiralStep: 20
+  phase1Color: {r: 1, g: 0.3443396, b: 0.3443396, a: 1}
+  phase2Color: {r: 0.754717, g: 0.17443931, b: 0.22650695, a: 1}
+  pulseSpeed: 3
+  warningBeepInterval: 0.15
+  spiralStep: 50
+  spiralSpawnDelay: 0.075
+  spiralWidth: 3
+  spiralLength: 6
+  spiralLineCount: 50
   warningLinePrefab: {fileID: 3130279278355939329, guid: ec851eb1d67d6aa4791e442c65b3336d, type: 3}
   slamLinePrefab: {fileID: 2490522040738552881, guid: 9bad39bc56c1e244c86f327e373dbe9f, type: 3}
   slamColor: {r: 0.09371662, g: 0.16981131, b: 0.15211113, a: 1}
@@ -162,21 +170,24 @@ MonoBehaviour:
   flashCount: 10
   warningColor: {r: 0.6037736, g: 0.16963997, b: 0.15663938, a: 1}
   flashColor: {r: 1, g: 0.76687104, b: 0.1745283, a: 1}
-  slamLineCount: 8
-  warningDuration: 1.5
+  slamLineCount: 12
+  warningDuration: 0.85
   slamWidth: 3.5
   slamLength: 3.5
   attackCooldown: 5
-  audioSource: {fileID: 0}
-  hitSound: {fileID: 0}
-  deathSound: {fileID: 0}
-  maxHealth: 300
+  audioSource: {fileID: 5041963817943623413}
+  hitSound: {fileID: 8300000, guid: b6f6c6fcc6e525447bb5714faa4393c0, type: 3}
+  deathSound: {fileID: 8300000, guid: 99728e9d46f957246b893cf5ed18d785, type: 3}
+  roarSound: {fileID: 8300000, guid: 8c253f1ed10271b4b89c4c1389fe2a6d, type: 3}
+  warningSound: {fileID: 8300000, guid: e5366aac442285b4c985527b0b1b8275, type: 3}
+  slamSound: {fileID: 8300000, guid: 259eeaf660bba8a49817836e0f882732, type: 3}
+  maxHealth: 500
   enemyDamage: 1
   scoreDrop: 1500
   moveSpeed: 4
   arrowPivot: {fileID: 1551078523053731525}
   expOrbPrefab: {fileID: 6046146200178845733, guid: 801dad6f9afc8624288b0a129b8b02d7, type: 3}
-  bloodEffectPrefab: {fileID: 8641287941577885775, guid: d7f2ca45bc8e2ae478f8bae7d8b7802e, type: 3}
+  bloodEffectPrefab: {fileID: 8641287941577885775, guid: fa1321a3cc960a548a11f3c4aa5435ee, type: 3}
 --- !u!50 &-1228685648526768382
 Rigidbody2D:
   serializedVersion: 4

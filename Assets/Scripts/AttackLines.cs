@@ -18,7 +18,6 @@ public class AttackLines : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D hitInfo)
     {
-        Debug.Log("Hit: " + hitInfo.name);
 
         if (hitInfo.CompareTag("Player"))
         {

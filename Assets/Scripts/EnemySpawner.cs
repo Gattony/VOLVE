@@ -29,7 +29,12 @@ public class EnemySpawner : MonoBehaviour
     [Header("Burst Spawning")]
     public float burstSpawnInterval = 120f; 
     public int burstEnemyCount = 10;
-    public float burstEnemySpeedMultiplier = 0.8f; 
+    public float burstEnemySpeedMultiplier = 0.8f;
+
+    [Header("Boss Spawn")]
+    public GameObject bossPrefab;
+    public float bossSpawnTime = 180f; // 3 minutes
+    private bool bossSpawned = false;
 
     private bool isBursting = false;
 
@@ -39,6 +44,7 @@ public class EnemySpawner : MonoBehaviour
     {
         StartCoroutine(BurstSpawnEnemies());
         StartCoroutine(EnableSecondEnemyType());
+        StartCoroutine(SpawnBossAfterTime());
         currentSpawnRate = initialSpawnRate;
         currentMaxEnemies = initialMaxEnemies;
 
@@ -185,5 +191,21 @@ public class EnemySpawner : MonoBehaviour
         {
             Gizmos.DrawWireSphere(player.position, spawnRadius);
         }
+    }
+    IEnumerator SpawnBossAfterTime()
+    {
+        yield return new WaitForSeconds(bossSpawnTime);
+
+        if (bossSpawned || player == null)
+            yield break;
+
+        bossSpawned = true;
+
+        Vector2 spawnDirection = Random.insideUnitCircle.normalized;
+        Vector2 spawnPosition = (Vector2)player.position + spawnDirection * spawnRadius;
+
+        Instantiate(bossPrefab, spawnPosition, Quaternion.identity);
+
+        Debug.Log("Boss Spawned!");
     }
 }

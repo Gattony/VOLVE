@@ -8,6 +8,7 @@ public class PlayerCharacter : MonoBehaviour
 {
     private CameraController cameraController;
     public static PlayerCharacter Instance;
+    private bool isInvulnerable = false;
 
     [Header("Audio Clips")]
     public AudioClip levelUpClip;
@@ -121,7 +122,7 @@ public class PlayerCharacter : MonoBehaviour
 
     public void TakeDamage(int amount)
     {
-        if (isDead) return;
+        if (isDead || isInvulnerable) return;
 
         currentHealth -= amount;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
@@ -135,6 +136,7 @@ public class PlayerCharacter : MonoBehaviour
         {
             StartCoroutine(Invunerability());
         }
+
         if (currentHealth <= 0)
         {
             Die();
@@ -308,17 +310,18 @@ public class PlayerCharacter : MonoBehaviour
 
     private IEnumerator Invunerability()
     {
-        Physics2D.IgnoreLayerCollision(3, 7, true);
+        isInvulnerable = true;
 
         for (int i = 0; i < numberOfFlashes; i++)
         {
-            spriteRend.color = new Color(1f, 1f, 1f, .7f);
+            spriteRend.color = new Color(1f, 1f, 1f, 0.7f);
             yield return new WaitForSeconds(0.4f);
+
             spriteRend.color = Color.white;
             yield return new WaitForSeconds(0.4f);
         }
 
-        Physics2D.IgnoreLayerCollision(3, 7, false);
+        isInvulnerable = false;
     }
 
     private IEnumerator SlideInDeathScreen()

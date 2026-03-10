@@ -15,9 +15,25 @@ public class EnemyBoss : MonoBehaviour, IDamageable
 
     private List<GameObject> warningArrows = new List<GameObject>();
 
+    [Header("Phase 2 Pulse")]
+    public Color phase1Color = Color.white;
+    public Color phase2Color = new Color(1f, 0.25f, 0.25f);
+    public float pulseSpeed = 3f;
+
+    private bool isPhase2 = false;
+    private SpriteRenderer sr;
+
+    [Header("Warning Beep")]
+    public float warningBeepInterval = 0.15f;
+
     [Header("Spiral Slam")]
     public float spiralStep = 20f;
     private float spiralOffset = 0f;
+
+    public float spiralSpawnDelay = 0.1f;
+    public float spiralWidth = 2f;
+    public float spiralLength = 8f;
+    public int spiralLineCount = 16;
 
     [Header("Boss Slam Attack")]
     public GameObject warningLinePrefab;
@@ -27,27 +43,33 @@ public class EnemyBoss : MonoBehaviour, IDamageable
     public Color slamColor = new Color(1f, 0.4f, 0.1f);
 
     [Header("Telegraph Flash")]
-    public float flashDuration = 0.2f;
+    public float flashDuration = 0.5f;
     public int flashCount = 5;
     public Color warningColor = Color.yellow;
     public Color flashColor = Color.red;
 
     private float[] slamAngles;
     public int slamLineCount = 8;
-    public float warningDuration = 0.8f;
+    public float warningDuration = 1.25f;
     public float slamWidth = 7f;
     public float slamLength = 7f;
     public float attackCooldown = 4f;
 
+    private bool phase2Started = false;
+    private bool isTransitioningPhase = false;
     private float attackTimer;
     private bool isAttacking;
     private bool introFinished;
 
     public Action OnEnemyDestroyed;
 
+    [Header("Boss Audio")]
     public AudioSource audioSource;
     public AudioClip hitSound;
     public AudioClip deathSound;
+    public AudioClip roarSound;
+    public AudioClip warningSound;
+    public AudioClip slamSound;
 
     [Header("Health")]
     public int maxHealth = 100;
@@ -75,6 +97,8 @@ public class EnemyBoss : MonoBehaviour, IDamageable
 
     void Start()
     {
+        sr = GetComponent<SpriteRenderer>();
+
         currentHealth = maxHealth;
 
         rb = GetComponent<Rigidbody2D>();
@@ -84,6 +108,7 @@ public class EnemyBoss : MonoBehaviour, IDamageable
         StartCoroutine(FindPlayer());
 
         StartCoroutine(BossIntro());
+
     }
 
     IEnumerator FindPlayer()
@@ -103,10 +128,17 @@ public class EnemyBoss : MonoBehaviour, IDamageable
 
     void FixedUpdate()
     {
-        if (!introFinished || player == null) return;
+        if (!introFinished || player == null || isTransitioningPhase)
+            return;
 
         HandleMovement();
         HandleAttacks();
+
+        if (isPhase2 && sr != null)
+        {
+            float pulse = (Mathf.Sin(Time.time * pulseSpeed) + 1f) / 2f;
+            sr.color = Color.Lerp(phase1Color, phase2Color, pulse);
+        }
     }
 
     void HandleMovement()
@@ -144,9 +176,27 @@ public class EnemyBoss : MonoBehaviour, IDamageable
             StartCoroutine(SlamAttack());
         }
     }
+    IEnumerator WarningBeepLoop()
+    {
+        float timer = 0f;
+
+        while (timer < warningDuration)
+        {
+            if (audioSource != null && warningSound != null)
+            {
+                audioSource.PlayOneShot(warningSound);
+            }
+
+            yield return new WaitForSeconds(warningBeepInterval);
+            timer += warningBeepInterval;
+        }
+    }
 
     IEnumerator BossIntro()
     {
+        if (audioSource != null && roarSound != null)
+            audioSource.PlayOneShot(roarSound);
+
         rb.velocity = Vector2.zero;
 
         if (animator != null)
@@ -158,23 +208,101 @@ public class EnemyBoss : MonoBehaviour, IDamageable
         introFinished = true;
     }
 
+    IEnumerator FlashSingleArrow(SpriteRenderer sr)
+    {
+        for (int i = 0; i < flashCount; i++)
+        {
+            if (sr == null) yield break;
+
+            sr.color = flashColor;
+            yield return new WaitForSeconds(flashDuration / (flashCount * 2));
+
+            sr.color = warningColor;
+            yield return new WaitForSeconds(flashDuration / (flashCount * 2));
+        }
+    }
+
+    IEnumerator SpiralAttack()
+    {
+        float angle = spiralOffset;
+
+        for (int i = 0; i < spiralLineCount; i++)
+        {
+            Quaternion rotation = Quaternion.Euler(0, 0, angle);
+
+            GameObject arrow = Instantiate(
+                warningLinePrefab,
+                arrowPivot.position,
+                rotation
+            );
+
+            SpriteRenderer sr = arrow.GetComponent<SpriteRenderer>();
+            Collider2D col = arrow.GetComponent<Collider2D>();
+
+            arrow.transform.localScale = new Vector3(spiralWidth, spiralLength, 1f);
+
+            if (sr != null)
+                sr.color = warningColor;
+
+            // WARNING SOUND
+            if (audioSource != null && warningSound != null)
+                audioSource.PlayOneShot(warningSound);
+
+            // Handle slam timing separately
+            StartCoroutine(HandleSpiralLine(sr, col));
+
+            angle += spiralStep;
+
+            // THIS controls spiral speed
+            yield return new WaitForSeconds(spiralSpawnDelay);
+        }
+
+        spiralOffset += spiralStep;
+    }
+
+    IEnumerator HandleSpiralLine(SpriteRenderer sr, Collider2D col)
+    {
+        yield return new WaitForSeconds(warningDuration - flashDuration);
+
+        if (sr != null)
+            yield return StartCoroutine(FlashSingleArrow(sr));
+
+        // SLAM SOUND
+        if (audioSource != null && slamSound != null)
+            audioSource.PlayOneShot(slamSound);
+
+        SpriteRenderer slamSprite = slamLinePrefab.GetComponent<SpriteRenderer>();
+
+        if (sr != null && slamSprite != null)
+        {
+            sr.sprite = slamSprite.sprite;
+            sr.color = slamColor;
+        }
+
+        if (col != null)
+        {
+            col.enabled = true;
+            StartCoroutine(DisableHitboxAfterDelay(col));
+        }
+
+        StartCoroutine(FadeOutArrow(sr));
+    }
+
     SlamPattern GetRandomPattern()
     {
-        if (currentHealth <= maxHealth * 0.5f)
+        // Phase 2 attacks
+        if (phase2Started)
         {
-            int roll = UnityEngine.Random.Range(0, 4);
+            int roll = UnityEngine.Random.Range(0, 2);
 
-            switch (roll)
-            {
-                case 0: return SlamPattern.Plus;
-                case 1: return SlamPattern.Diagonal;
-                case 2: return SlamPattern.Radial;
-                default: return SlamPattern.Spiral;
-            }
+            return roll == 0 ? SlamPattern.Radial : SlamPattern.Spiral;
         }
+
+        // Phase 1 attacks
         else
         {
             int roll = UnityEngine.Random.Range(0, 2);
+
             return roll == 0 ? SlamPattern.Plus : SlamPattern.Diagonal;
         }
     }
@@ -213,29 +341,34 @@ public class EnemyBoss : MonoBehaviour, IDamageable
         isAttacking = true;
         rb.velocity = Vector2.zero;
 
-        // Start prepare animation
         if (animator != null)
             animator.SetTrigger("Prepare");
 
         SlamPattern pattern = GetRandomPattern();
 
-        // Spawn warning lines at the same time
+        if (pattern == SlamPattern.Spiral)
+        {
+            yield return StartCoroutine(SpiralAttack());
+
+            if (animator != null)
+                animator.SetBool("IsMoving", true);
+
+            isAttacking = false;
+            yield break;
+        }
+
         SpawnWarningLines(pattern);
 
-        // Wait until the warning phase almost finishes
         yield return new WaitForSeconds(warningDuration - flashDuration);
 
-        // Flash telegraph
         yield return StartCoroutine(FlashTelegraph());
 
-        // Start slam animation slightly before the flash finishes
         if (animator != null)
             animator.SetTrigger("Slam");
 
-        // Flash telegraph
         yield return StartCoroutine(FlashTelegraph());
 
-        SpawnSlamLines();   
+        SpawnSlamLines();
 
         yield return new WaitForSeconds(0.4f);
 
@@ -249,10 +382,14 @@ public class EnemyBoss : MonoBehaviour, IDamageable
         Vector3 startScale = new Vector3(1f, 0f, 1f);
         Vector3 endScale = new Vector3(slamWidth, slamLength, 1f);
 
+        if (arrow == null) yield break;
+
         arrow.localScale = startScale;
 
         while (timer < warningDuration)
         {
+            if (arrow == null) yield break;   // SAFETY CHECK
+
             timer += Time.deltaTime;
             float t = timer / warningDuration;
 
@@ -261,6 +398,7 @@ public class EnemyBoss : MonoBehaviour, IDamageable
             yield return null;
         }
     }
+
     IEnumerator FadeOutArrow(SpriteRenderer sr)
     {
         float t = 0;
@@ -269,6 +407,7 @@ public class EnemyBoss : MonoBehaviour, IDamageable
         
         while (t < 0.85f)
         {
+            if (sr == null) yield break;
             t += Time.deltaTime;
             float alpha = 1 - (t / 0.85f);
 
@@ -282,6 +421,8 @@ public class EnemyBoss : MonoBehaviour, IDamageable
 
     void SpawnWarningLines(SlamPattern pattern)
     {
+        StartCoroutine(WarningBeepLoop());
+
         warningArrows.Clear();
 
         float[] angles = GetPatternAngles(pattern);
@@ -309,6 +450,11 @@ public class EnemyBoss : MonoBehaviour, IDamageable
 
     void SpawnSlamLines()
     {
+        StopCoroutine(nameof(WarningBeepLoop));
+
+        if (audioSource != null && slamSound != null)
+            audioSource.PlayOneShot(slamSound);
+
         foreach (GameObject arrow in warningArrows)
         {
             if (arrow == null) continue;
@@ -353,13 +499,51 @@ public class EnemyBoss : MonoBehaviour, IDamageable
         CheckPhase2();
     }
 
+    IEnumerator Phase2Transition()
+    {
+        if (audioSource != null && roarSound != null)
+            audioSource.PlayOneShot(roarSound);
+
+        // wait until current attack finishes
+        while (isAttacking)
+            yield return null;
+
+        rb.velocity = Vector2.zero;
+
+        // Remove current attack warnings
+        DestroyAllLines();
+
+        // Play roar animation
+        if (animator != null)
+            animator.SetTrigger("Roar");
+
+        if (sr != null)
+        {
+            sr.color = phase2Color;
+        }
+        // Optional roar sound
+        if (audioSource != null)
+            audioSource.Play();
+
+        // Wait for roar animation
+        yield return new WaitForSeconds(2f);
+
+        // Apply Phase 2 buffs
+        flashDuration = 0.25f;
+        attackCooldown = 2.5f;
+        moveSpeed = 6f;
+        warningDuration = 0.55f;
+
+        // Resume fighting
+        isAttacking = false;
+    }
+
     void CheckPhase2()
     {
-        if (currentHealth <= maxHealth * 0.65f)
+        if (!phase2Started && currentHealth <= maxHealth * 0.65f)
         {
-            attackCooldown = 2f;
-            slamLineCount = 10;
-            moveSpeed = 5f;
+            phase2Started = true;
+            StartCoroutine(Phase2Transition());
         }
     }
 
@@ -470,6 +654,7 @@ public class EnemyBoss : MonoBehaviour, IDamageable
         if (animator != null)
             animator.SetTrigger("Death");
 
+        yield return new WaitForSeconds(1f);
         yield return new WaitForSeconds(1f);
 
         if (expOrbPrefab != null)

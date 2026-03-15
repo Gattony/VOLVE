@@ -100,11 +100,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa63904fc00c10c4197aaf41cd8dac31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseSpeed: 0.2
-  maxSpeed: 5
-  detectionRange: 5
-  minExpAmount: 20
-  maxExpAmount: 25
+  baseSpeed: 4
+  maxSpeed: 10
+  detectionRange: 4
+  minExpAmount: 25
+  maxExpAmount: 30
 --- !u!58 &5633755482970642138
 CircleCollider2D:
   m_ObjectHideFlags: 0

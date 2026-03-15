@@ -111,7 +111,7 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 4
   m_Sprite: {fileID: -315479350, guid: 02ad4dbbd776fec4f9df664d6005fabe, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.5330188, b: 0.5330188, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -154,8 +154,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bdb362d4e54c1f4a946241a08d67cde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  phase1Color: {r: 1, g: 0.3443396, b: 0.3443396, a: 1}
-  phase2Color: {r: 0.754717, g: 0.17443931, b: 0.22650695, a: 1}
+  phase1Color: {r: 1, g: 1, b: 1, a: 1}
+  phase2Color: {r: 1, g: 0.3726415, b: 0.46452746, a: 1}
   pulseSpeed: 3
   warningBeepInterval: 0.15
   spiralStep: 50
@@ -181,9 +181,9 @@ MonoBehaviour:
   roarSound: {fileID: 8300000, guid: 8c253f1ed10271b4b89c4c1389fe2a6d, type: 3}
   warningSound: {fileID: 8300000, guid: e5366aac442285b4c985527b0b1b8275, type: 3}
   slamSound: {fileID: 8300000, guid: 259eeaf660bba8a49817836e0f882732, type: 3}
-  maxHealth: 500
+  maxHealth: 800
   enemyDamage: 1
-  scoreDrop: 1500
+  scoreDrop: 3000
   moveSpeed: 4
   arrowPivot: {fileID: 1551078523053731525}
   expOrbPrefab: {fileID: 6046146200178845733, guid: 801dad6f9afc8624288b0a129b8b02d7, type: 3}
